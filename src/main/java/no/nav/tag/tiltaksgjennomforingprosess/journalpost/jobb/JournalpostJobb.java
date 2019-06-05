@@ -15,8 +15,10 @@ import java.util.List;
 @Component
 public class JournalpostJobb {
 
+    @Autowired
     private JoarkService joarkService;
 
+    @Autowired
     private StsService stsService;
 
     @Autowired
@@ -28,6 +30,9 @@ public class JournalpostJobb {
         List<Avtale> avtaler = avtaleRepository.finnIkkeJournalfoerte();
         log.info("Hentet {} avtaler", avtaler.size());
 
+        if(avtaler.isEmpty()){
+            return;
+        }
         String token = stsService.hentToken();
 
         //TODO Test hvordan integrasjon håndterer parallelle kall
@@ -39,3 +44,5 @@ public class JournalpostJobb {
 
     }
 }
+
+

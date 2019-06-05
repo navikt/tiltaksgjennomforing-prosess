@@ -1,7 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess.sts;
 
-import no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.JournalpostResponse;
-import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
@@ -28,13 +26,13 @@ public class StsService {
                 .build()
                 .toUri();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.setContentType((MediaType.APPLICATION_JSON));
+        headers.setContentType((MediaType.APPLICATION_FORM_URLENCODED));
         headers.setBasicAuth(stsProperties.getBruker(), stsProperties.getPassord());
     }
 
     public String hentToken() {
         ResponseEntity<StsTokenResponse> response;
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
         try {
             response = new RestTemplate().exchange(uri, HttpMethod.GET, entity, StsTokenResponse.class);
         } catch (Exception e) {

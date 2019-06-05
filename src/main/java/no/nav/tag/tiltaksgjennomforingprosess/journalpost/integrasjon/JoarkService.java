@@ -39,15 +39,7 @@ public class JoarkService {
 
     public String opprettOgSendJournalpost(final String token, final Avtale avtale) {
         Journalpost journalpost = new JournalpostFactory().konverterTilJournalpost(avtale);
-
-        //TODO Fjerne
-        try {
-            log.info("URI={}", uri);
-            log.info("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
+        debugLogJournalpost(journalpost);
         headers.setBearerAuth(token);
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
         JournalpostResponse response;
@@ -58,4 +50,13 @@ public class JoarkService {
         }
         return response.getJournalpostId();
     }
+
+    private void debugLogJournalpost(Journalpost journalpost){
+        if(log.isDebugEnabled()){
+            try {
+                log.info("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
+            } catch (JsonProcessingException e) {}
+        }
+    }
+
 }
