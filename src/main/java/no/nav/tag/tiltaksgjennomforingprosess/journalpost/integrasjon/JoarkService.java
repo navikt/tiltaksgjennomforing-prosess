@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.builder.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
+import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

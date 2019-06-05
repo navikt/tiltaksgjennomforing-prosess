@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.sts;
 
+import no.nav.tag.tiltaksgjennomforingprosess.properties.StsProperties;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
@@ -17,6 +18,7 @@ public class StsService {
     private static final String PARAM_SCOPE = "scope=openid";
     private URI uri;
     private final HttpHeaders headers = new HttpHeaders();
+    private String token;
 
     public StsService(StsProperties stsProperties) {
         uri = UriComponentsBuilder.fromUri(stsProperties.getUri())

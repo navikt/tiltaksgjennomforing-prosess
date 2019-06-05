@@ -1,4 +1,4 @@
-package no.nav.tag.tiltaksgjennomforingprosess.sts;
+package no.nav.tag.tiltaksgjennomforingprosess.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

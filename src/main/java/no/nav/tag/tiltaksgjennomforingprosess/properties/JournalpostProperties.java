@@ -1,4 +1,4 @@
-package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
+package no.nav.tag.tiltaksgjennomforingprosess.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

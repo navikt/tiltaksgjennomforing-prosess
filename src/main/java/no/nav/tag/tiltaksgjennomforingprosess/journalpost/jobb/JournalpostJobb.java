@@ -8,6 +8,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.sts.StsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 
@@ -37,9 +38,14 @@ public class JournalpostJobb {
 
         //TODO Test hvordan integrasjon håndterer parallelle kall
         avtaler.parallelStream().forEach(avtale -> {
-            String jornalpostId = joarkService.opprettOgSendJournalpost(token, avtale);
-            avtale.setJournalpostId(jornalpostId);
-            avtaleRepository.save(avtale);
+            try {
+                String jornalpostId = joarkService.opprettOgSendJournalpost(token, avtale);
+                avtale.setJournalpostId(jornalpostId);
+                avtaleRepository.save(avtale);
+            } catch (HttpServerErrorException e){
+                log.error("Feil ved journalføring av avtale {}: {}", avtale.getId(), e.getMessage());
+            }
+
         });
 
     }

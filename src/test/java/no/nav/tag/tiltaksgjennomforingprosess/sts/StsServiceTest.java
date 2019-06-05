@@ -2,8 +2,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.sts;
 
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.JoarkService;
-import no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.JournalpostProperties;
+import no.nav.tag.tiltaksgjennomforingprosess.properties.StsProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
