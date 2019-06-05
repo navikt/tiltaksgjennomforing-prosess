@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    platform: postgres
+    url: ${DATABASE_URL}
+    driverClassName: org.postgresql.Driver
+  h2:
+    console:
+      enabled: true
+
+  flyway:
+    locations: classpath:db/migration,classpath:db/migration
+  main:
+    banner-mode: "console"
+
+journalpost:
+  jobb:
+    cron: 5,10,20,30,40,50 * * ? * *
+  integrasjon:
+    uri: https://dokarkiv-q1.nais.preprod.local
+
+sts:
+  uri: https://security-token-service.nais.preprod.local
+  bruker: ${SRVBRUKER}
+  passord: ${SRVPASSORD}
