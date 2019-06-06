@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   bygg:
     docker:
-      - image: circleci/openjdk:12
+      - image: circleci/openjdk:11
     steps:
       - checkout
       - restore_cache:
