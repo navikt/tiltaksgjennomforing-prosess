@@ -1,16 +1,19 @@
 spring:
   datasource:
     platform: postgres
-    url: ${DATABASE_URL}
     driverClassName: org.postgresql.Driver
   h2:
     console:
       enabled: true
 
-  flyway:
-    locations: classpath:db/migration,classpath:db/migration
-  main:
-    banner-mode: "console"
+tiltaksgjennomforing:
+  database:
+    database-navn: tiltaksgjennomforing-preprod
+    database-url: ${spring.datasource.url}
+    vault-sti: postgresql/preprod-fss
+    minimum-idle: 1
+    maximum-pool-size: 5
+    max-lifetime: 300000
 
 journalpost:
   jobb:
@@ -20,5 +23,5 @@ journalpost:
 
 sts:
   uri: https://security-token-service.nais.preprod.local
-  bruker: ${SRVBRUKER}
-  passord: ${SRVPASSORD}
+  bruker: ${srvbruker}
+  passord: ${srvpassord}
