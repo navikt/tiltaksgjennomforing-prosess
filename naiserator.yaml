@@ -15,8 +15,6 @@ spec:
   readiness:
     path: /tiltaksgjennomforing-prosess/internal/healthcheck
     initialDelay: 30
-  ingresses:
-    - {{ingress}}
   vault:
     enabled: true
   env:
