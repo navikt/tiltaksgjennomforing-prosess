@@ -64,6 +64,7 @@ workflows:
 
       # På branch kreves det approval for å deploye til dev-fss
       - godkjenn-deploy-til-dev:
+          context: NAIS deployment
           type: approval
           requires:
             - bygg
@@ -72,6 +73,7 @@ workflows:
               ignore:
                 - master
       - deploy-til-dev:
+          context: NAIS deployment
           requires:
             - godkjenn-deploy-til-dev
 
