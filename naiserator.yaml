@@ -1,0 +1,28 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: tiltaksgjennomforing-prosess
+  namespace: default
+  labels:
+    team: teamtag
+spec:
+  image: navikt/tiltaksgjennomforing-prosess:{{version}}
+  team: teamtag
+  port: 8080
+  liveness:
+    path: /tiltaksgjennomforing-prosess/internal/healthcheck
+    initialDelay: 30
+  readiness:
+    path: /tiltaksgjennomforing-prosess/internal/healthcheck
+    initialDelay: 30
+  ingresses:
+    - {{ingress}}
+  vault:
+    enabled: true
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: {{spring-profil}}
+  webproxy: true
+  prometheus:
+    enabled: true
+    path: /tiltaksgjennomforing-prosess/internal/actuator/prometheus
