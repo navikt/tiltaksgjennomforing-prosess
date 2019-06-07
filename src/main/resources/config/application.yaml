@@ -1,0 +1,11 @@
+server.servlet.context-path: /tiltaksgjennomforing-prosess
+
+management.endpoints.web:
+  exposure.include: info, health, metrics, prometheus
+  base-path: /internal/actuator
+
+spring:
+  application:
+    name: tiltaksgjennomforing-prosess
+  main:
+    banner-mode: "off"

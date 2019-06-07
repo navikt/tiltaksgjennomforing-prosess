@@ -27,13 +27,13 @@ public class JournalpostJobb {
 
     @Scheduled(cron = "${journalpost.jobb.cron}")
     public void kjoerJobb() {
-
         List<Avtale> avtaler = avtaleRepository.finnIkkeJournalfoerte();
-        log.info("Hentet {} avtaler", avtaler.size());
 
         if(avtaler.isEmpty()){
             return;
         }
+
+        log.info("Hentet {} avtaler", avtaler.size());
         String token = stsService.hentToken();
 
         //TODO Test hvordan integrasjon håndterer parallelle kall
