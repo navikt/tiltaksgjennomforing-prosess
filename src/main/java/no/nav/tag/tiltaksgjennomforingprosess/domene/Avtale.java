@@ -2,9 +2,11 @@ package no.nav.tag.tiltaksgjennomforingprosess.domene;
 
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@ToString
+@XmlRootElement
 public class Avtale {
 
     private String deltakerFnr;

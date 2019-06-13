@@ -5,20 +5,26 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.Maal;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Oppgave;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class TestData {
 
     public static Avtale opprettAvtale() {
         Avtale avtale = new Avtale();
-        avtale.setDeltakerFornavn("Fornavn");
-        avtale.setDeltakerEtternavn("Etternavn");
+        avtale.setId(UUID.randomUUID());
+        avtale.setVersjon(1);
+        avtale.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
+        avtale.setDeltakerFornavn("DeltakerFornavn");
+        avtale.setDeltakerEtternavn("DeltakerEtternavn");
         avtale.setDeltakerFnr("88888899999");
         avtale.setBedriftNavn("Bedriftnavn");
         avtale.setBedriftNr("12345678");
         avtale.setArbeidsgiverFornavn("AG fornavn");
         avtale.setArbeidsgiverEtternavn("AG etternavn");
         avtale.setArbeidsgiverTlf("AG tlf");
+        avtale.setVeilederNavIdent("navIdent");
         avtale.setVeilederFornavn("Veilederfornavn");
         avtale.setVeilederEtternavn("Veilederetternavn");
         avtale.setVeilederTlf("Veiledertlf");
@@ -27,17 +33,30 @@ public class TestData {
         avtale.setStartDato(LocalDate.now());
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);
+        avtale.setGodkjentAvArbeidsgiver(true);
+        avtale.setGodkjentAvDeltaker(true);
+        avtale.setGodkjentAvVeileder(true);
         avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
         avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.enOppgave()));
         return avtale;
     }
 
     public static Oppgave enOppgave() {
-        return new Oppgave();
+        Oppgave oppgave = new Oppgave();
+        oppgave.setId(UUID.randomUUID());
+        oppgave.setBeskrivelse("OppgaveBeskrivelse");
+        oppgave.setOpplaering("Opplæring");
+        oppgave.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
+        return oppgave;
     }
 
     public static Maal etMaal() {
-        return new Maal();
+        Maal maal = new Maal();
+        maal.setId(UUID.randomUUID());
+        maal.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
+        maal.setKategori("Kategori");
+        maal.setBeskrivelse("MaalBeskrivelse");
+        return maal;
     }
 
 }
