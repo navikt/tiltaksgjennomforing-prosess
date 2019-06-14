@@ -1,4 +1,4 @@
-package no.nav.tag.tiltaksgjennomforingprosess.integrasjon.journalpost;
+package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
 import org.junit.Ignore;

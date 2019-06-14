@@ -29,8 +29,8 @@ public class JournalpostFactory {
         journalpost.setBruker(bruker);
 
         //TODO Sette i gang PDF konvertering av avtale her
-        //TODO Sette i gang XML konvertering av avtale her
-        String dokumentXml = avtaleTilXml.avtaleTilXml2(avtale);
+
+        String dokumentXml = avtaleTilXml.genererXml(avtale);
 
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(
