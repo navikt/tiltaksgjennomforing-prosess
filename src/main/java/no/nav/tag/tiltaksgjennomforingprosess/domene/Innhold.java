@@ -2,11 +2,8 @@ package no.nav.tag.tiltaksgjennomforingprosess.domene;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Innhold", propOrder = {
     "skjemaInfo",
     "generelt"
@@ -14,8 +11,8 @@ import javax.xml.bind.annotation.XmlType;
 @Data
 public class Innhold {
 
-    protected SkjemaInfo skjemaInfo;
-    protected Generelt generelt;
+    private SkjemaInfo skjemaInfo;
+    private Generelt generelt;
 
     public Innhold(SkjemaInfo skjemaInfo, Generelt generelt) {
         this.skjemaInfo = skjemaInfo;

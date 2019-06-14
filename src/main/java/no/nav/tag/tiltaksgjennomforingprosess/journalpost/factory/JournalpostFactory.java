@@ -49,7 +49,6 @@ public class JournalpostFactory {
     }
 
     //TODO Denne er temporær for testing. Bytt ut med pdf generering
-
     private String testEncodeDummyFileToBase64() {
         byte[] bytes = new byte[0];
         try {
