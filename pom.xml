@@ -68,14 +68,6 @@
             <version>${jaxb.api.version}</version>
         </dependency>
 
-<!--        TODO  Rydde -->
-
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>${jaxb.api.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>javax.activation-api</artifactId>
@@ -98,6 +90,7 @@
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock</artifactId>
             <version>2.22.0</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
