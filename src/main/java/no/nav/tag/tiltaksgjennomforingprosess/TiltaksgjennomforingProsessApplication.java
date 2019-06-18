@@ -1,5 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
+import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.AvtaleTilPdf;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +19,12 @@ public class TiltaksgjennomforingProsessApplication {
 				.initializers(new SjekkAktiveProfilerInitializer())
 				.build();
 		application.run(args);
+		AvtaleTilPdf avtaleTilPdf= new AvtaleTilPdf();
+		Avtale testToPdfAvtale= new Avtale();
+		testToPdfAvtale.setDeltakerFnr("000000000000");
+		testToPdfAvtale.setBedriftNr("123456789");
+		testToPdfAvtale.setDeltakerEtternavn("okoskoskgskg");
+		avtaleTilPdf.generererPdf(testToPdfAvtale);
 	}
 
 }
