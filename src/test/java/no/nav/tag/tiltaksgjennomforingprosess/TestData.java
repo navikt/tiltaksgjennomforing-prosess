@@ -33,11 +33,12 @@ public class TestData {
         avtale.setStartDato(LocalDate.now());
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);
-        avtale.setGodkjentAvArbeidsgiver(true);
-        avtale.setGodkjentAvDeltaker(true);
-        avtale.setGodkjentAvVeileder(true);
+        avtale.setGodkjentAvArbeidsgiver(LocalDateTime.now());
+        avtale.setGodkjentAvDeltaker(LocalDateTime.now());
+        avtale.setGodkjentAvVeileder(LocalDateTime.now());
         avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
         avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.enOppgave()));
+        avtale.setGodkjentPaVegneAv(true);
         return avtale;
     }
 
