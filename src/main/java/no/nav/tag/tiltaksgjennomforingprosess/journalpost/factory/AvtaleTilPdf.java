@@ -29,7 +29,6 @@ public class AvtaleTilPdf {
             contentStream.showText("Deltaker FødeslsNummer er: ");
             contentStream.showText(avtale.getDeltakerFnr());
             contentStream.newLine();
-            contentStream.showText("/n");
             contentStream.showText(avtale.getBedriftNr());
             //contentStream.drawString(avtale.toString());
             contentStream.endText();
