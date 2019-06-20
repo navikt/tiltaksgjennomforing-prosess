@@ -2,6 +2,8 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory;
 
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.Maal;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.Oppgave;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
@@ -50,10 +52,42 @@ public class AvtaleTilPdfTest {
         try {
             PDDocument doc = PDDocument.load(new File(filNavn));
             String textInPdf = new PDFTextStripper().getText(doc);
-            return textInPdf.contains(avtale.getId().toString()) && textInPdf.contains(avtale.getDeltakerFnr()) && textInPdf.contains(avtale.getBedriftNr());
+            return textInPdf.contains(avtale.getId().toString()) && textInPdf.contains(avtale.getDeltakerFnr()) && textInPdf.contains(avtale.getBedriftNr())
+                    && textInPdf.contains(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn())
+                    && textInPdf.contains(avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn()) && textInPdf.contains(avtale.getArbeidsgiverTlf())
+                    && textInPdf.contains(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn())
+                    && textInPdf.contains(avtale.getOppfolging()) && textInPdf.contains(avtale.getTilrettelegging())
+                    && textInPdf.contains(avtale.getStartDato().toString()) && textInPdf.contains(avtale.getArbeidstreningLengde().toString())
+                    && textInPdf.contains(avtale.getArbeidstreningStillingprosent().toString())
+                    && textInPdf.contains(avtale.getGodkjentAvDeltaker().toString())
+                    && textInPdf.contains(avtale.getGodkjentAvArbeidsgiver().toString())
+                    && textInPdf.contains(avtale.getGodkjentAvVeileder().toString())
+                    && sjekkPdfMaalListInnhold(textInPdf, avtale)
+                    && sjekkPdfOppgaveListInnhold(textInPdf, avtale);
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
-        return true;
+
+    }
+
+    private boolean sjekkPdfMaalListInnhold(String textInPdf, Avtale avtale) {
+        boolean result = false;
+        for (Maal maal : avtale.getMaal()
+        ) {
+            result = textInPdf.contains(maal.getKategori()) && textInPdf.contains(maal.getBeskrivelse());
+
+        }
+        return result;
+    }
+
+    private boolean sjekkPdfOppgaveListInnhold(String textInPdf, Avtale avtale) {
+        boolean result = false;
+        for (Oppgave oppgave : avtale.getOppgaver()
+        ) {
+            result = textInPdf.contains(oppgave.getTittel()) && textInPdf.contains(oppgave.getBeskrivelse()) && textInPdf.contains(oppgave.getOpplaering());
+
+        }
+        return result;
     }
 }

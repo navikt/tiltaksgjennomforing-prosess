@@ -45,6 +45,7 @@ public class TestData {
     public static Oppgave enOppgave() {
         Oppgave oppgave = new Oppgave();
         oppgave.setId(UUID.randomUUID());
+        oppgave.setTittel("OppgaveTittel");
         oppgave.setBeskrivelse("OppgaveBeskrivelse");
         oppgave.setOpplaering("Opplæring");
         oppgave.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
