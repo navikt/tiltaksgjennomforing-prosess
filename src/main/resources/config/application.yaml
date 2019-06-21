@@ -9,3 +9,8 @@ spring:
     name: tiltaksgjennomforing-prosess
   main:
     banner-mode: "off"
+  datasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+  flyway:
+    enabled: false
