@@ -45,9 +45,9 @@ public class Avtale {
     @Column(keyColumn = "id")
     private List<Oppgave> oppgaver = new ArrayList<>();
 
-    private boolean godkjentAvDeltaker;
-    private boolean godkjentAvArbeidsgiver;
-    private boolean godkjentAvVeileder;
+    private LocalDate godkjentAvDeltaker;
+    private LocalDate godkjentAvArbeidsgiver;
+    private LocalDate godkjentAvVeileder;
 }
 
 

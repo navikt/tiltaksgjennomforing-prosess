@@ -5,7 +5,7 @@ insert into avtale (ID, OPPRETTET_TIDSPUNKT, VERSJON, DELTAKER_FORNAVN, DELTAKER
                     GODKJENT_AV_ARBEIDSGIVER, GODKJENT_AV_VEILEDER, JOURNALPOST_ID)
 values ('6ae3be81-abcd-477e-a8f3-4a5eb5fe91e3', current_timestamp, 7, 'Didrik', 'Deltaker', '01093434109',
         'Fiskebåten', '111111111', '29118923330', 'Filip', 'Fisker', '22334455', 'X123456', 'Vera', 'Veileder',
-        '33445566', 'Ingen', 'Ingen', '2019-03-25', 2, 100, TRUE, TRUE, TRUE, '123456789');
+        '33445566', 'Ingen', 'Ingen', '2019-03-25', 2, 100, '2019-03-25', '2019-03-25', '2019-03-25', '123456789');
 
 insert into maal(ID, OPPRETTET_TIDSPUNKT, KATEGORI, BESKRIVELSE, AVTALE)
 values ('d16350f6-27ea-49b3-9fbc-25fcee0dd080', current_timestamp, 'Arbeidserfaring', 'Sette sjøbein.',
@@ -24,7 +24,7 @@ insert into avtale (ID, OPPRETTET_TIDSPUNKT, VERSJON, DELTAKER_FORNAVN, DELTAKER
                     GODKJENT_AV_ARBEIDSGIVER, GODKJENT_AV_VEILEDER)
 values ('5ae3be81-abcd-477e-a8f3-4a5eb5fe91e3', current_timestamp, 7, 'Dagny', 'Deltaker', '01093434109',
         'Pers butikk', '222222222', '29118923330', 'Per', 'Kremmer', '22334455', 'X123456', 'Vera', 'Veileder',
-        '33445566', 'Telefon hver uke', 'Ingen', '2019-03-25', 2, 100, FALSE, FALSE, FALSE);
+        '33445566', 'Telefon hver uke', 'Ingen', '2019-03-25', 2, 100, null, null, null);
 
 insert into maal(ID, OPPRETTET_TIDSPUNKT, KATEGORI, BESKRIVELSE, AVTALE)
 values ('e16350f6-27ea-49b3-9fbc-25fcee0dd080', current_timestamp, 'Arbeidserfaring', 'Lære butikkarbeid',
@@ -43,7 +43,7 @@ insert into avtale (ID, OPPRETTET_TIDSPUNKT, VERSJON, DELTAKER_FORNAVN, DELTAKER
                     GODKJENT_AV_ARBEIDSGIVER, GODKJENT_AV_VEILEDER)
 values ('b3adb8c8-8205-11e9-bc42-526af7764f64', current_timestamp, 7, 'Dolly', 'Deltaker', '01093434109',
         'Dollys butikk', '222222222', '29118923330', 'Dolly', 'Dimple', '22334455', 'X123456', 'Vera', 'Veileder',
-        '33445566', 'Telefon hver uke', 'Ingen', '2019-03-25', 2, 100, TRUE, TRUE, TRUE);
+        '33445566', 'Telefon hver uke', 'Ingen', '2019-03-25', 2, 100, '2019-03-25', '2019-03-25', '2019-03-25');
 
 insert into maal(ID, OPPRETTET_TIDSPUNKT, KATEGORI, BESKRIVELSE, AVTALE)
 values ('13292cf0-8207-11e9-bc42-526af7764f64', current_timestamp, 'Arbeidserfaring', 'Lære butikkarbeid',
