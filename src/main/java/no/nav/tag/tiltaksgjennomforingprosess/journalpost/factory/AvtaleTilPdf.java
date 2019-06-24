@@ -149,9 +149,10 @@ public class AvtaleTilPdf {
             contentStream.newLine();
             String oppfolging = avtale.getOppfolging();
             contentStream = skrivTekst(oppfolging, contentStream, document);
-            contentStream.setFont(font, fontSize);
+            contentStream.setFont(font_Bold, fontSize);
             contentStream.showText("Tilrettelegging ");
             contentStream.setLeading(leadingSmaa);
+            contentStream.setFont(font,fontSize);
             contentStream.newLine();
             contentStream.showText("_________________________________________________________________________________");
             contentStream.setLeading(leadingNormal);
