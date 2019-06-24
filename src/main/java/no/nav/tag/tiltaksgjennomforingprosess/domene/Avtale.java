@@ -51,10 +51,13 @@ public class Avtale {
     @Column(keyColumn = "id")
     private List<Oppgave> oppgaver = new ArrayList<>();
 
+    private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
+
     private LocalDateTime godkjentAvDeltaker;
     private LocalDateTime godkjentAvArbeidsgiver;
     private LocalDateTime godkjentAvVeileder;
     private boolean godkjentPaVegneAv;
+
     public boolean erGodkjentAvDeltaker() {
         return godkjentAvDeltaker != null;
     }

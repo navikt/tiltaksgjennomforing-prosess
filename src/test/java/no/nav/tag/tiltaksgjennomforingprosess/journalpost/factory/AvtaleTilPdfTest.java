@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class AvtaleTilPdfTest {
@@ -19,7 +20,6 @@ public class AvtaleTilPdfTest {
     private final static String ID_MAAL_2 = "eb0f0ceb-4a17-4dca-85f3-13b38fdeebe3";
     private final static String ID_OPPG_1 = "a63ce05a-8337-400a-86d4-3b4a6459e263";
     private final static String ID_OPPG_2 = "8eea897f-40f9-472b-beb1-de64ab632075";
-    //private final static String FASIT_XML = lesFraXmlFil();
 
     private AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
 
@@ -34,21 +34,20 @@ public class AvtaleTilPdfTest {
 
         String pdf = avtaleTilPdf.generererPdf(avtale);
         Assert.assertTrue("Fil ikke eksisteres", sjekkOmPdfFilEksist("avtaleNr72c365e7-177a-43ad-9d91-48c6479a6cf0.pdf"));
-        Assert.assertTrue("Feil innhold i filen", sjekkPdfInnhold("avtaleNr" + ID_AVTALE + ".pdf", avtale));
+        Assert.assertTrue("Feil innhold i filen", sjekkPdfInnhold("avtaleNr" + ID_AVTALE + ".pdf", avtale, avtaleTilPdf));
     }
 
     private boolean sjekkOmPdfFilEksist(String filNavn) {
         try {
             PDDocument doc = PDDocument.load(new File(filNavn));
-            String textInPdf = new PDFTextStripper().getText(doc);
-
+            if (doc != null) return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 
-    private boolean sjekkPdfInnhold(String filNavn, Avtale avtale) {
+    private boolean sjekkPdfInnhold(String filNavn, Avtale avtale, AvtaleTilPdf avtaleTilPdf) {
         try {
             PDDocument doc = PDDocument.load(new File(filNavn));
             String textInPdf = new PDFTextStripper().getText(doc);
@@ -56,12 +55,12 @@ public class AvtaleTilPdfTest {
                     && textInPdf.contains(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn())
                     && textInPdf.contains(avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn()) && textInPdf.contains(avtale.getArbeidsgiverTlf())
                     && textInPdf.contains(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn())
-                    && textInPdf.contains(avtale.getOppfolging()) && textInPdf.contains(avtale.getTilrettelegging())
-                    && textInPdf.contains(avtale.getStartDato().toString()) && textInPdf.contains(avtale.getArbeidstreningLengde().toString())
+                    && sjekkPdfOppfolgingInnhold(textInPdf, avtale) && sjekkPdfTilretteleggingInnhold(textInPdf, avtale)
+                    && textInPdf.contains(avtale.getStartDato().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE()))) && textInPdf.contains(avtale.getArbeidstreningLengde().toString())
                     && textInPdf.contains(avtale.getArbeidstreningStillingprosent().toString())
-                    && textInPdf.contains(avtale.getGodkjentAvDeltaker().toString())
-                    && textInPdf.contains(avtale.getGodkjentAvArbeidsgiver().toString())
-                    && textInPdf.contains(avtale.getGodkjentAvVeileder().toString())
+                    && textInPdf.contains(avtale.getGodkjentAvDeltaker().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE())))
+                    && textInPdf.contains(avtale.getGodkjentAvArbeidsgiver().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE())))
+                    && textInPdf.contains(avtale.getGodkjentAvVeileder().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE())))
                     && sjekkPdfMaalListInnhold(textInPdf, avtale)
                     && sjekkPdfOppgaveListInnhold(textInPdf, avtale);
         } catch (IOException e) {
@@ -72,21 +71,54 @@ public class AvtaleTilPdfTest {
     }
 
     private boolean sjekkPdfMaalListInnhold(String textInPdf, Avtale avtale) {
-        boolean result = false;
+        boolean result = true;
         for (Maal maal : avtale.getMaal()
         ) {
-            result = textInPdf.contains(maal.getKategori()) && textInPdf.contains(maal.getBeskrivelse());
+            result = result && textInPdf.contains(maal.getKategori());
+            for (String str : AvtaleTilPdf.possibleWrapText(maal.getBeskrivelse())
+            ) {
+                result = result && textInPdf.contains(str);
+            }
 
         }
         return result;
     }
 
     private boolean sjekkPdfOppgaveListInnhold(String textInPdf, Avtale avtale) {
-        boolean result = false;
+        boolean result = true;
         for (Oppgave oppgave : avtale.getOppgaver()
         ) {
-            result = textInPdf.contains(oppgave.getTittel()) && textInPdf.contains(oppgave.getBeskrivelse()) && textInPdf.contains(oppgave.getOpplaering());
+            result = result && textInPdf.contains(oppgave.getTittel());
+            for (String str : AvtaleTilPdf.possibleWrapText(oppgave.getBeskrivelse())
+            ) {
+                result = result && textInPdf.contains(str);
+            }
+            for (String str : AvtaleTilPdf.possibleWrapText(oppgave.getOpplaering())
+            ) {
 
+                result = result && textInPdf.contains(str);
+            }
+
+        }
+        return result;
+    }
+
+    private boolean sjekkPdfOppfolgingInnhold(String textInPdf, Avtale avtale) {
+        boolean result = true;
+
+        for (String str : AvtaleTilPdf.possibleWrapText(avtale.getOppfolging())
+        ) {
+            result = result && textInPdf.contains(str);
+        }
+        return result;
+    }
+
+    private boolean sjekkPdfTilretteleggingInnhold(String textInPdf, Avtale avtale) {
+        boolean result = true;
+
+        for (String str : AvtaleTilPdf.possibleWrapText(avtale.getOppfolging())
+        ) {
+            result = result && textInPdf.contains(str);
         }
         return result;
     }

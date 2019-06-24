@@ -1,19 +1,10 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
-import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.Maal;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.Oppgave;
-import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.AvtaleTilPdf;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @SpringBootApplication
 @EnableScheduling
@@ -25,16 +16,16 @@ public class TiltaksgjennomforingProsessApplication {
 				.initializers(new SjekkAktiveProfilerInitializer())
 				.build();
 		application.run(args);
-		AvtaleTilPdf avtaleTilPdf= new AvtaleTilPdf();
-		avtaleTilPdf.generererPdf(getSampleAvtale());
+		/*AvtaleTilPdf avtaleTilPdf= new AvtaleTilPdf();
+		avtaleTilPdf.generererPdf(getSampleAvtale());*/
 	}
 
-	protected static Avtale getSampleAvtale(){
+/*	protected static Avtale getSampleAvtale(){
 Avtale testToPdfAvtale= TiltaksgjennomforingProsessApplication.opprettAvtale();
 		//testToPdfAvtale.setVersjon();
 		return testToPdfAvtale;
-	}
-	public static Avtale opprettAvtale() {
+	}*/
+/*	public static Avtale opprettAvtale() {
 		Avtale avtale = new Avtale();
 		avtale.setId(UUID.randomUUID());
 		avtale.setVersjon(1);
@@ -81,5 +72,5 @@ Avtale testToPdfAvtale= TiltaksgjennomforingProsessApplication.opprettAvtale();
 		maal.setKategori("Kategori");
 		maal.setBeskrivelse("MaalBeskrivelse");
 		return maal;
-	}
+	}*/
 }
