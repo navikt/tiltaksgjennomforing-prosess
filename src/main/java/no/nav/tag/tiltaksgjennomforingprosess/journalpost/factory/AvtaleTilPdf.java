@@ -1,6 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory;
 
-import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
 import lombok.Data;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Maal;
@@ -19,7 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
 
 @Component
 @Data
@@ -51,14 +49,6 @@ public class AvtaleTilPdf {
         PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
         try {
-            BaseRendererBuilder baseRendererBuilder = null;
-
-            //        PDFRenderer pdfRenderer=null;
-            //      PdfRendererBuilder pdfRendererBuilder=null;
-            /*            BatikSVG*/
-//            PdfBoxRenderer pdfBoxRenderer= pdfRendererBuilder.buildPdfRenderer();
-            //           pdfBoxRenderer.createPDF();
-            //PdfBoxRenderer r = new PdfBoxRenderer();
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
             PDImageXObject pdImage = null;
@@ -79,7 +69,6 @@ public class AvtaleTilPdf {
             }
 
             contentStream.drawImage(pdImage, logoposition[0], logoposition[1], logoStorrelse[0], logoStorrelse[1]);
-            //contentStream.drawImage();
             contentStream.setFont(font_Bold, fontSizeStor);
             contentStream.beginText();
             contentStream.newLineAtOffset(startSidenXY[0], startSidenXY[1]);
@@ -150,7 +139,7 @@ public class AvtaleTilPdf {
                 contentStream.newLine();
                 contentStream.setFont(font, fontSize);
                 String maalBesk = maal.getBeskrivelse();
-                contentStream = skrivTekst(maalBesk, contentStream, document,page);
+                contentStream = skrivTekst(maalBesk, contentStream, document, page);
                 contentStream.newLine();
             }
             contentStream.newLine();
@@ -172,12 +161,12 @@ public class AvtaleTilPdf {
                 contentStream.setFont(font, fontSize);
                 contentStream.newLine();
                 String oppgaveBesk = oppgave.getBeskrivelse();
-                contentStream = skrivTekst(oppgaveBesk, contentStream, document,page);
+                contentStream = skrivTekst(oppgaveBesk, contentStream, document, page);
                 contentStream.newLine();
                 contentStream.showText("Opplæring: ");
                 contentStream.newLine();
                 String opplaering = oppgave.getOpplaering();
-                contentStream = skrivTekst(opplaering, contentStream, document,page);
+                contentStream = skrivTekst(opplaering, contentStream, document, page);
                 contentStream.newLine();
             }
             contentStream.showText("Startdato: " + avtale.getStartDato().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)));
@@ -187,6 +176,7 @@ public class AvtaleTilPdf {
             contentStream.showText("Stillingsprosent: " + avtale.getArbeidstreningStillingprosent() + "%");
             contentStream.newLine();
             contentStream.newLine();
+            aktulLinjerISiden += 4;
             contentStream.setFont(font_Bold, fontSize);
             contentStream.showText("Oppfølging ");
             contentStream.setLeading(leadingSmaa);
@@ -197,7 +187,7 @@ public class AvtaleTilPdf {
             contentStream.newLine();
             contentStream.newLine();
             String oppfolging = avtale.getOppfolging();
-            contentStream = skrivTekst(oppfolging, contentStream, document,page);
+            contentStream = skrivTekst(oppfolging, contentStream, document, page);
             contentStream.newLine();
             contentStream.setFont(font_Bold, fontSize);
             contentStream.showText("Tilrettelegging ");
@@ -207,12 +197,22 @@ public class AvtaleTilPdf {
             contentStream.showText("_________________________________________________________________________________");
             contentStream.setLeading(leadingNormal);
             contentStream.newLine();
+            contentStream.newLine();
             String tilrettelegging = avtale.getTilrettelegging();
-            contentStream = skrivTekst(tilrettelegging, contentStream, document,page);
+            contentStream = skrivTekst(tilrettelegging, contentStream, document, page);
             //Vi trenger å sjekke at det er nok plass til Godkjenning i siden, upraktisk at godkjenning blir delt inn 2 sider
             if (aktulLinjerISiden > (maksLinjerPerSide - 10)) {
                 contentStream = openNewPage(contentStream, document);
             }
+            contentStream.newLine();
+            contentStream.setFont(font_Bold, fontSize);
+            contentStream.showText("Godkjenning ");
+            contentStream.setLeading(leadingSmaa);
+            contentStream.setFont(font, fontSize);
+            contentStream.newLine();
+            contentStream.showText("_________________________________________________________________________________");
+            contentStream.setLeading(leadingNormal);
+            contentStream.newLine();
             contentStream.newLine();
             contentStream.showText(" Godkjent av deltaker: " + avtale.getGodkjentAvDeltaker().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)));
             contentStream.newLine();
@@ -252,56 +252,23 @@ public class AvtaleTilPdf {
         return null;
     }
 
-     List<String> possibleWrapText(String skrivText, PDPage page) throws IOException {
-      //  List<String> lineText = new ArrayList<>();
-       // List<String> ord = List.of(text.split(" "));
-        String textInLine = "";
-    /*    while (text.length() > paragraphWidth) {
+    List<String> possibleWrapText(String skrivText, PDPage page) throws IOException {
 
-            lineText.addAll(List.of(text.substring(0, paragraphWidth).split("\n")));
-            text = text.substring(paragraphWidth);
-        }*/
-        /*while (text.length() > paragraphWidth) {
-            while (textInLine.length() + ord.get(0).length() < paragraphWidth) {
-                if (ord.get(0).contains("\n")) {
-                    textInLine = textInLine + " " + ord.get(0).split("\n")[0];
-                    ord.set(0, ord.get(0).split("\n")[1]);
-                    break;
-                } else {
-                    textInLine = textInLine + " " + ord.get(0);
-                }
-                try {
-                    ord.remove(0);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage());
-                }
-                lineText.add(textInLine);
-                textInLine = "";
-            }
-            lineText.add(textInLine);
-        }
-        lineText.add(text.trim());*/
-         float leading = 1.5f * fontSize;
 
-         PDRectangle mediabox = page.getMediaBox();
-         float margin = 72;
-         float width = mediabox.getWidth() - 2*margin;
-         float startX = mediabox.getLowerLeftX() + margin;
-         float startY = mediabox.getUpperRightY() - margin;
+        PDRectangle mediabox = page.getMediaBox();
+        float margin = 72;
+        float width = mediabox.getWidth() - 2 * margin;
 
-         List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<String>();
         int lastSpace = -1;
-        while (skrivText.length() > 0)
-        {
+        while (skrivText.length() > 0) {
             int spaceIndex = skrivText.indexOf(' ', lastSpace + 1);
             if (spaceIndex < 0)
                 spaceIndex = skrivText.length();
             String subString = skrivText.substring(0, spaceIndex);
             float size = fontSize * font.getStringWidth(subString) / 1000;
             System.out.printf("'%s' - %f of %f\n", subString, size, width);
-            if (size > width)
-            {
+            if (size > width) {
                 if (lastSpace < 0)
                     lastSpace = spaceIndex;
                 subString = skrivText.substring(0, lastSpace);
@@ -309,15 +276,11 @@ public class AvtaleTilPdf {
                 skrivText = skrivText.substring(lastSpace).trim();
                 System.out.printf("'%s' is line\n", subString);
                 lastSpace = -1;
-            }
-            else if (spaceIndex == skrivText.length())
-            {
+            } else if (spaceIndex == skrivText.length()) {
                 lines.add(skrivText);
                 System.out.printf("'%s' is line\n", skrivText);
                 skrivText = "";
-            }
-            else
-            {
+            } else {
                 lastSpace = spaceIndex;
             }
         }
@@ -333,7 +296,7 @@ public class AvtaleTilPdf {
         contentStream = new PDPageContentStream(document, new_Page);
         contentStream.setFont(font, fontSize);
         contentStream.beginText();
-        contentStream.newLineAtOffset(startSidenXY[0] / 2, startSidenXY[1]);
+        contentStream.newLineAtOffset(startSidenXY[0] / 1, startSidenXY[1]);
         contentStream.setLeading(leadingNormal);
         totalSider++;
         aktulLinjerISiden = 0;
@@ -341,7 +304,7 @@ public class AvtaleTilPdf {
     }
 
     public PDPageContentStream skrivFlereLinjer(String skrivTekst, PDPageContentStream contentStream, PDDocument document) throws IOException {
-        for (String lineText : possibleWrapText(skrivTekst,new PDPage(PDRectangle.A4))
+        for (String lineText : possibleWrapText(skrivTekst, new PDPage(PDRectangle.A4))
         ) {
             try {
                 aktulLinjerISiden++;
@@ -371,75 +334,10 @@ public class AvtaleTilPdf {
         if (skrivText.length() < paragraphWidth) {
             contentStream.showText(skrivText);
             contentStream.newLine();
+            aktulLinjerISiden++;
         } else {
             contentStream = skrivFlereLinjer(skrivText, contentStream, document);
         }
-       /* float leading = 1.5f * fontSize;
-
-        PDRectangle mediabox = page.getMediaBox();
-        float margin = 72;
-        float width = mediabox.getWidth() - 2*margin;
-        float startX = mediabox.getLowerLeftX() + margin;
-        float startY = mediabox.getUpperRightY() - margin;
-
-        //String text = "I am trying to create a PDF file with a lot of text contents in the document. I am using PDFBox.An essay is, generally, a piece of writing that gives the author's own argument — but the definition is vague, overlapping with those of an article, a pamphlet, and a short story. Essays have traditionally been sub-classified as formal and informal. Formal essays are characterized by serious purpose, dignity, logical organization, length,whereas the informal essay is characterized by the personal element (self-revelation, individual tastes and experiences, confidential manner), humor, graceful style, rambling structure, unconventionality or novelty of theme.Lastly, one of the most attractive features of cats as housepets is their ease of care. Cats do not have to be walked. They get plenty of exercise in the house as they play, and they do their business in the litter box. Cleaning a litter box is a quick, painless procedure. Cats also take care of their own grooming. Bathing a cat is almost never necessary because under ordinary circumstances cats clean themselves. Cats are more particular about personal cleanliness than people are. In addition, cats can be left home alone for a few hours without fear. Unlike some pets, most cats will not destroy the furnishings when left alone. They are content to go about their usual activities until their owners return.";
-        List<String> lines = new ArrayList<String>();
-        int lastSpace = -1;
-        while (skrivText.length() > 0)
-        {
-            int spaceIndex = skrivText.indexOf(' ', lastSpace + 1);
-            if (spaceIndex < 0)
-                spaceIndex = skrivText.length();
-            String subString = skrivText.substring(0, spaceIndex);
-            float size = fontSize * font.getStringWidth(subString) / 1000;
-            System.out.printf("'%s' - %f of %f\n", subString, size, width);
-            if (size > width)
-            {
-                if (lastSpace < 0)
-                    lastSpace = spaceIndex;
-                subString = skrivText.substring(0, lastSpace);
-                lines.add(subString);
-                skrivText = skrivText.substring(lastSpace).trim();
-                System.out.printf("'%s' is line\n", subString);
-                lastSpace = -1;
-            }
-            else if (spaceIndex == skrivText.length())
-            {
-                lines.add(skrivText);
-                System.out.printf("'%s' is line\n", skrivText);
-                skrivText = "";
-            }
-            else
-            {
-                lastSpace = spaceIndex;
-            }
-        }
-
-        //contentStream.beginText();
-        //contentStream.setFont(pdfFont, fontSize);
-        //contentStream.newLineAtOffset(startX, startY);
-        float currentY=startY;
-        for (String line: lines)
-        {
-            currentY -=leading;
-
-            if(currentY<=margin)
-            {
-
-                contentStream.endText();
-                contentStream.close();
-                //PDPage new_Page = new PDPage();
-                //document.addPage(new_Page);
-                //contentStream = new PDPageContentStream(document, page);
-                contentStream= openNewPage(contentStream,document);
-                contentStream.beginText();
-                contentStream.setFont(font, fontSize);
-                contentStream.newLineAtOffset(startX, startY);
-                currentY=startY;
-            }
-            contentStream.showText(line);
-            contentStream.newLineAtOffset(0, -leading);
-        }*/
         return contentStream;
     }
 }

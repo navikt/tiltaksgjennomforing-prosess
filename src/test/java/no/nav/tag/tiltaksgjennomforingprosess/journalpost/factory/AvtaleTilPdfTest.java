@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class AvtaleTilPdfTest {
@@ -52,7 +53,7 @@ public class AvtaleTilPdfTest {
         try {
             PDDocument doc = PDDocument.load(new File(filNavn));
             String textInPdf = new PDFTextStripper().getText(doc);
-            /*return textInPdf.contains(avtale.getId().toString()) && textInPdf.contains(avtale.getDeltakerFnr()) && textInPdf.contains(avtale.getBedriftNr())
+            return textInPdf.contains(avtale.getId().toString()) && textInPdf.contains(avtale.getDeltakerFnr()) && textInPdf.contains(avtale.getBedriftNr())
                     && textInPdf.contains(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn())
                     && textInPdf.contains(avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn()) && textInPdf.contains(avtale.getArbeidsgiverTlf())
                     && textInPdf.contains(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn())
@@ -63,8 +64,7 @@ public class AvtaleTilPdfTest {
                     && textInPdf.contains(avtale.getGodkjentAvArbeidsgiver().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE())))
                     && textInPdf.contains(avtale.getGodkjentAvVeileder().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE())))
                     && sjekkPdfMaalListInnhold(textInPdf, avtale)
-                    && sjekkPdfOppgaveListInnhold(textInPdf, avtale);*/
-            return true;
+                    && sjekkPdfOppgaveListInnhold(textInPdf, avtale);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
