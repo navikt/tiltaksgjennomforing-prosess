@@ -34,9 +34,9 @@ public class AvtaleTilPdfTest {
         avtale.getOppgaver().get(0).setId(UUID.fromString(ID_OPPG_1));
         avtale.getOppgaver().get(1).setId(UUID.fromString(ID_OPPG_2));
 
-        String pdf = avtaleTilPdf.generererPdf(avtale);
-        Assert.assertTrue("Fil ikke eksisteres", sjekkOmPdfFilEksist("avtaleNr72c365e7-177a-43ad-9d91-48c6479a6cf0.pdf"));
-        Assert.assertTrue("Feil innhold i filen", sjekkPdfInnhold("avtaleNr" + ID_AVTALE + ".pdf", avtale, avtaleTilPdf));
+        String pdfFilNavn = avtaleTilPdf.generererPdf(avtale);
+        Assert.assertTrue("Fil ikke eksisteres", sjekkOmPdfFilEksist(pdfFilNavn));
+        Assert.assertTrue("Feil innhold i filen", sjekkPdfInnhold(pdfFilNavn, avtale, avtaleTilPdf));
     }
 
     private boolean sjekkOmPdfFilEksist(String filNavn) {
@@ -72,9 +72,9 @@ public class AvtaleTilPdfTest {
 
     }
 
-    private boolean sjekkPdfMaalListInnhold(String textInPdf, Avtale avtale) throws IOException{
+    private boolean sjekkPdfMaalListInnhold(String textInPdf, Avtale avtale) throws IOException {
         boolean result = true;
-        AvtaleTilPdf avtaleTilPdf= new AvtaleTilPdf();
+        AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
         for (Maal maal : avtale.getMaal()
         ) {
             result = result && textInPdf.contains(maal.getKategori());
@@ -87,17 +87,17 @@ public class AvtaleTilPdfTest {
         return result;
     }
 
-    private boolean sjekkPdfOppgaveListInnhold(String textInPdf, Avtale avtale) throws IOException{
+    private boolean sjekkPdfOppgaveListInnhold(String textInPdf, Avtale avtale) throws IOException {
         boolean result = true;
-        AvtaleTilPdf avtaleTilPdf= new AvtaleTilPdf();
+        AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
         for (Oppgave oppgave : avtale.getOppgaver()
         ) {
             result = result && textInPdf.contains(oppgave.getTittel());
-            for (String str : avtaleTilPdf.possibleWrapText(oppgave.getBeskrivelse(),new PDPage(PDRectangle.A4))
+            for (String str : avtaleTilPdf.possibleWrapText(oppgave.getBeskrivelse(), new PDPage(PDRectangle.A4))
             ) {
                 result = result && textInPdf.contains(str);
             }
-            for (String str : avtaleTilPdf.possibleWrapText(oppgave.getOpplaering(),new PDPage(PDRectangle.A4))
+            for (String str : avtaleTilPdf.possibleWrapText(oppgave.getOpplaering(), new PDPage(PDRectangle.A4))
             ) {
 
                 result = result && textInPdf.contains(str);
@@ -107,9 +107,9 @@ public class AvtaleTilPdfTest {
         return result;
     }
 
-    private boolean sjekkPdfOppfolgingInnhold(String textInPdf, Avtale avtale) throws  IOException{
+    private boolean sjekkPdfOppfolgingInnhold(String textInPdf, Avtale avtale) throws IOException {
         boolean result = true;
-AvtaleTilPdf avtaleTilPdf= new AvtaleTilPdf();
+        AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
         for (String str : avtaleTilPdf.possibleWrapText(avtale.getOppfolging(), new PDPage(PDRectangle.A4))
         ) {
             result = result && textInPdf.contains(str);
@@ -117,9 +117,9 @@ AvtaleTilPdf avtaleTilPdf= new AvtaleTilPdf();
         return result;
     }
 
-    private boolean sjekkPdfTilretteleggingInnhold(String textInPdf, Avtale avtale) throws IOException{
+    private boolean sjekkPdfTilretteleggingInnhold(String textInPdf, Avtale avtale) throws IOException {
         boolean result = true;
-AvtaleTilPdf avtaleTilPdf =new AvtaleTilPdf();
+        AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
         for (String str : avtaleTilPdf.possibleWrapText(avtale.getOppfolging(), new PDPage(PDRectangle.A4))
         ) {
             result = result && textInPdf.contains(str);

@@ -27,10 +27,11 @@ public class AvtaleTilPdf {
     private PDFont font = PDType1Font.TIMES_ROMAN;
     private PDFont font_Bold = PDType1Font.TIMES_BOLD;
     private int fontSize = 12;
+    private int fontSizeMellomStor = 14;
     private int fontSizeStor = 18;
     private int totalSider = 1;
-    private int aktulLinjerISiden = 20;
-    private final int maksLinjerPerSide = 40;
+    private int aktulLinjerISiden = 5;
+    private final int maksLinjerPerSide = 45;
     int[] startSidenXY = new int[]{50, 700};
     float leadingNormal = 14f;
     float leadingSmaa = 1f;
@@ -73,168 +74,98 @@ public class AvtaleTilPdf {
             contentStream.beginText();
             contentStream.newLineAtOffset(startSidenXY[0], startSidenXY[1]);
             contentStream.setLeading(leadingNormal);
-            contentStream.showText("Avtale for arbeidstrening");
-            contentStream.newLine();
+            contentStream = skrivTekst("Avtale for arbeidstrening", contentStream, document);
             contentStream.setFont(font, fontSize);
-            contentStream.showText("Avtale Nr:  " + avtale.getId().toString());
-            contentStream.newLine();
-            contentStream.showText("Versjon Nr: " + avtale.getVersjon().toString());
-            contentStream.newLine();
+            contentStream = skrivTekst("Avtale Nr:  " + avtale.getId().toString(), contentStream, document);
+            contentStream = skrivTekst("Versjon Nr: " + avtale.getVersjon().toString(), contentStream, document);
             contentStream.newLineAtOffset(-0, -30);
-            contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText("Avtalens parter");
-            contentStream.setLeading(leadingSmaa);
-            contentStream.newLine();
-            contentStream.showText("_________________________________________________________________________________");
-            contentStream.setLeading(leadingNormal);
-            contentStream.newLine();
+            contentStream=startNyttAvsnitt("Avtalens parter",contentStream);
             contentStream.setFont(font, fontSize);
-            contentStream.showText("Deltaker  ");
-            contentStream.newLine();
+            contentStream = skrivTekst("Deltaker  ", contentStream, document);
             contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn());
-            contentStream.newLine();
+            contentStream = skrivTekst(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn(), contentStream, document);
             contentStream.setFont(font, fontSize);
-            contentStream.showText("Fødselsnummer: " + avtale.getDeltakerFnr());
+            contentStream = skrivTekst("Fødselsnummer: " + avtale.getDeltakerFnr(), contentStream, document);
+            contentStream = skrivTekst("Telefon: " + avtale.getDeltakerTlf(), contentStream, document);
             contentStream.newLine();
-            contentStream.showText("Telefon: " + avtale.getDeltakerTlf());
-            contentStream.newLine();
-            contentStream.newLine();
-            contentStream.showText("Arbeidsgiver ");
-            contentStream.newLine();
+            contentStream = skrivTekst("Arbeidsgiver ", contentStream, document);
             contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText(avtale.getBedriftNavn());
-            contentStream.newLine();
+            contentStream = skrivTekst(avtale.getBedriftNavn(), contentStream, document);
             contentStream.setFont(font, fontSize);
-            contentStream.showText("BedriftsNr: " + avtale.getBedriftNr());
+            contentStream = skrivTekst("BedriftsNr: " + avtale.getBedriftNr(), contentStream, document);
+            contentStream = skrivTekst("Kontakperson: " + avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn(), contentStream, document);
+            contentStream = skrivTekst("Telefon: " + avtale.getArbeidsgiverTlf(), contentStream, document);
             contentStream.newLine();
-            contentStream.showText("Kontakperson: " + avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn());
-            contentStream.newLine();
-            contentStream.showText("Telefon: " + avtale.getArbeidsgiverTlf());
-            contentStream.newLine();
-            contentStream.newLine();
-            contentStream.showText("Nav-veileder ");
-            contentStream.newLine();
+            contentStream = skrivTekst("Nav-veileder ", contentStream, document);
             contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn());
+            contentStream = skrivTekst(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn(), contentStream, document);
             contentStream.setFont(font, fontSize);
+            contentStream = skrivTekst("Telefon: " + avtale.getVeilederTlf(), contentStream, document);
             contentStream.newLine();
-            contentStream.showText("Telefon: " + avtale.getVeilederTlf());
-            contentStream.newLine();
-            contentStream.newLine();
-            contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText("Mål: ");
-            contentStream.setLeading(leadingSmaa);
-            contentStream.newLine();
-            contentStream.showText("_________________________________________________________________________________");
-            contentStream.setLeading(leadingNormal);
-            contentStream.newLine();
-            contentStream.newLine();
+            contentStream = startNyttAvsnitt("Mål  ", contentStream);
 
             for (Maal maal : avtale.getMaal()
             ) {
                 aktulLinjerISiden++;
                 contentStream.setFont(font_Bold, fontSize);
-                contentStream.showText(maal.getKategori());
-                contentStream.newLine();
+                contentStream = skrivTekst(maal.getKategori(), contentStream, document);
                 contentStream.setFont(font, fontSize);
                 String maalBesk = maal.getBeskrivelse();
-                contentStream = skrivTekst(maalBesk, contentStream, document, page);
+                contentStream = skrivTekst(maalBesk, contentStream, document);
                 contentStream.newLine();
             }
-            contentStream.newLine();
-            aktulLinjerISiden++;
-            contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText("Arbeidsoppgaver: ");
-            contentStream.setLeading(leadingSmaa);
-            contentStream.newLine();
-            aktulLinjerISiden++;
-            contentStream.showText("_________________________________________________________________________________");
-            contentStream.setLeading(leadingNormal);
-
-            contentStream.newLine();
-            contentStream.newLine();
+            contentStream = startNyttAvsnitt("Arbeidsoppgaver ", contentStream);
             for (Oppgave oppgave : avtale.getOppgaver()
             ) {
                 contentStream.setFont(font_Bold, fontSize);
-                contentStream.showText(oppgave.getTittel());
+                contentStream = skrivTekst(oppgave.getTittel(), contentStream, document);
                 contentStream.setFont(font, fontSize);
-                contentStream.newLine();
                 String oppgaveBesk = oppgave.getBeskrivelse();
-                contentStream = skrivTekst(oppgaveBesk, contentStream, document, page);
+                contentStream = skrivTekst(oppgaveBesk, contentStream, document);
                 contentStream.newLine();
-                contentStream.showText("Opplæring: ");
-                contentStream.newLine();
+                contentStream.setFont(font_Bold, fontSize);
+                contentStream = skrivTekst("Opplæring: ", contentStream, document);
+                contentStream.setFont(font, fontSize);
                 String opplaering = oppgave.getOpplaering();
-                contentStream = skrivTekst(opplaering, contentStream, document, page);
+                contentStream = skrivTekst(opplaering, contentStream, document);
                 contentStream.newLine();
             }
-            contentStream.showText("Startdato: " + avtale.getStartDato().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)));
             contentStream.newLine();
-            contentStream.showText("Varighet: " + avtale.getArbeidstreningLengde() + " uker ");
+            contentStream = skrivTekst("Startdato: " + avtale.getStartDato().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)), contentStream, document);
+            contentStream = skrivTekst("Varighet: " + avtale.getArbeidstreningLengde() + " uker ", contentStream, document);
+            contentStream = skrivTekst("Stillingsprosent: " + avtale.getArbeidstreningStillingprosent() + "%", contentStream, document);
             contentStream.newLine();
-            contentStream.showText("Stillingsprosent: " + avtale.getArbeidstreningStillingprosent() + "%");
-            contentStream.newLine();
-            contentStream.newLine();
-            aktulLinjerISiden += 4;
-            contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText("Oppfølging ");
-            contentStream.setLeading(leadingSmaa);
-            contentStream.setFont(font, fontSize);
-            contentStream.newLine();
-            contentStream.showText("_________________________________________________________________________________");
-            contentStream.setLeading(leadingNormal);
-            contentStream.newLine();
-            contentStream.newLine();
+            contentStream = startNyttAvsnitt("Oppfølging ", contentStream);
             String oppfolging = avtale.getOppfolging();
-            contentStream = skrivTekst(oppfolging, contentStream, document, page);
-            contentStream.newLine();
-            contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText("Tilrettelegging ");
-            contentStream.setLeading(leadingSmaa);
             contentStream.setFont(font, fontSize);
+            contentStream = skrivTekst(oppfolging, contentStream, document);
             contentStream.newLine();
-            contentStream.showText("_________________________________________________________________________________");
-            contentStream.setLeading(leadingNormal);
-            contentStream.newLine();
-            contentStream.newLine();
+            contentStream = startNyttAvsnitt("Tilrettelegging ", contentStream);
             String tilrettelegging = avtale.getTilrettelegging();
-            contentStream = skrivTekst(tilrettelegging, contentStream, document, page);
+            contentStream.setFont(font, fontSize);
+            contentStream = skrivTekst(tilrettelegging, contentStream, document);
             //Vi trenger å sjekke at det er nok plass til Godkjenning i siden, upraktisk at godkjenning blir delt inn 2 sider
             if (aktulLinjerISiden > (maksLinjerPerSide - 10)) {
                 contentStream = openNewPage(contentStream, document);
             }
             contentStream.newLine();
-            contentStream.setFont(font_Bold, fontSize);
-            contentStream.showText("Godkjenning ");
-            contentStream.setLeading(leadingSmaa);
+            contentStream = startNyttAvsnitt("Godkjenning ", contentStream);
             contentStream.setFont(font, fontSize);
-            contentStream.newLine();
-            contentStream.showText("_________________________________________________________________________________");
-            contentStream.setLeading(leadingNormal);
-            contentStream.newLine();
-            contentStream.newLine();
-            contentStream.showText(" Godkjent av deltaker: " + avtale.getGodkjentAvDeltaker().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)));
-            contentStream.newLine();
-            contentStream.showText(" Godkjent av ArbeidsGiver: " + avtale.getGodkjentAvArbeidsgiver().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)));
-            contentStream.newLine();
+            contentStream = skrivTekst(" Godkjent av deltaker: " + avtale.getGodkjentAvDeltaker().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)), contentStream, document);
+            contentStream = skrivTekst(" Godkjent av ArbeidsGiver: " + avtale.getGodkjentAvArbeidsgiver().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)), contentStream, document);
             contentStream.showText(" Godkjent av Nav veileder: " + avtale.getGodkjentAvVeileder().format(DateTimeFormatter.ofPattern(DATOFORMAT_NORGE)));
             try {
                 if (avtale.isGodkjentPaVegneAv()) {
                     contentStream.newLine();
-                    contentStream.showText("    NB: Avtalen er godkjent av veileder på vegne av deltaker fordi : ");
-                    contentStream.newLine();
+                    contentStream = skrivTekst("    NB: Avtalen er godkjent av veileder på vegne av deltaker fordi : ", contentStream, document);
                     if (avtale.getGodkjentPaVegneGrunn().isIkkeBankId()) {
-                        contentStream.showText("     Deltaker ikke har bankID");
-                        contentStream.newLine();
+                        contentStream = skrivTekst("     Deltaker ikke har bankID", contentStream, document);
                     }
                     if (avtale.getGodkjentPaVegneGrunn().isReservert()) {
-                        contentStream.showText("     Deltaker har reservert seg mot digitale tjenester");
-                        contentStream.newLine();
+                        contentStream = skrivTekst("     Deltaker har reservert seg mot digitale tjenester", contentStream, document);
                     }
                     if (avtale.getGodkjentPaVegneGrunn().isDigitalKompetanse()) {
-                        contentStream.showText("     Deltaker ikke har digital kompetanse");
-                        contentStream.newLine();
+                        contentStream = skrivTekst("     Deltaker mangler digital kompetanse", contentStream, document);
                     }
                 }
             } catch (Exception e) {
@@ -296,7 +227,7 @@ public class AvtaleTilPdf {
         contentStream = new PDPageContentStream(document, new_Page);
         contentStream.setFont(font, fontSize);
         contentStream.beginText();
-        contentStream.newLineAtOffset(startSidenXY[0] / 1, startSidenXY[1]);
+        contentStream.newLineAtOffset(startSidenXY[0], logoposition[1]);
         contentStream.setLeading(leadingNormal);
         totalSider++;
         aktulLinjerISiden = 0;
@@ -322,7 +253,8 @@ public class AvtaleTilPdf {
     }
 
     /**
-     * Skriver String som kan innholde lange tekster med flere linjer og oppretter ny side om det trengs
+     * Skriver korte og lange String som kan innholde lange tekster med flere linjer og oppretter ny side om det trengs
+     * Lager nylinje og øke aktuellLinjerISiden
      *
      * @param skrivText     tekst til skriving
      * @param contentStream bruk samme contentStream for å roftsette med samme context
@@ -330,7 +262,7 @@ public class AvtaleTilPdf {
      * @return Må bruke returnert contentStream for å fortsette i samme rekkefølge
      * @throws IOException
      */
-    private PDPageContentStream skrivTekst(String skrivText, PDPageContentStream contentStream, PDDocument document, PDPage page) throws IOException {
+    private PDPageContentStream skrivTekst(String skrivText, PDPageContentStream contentStream, PDDocument document) throws IOException {
         if (skrivText.length() < paragraphWidth) {
             contentStream.showText(skrivText);
             contentStream.newLine();
@@ -338,6 +270,20 @@ public class AvtaleTilPdf {
         } else {
             contentStream = skrivFlereLinjer(skrivText, contentStream, document);
         }
+        return contentStream;
+    }
+
+    private PDPageContentStream startNyttAvsnitt(String avsnitt, PDPageContentStream contentStream) throws IOException {
+        contentStream.newLine();
+        contentStream.setFont(font_Bold, fontSizeMellomStor);
+        contentStream.showText(avsnitt);
+        contentStream.setLeading(leadingSmaa);
+        contentStream.newLine();
+        contentStream.showText("_________________________________________________________________________________");
+        contentStream.setLeading(leadingNormal);
+        contentStream.newLine();
+        contentStream.newLine();
+        aktulLinjerISiden += 3;
         return contentStream;
     }
 }
