@@ -58,11 +58,11 @@ public class AvtaleTilPdfTest {
                     && textInPdf.contains(avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn()) && textInPdf.contains(avtale.getArbeidsgiverTlf())
                     && textInPdf.contains(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn())
                     && sjekkPdfOppfolgingInnhold(textInPdf, avtale) && sjekkPdfTilretteleggingInnhold(textInPdf, avtale)
-                    && textInPdf.contains(avtale.getStartDato().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE()))) && textInPdf.contains(avtale.getArbeidstreningLengde().toString())
+                    && textInPdf.contains(avtale.getStartDato().format(DateTimeFormatter.ofPattern(AvtaleTilPdf.DATOFORMAT_NORGE))) && textInPdf.contains(avtale.getArbeidstreningLengde().toString())
                     && textInPdf.contains(avtale.getArbeidstreningStillingprosent().toString())
-                    && textInPdf.contains(avtale.getGodkjentAvDeltaker().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE())))
-                    && textInPdf.contains(avtale.getGodkjentAvArbeidsgiver().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE())))
-                    && textInPdf.contains(avtale.getGodkjentAvVeileder().format(DateTimeFormatter.ofPattern(avtaleTilPdf.getDATOFORMAT_NORGE())))
+                    && textInPdf.contains(avtale.getGodkjentAvDeltaker().format(DateTimeFormatter.ofPattern(AvtaleTilPdf.DATOFORMAT_NORGE)))
+                    && textInPdf.contains(avtale.getGodkjentAvArbeidsgiver().format(DateTimeFormatter.ofPattern(AvtaleTilPdf.DATOFORMAT_NORGE)))
+                    && textInPdf.contains(avtale.getGodkjentAvVeileder().format(DateTimeFormatter.ofPattern(AvtaleTilPdf.DATOFORMAT_NORGE)))
                     && sjekkPdfMaalListInnhold(textInPdf, avtale)
                     && sjekkPdfOppgaveListInnhold(textInPdf, avtale);
         } catch (IOException e) {

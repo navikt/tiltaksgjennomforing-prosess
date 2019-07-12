@@ -23,22 +23,22 @@ import java.util.List;
 @Component
 @Data
 public class AvtaleTilPdf {
-    private final String DATOFORMAT_NORGE = "dd.MM.YYYY";
+    public final static String DATOFORMAT_NORGE = "dd.MM.YYYY";
     private static int paragraphWidth = 90;
-    private PDFont font = PDType1Font.TIMES_ROMAN;
-    private PDFont font_Bold = PDType1Font.TIMES_BOLD;
-    private int fontSizeSmaa = 10;
-    private int fontSize = 12;
-    private int fontSizeMellomStor = 14;
-    private int fontSizeStor = 18;
-    private int totalSider = 1;
-    private int aktulLinjerISiden = 10;
-    private final int maksLinjerPerSide = 45;
-    int[] startSidenXY = new int[]{50, 700};
-    float leadingNormal = 14f;
-    float leadingSmaa = 1f;
-    float[] logoposition = new float[]{50, 750};
-    float[] logoStorrelse = new float[]{60, 38};
+    private static PDFont font = PDType1Font.TIMES_ROMAN;
+    private static PDFont font_Bold = PDType1Font.TIMES_BOLD;
+    private static int fontSizeSmaa = 10;
+    private static int fontSize = 12;
+    private static int fontSizeMellomStor = 14;
+    private static int fontSizeStor = 18;
+    private static int totalSider = 1;
+    private static int aktulLinjerISiden = 10;
+    private final static int maksLinjerPerSide = 45;
+    static int[] startSidenXY = new int[]{50, 700};
+    static float leadingNormal = 14f;
+    static float leadingSmaa = 1f;
+    static float[] logoposition = new float[]{50, 750};
+    static float[] logoStorrelse = new float[]{60, 38};
     private static String ikonfil = "navikon.png";
 
     /**
