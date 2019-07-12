@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +59,12 @@ public class AvtaleTilPdf {
 
             PDImageXObject pdImage = null;
             try {
-                pdImage = PDImageXObject.createFromFile(ikonfil, document);
+                if (Files.exists(Path.of(ikonfil), LinkOption.NOFOLLOW_LINKS)) {
+                    pdImage = PDImageXObject.createFromFile(ikonfil, document);
+                    System.out.println("Ikonfil ikke eksist, logo blir ikke laget");
+                }
             } catch (NullPointerException e) {
                 System.out.println(e.getMessage());
-                System.out.println("Fil ikke eksist, logo blir ikke laget");
                 e.printStackTrace();
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -166,6 +171,7 @@ public class AvtaleTilPdf {
                     }
                 }
             } catch (Exception e) {
+                System.out.println("Kan være avtale fra gamle versjon som mangler mulighet for godkjenning på vegne av " + e.getMessage());
             }
             contentStream = skrivFooter("Referanse:  " + avtale.getId().toString(), contentStream);
             contentStream.endText();
