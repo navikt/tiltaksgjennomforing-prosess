@@ -176,7 +176,7 @@ public class AvtaleTilPdf {
             contentStream = skrivFooter("Referanse:  " + avtale.getId().toString(), contentStream);
             contentStream.endText();
             contentStream.close();
-            String filNavn = "avtaleNr" + avtale.getId() + ".pdf";
+            String filNavn = "PDFAvtaler/avtaleNr" + avtale.getId() + ".pdf";
             document.save(filNavn);
             document.close();
             return filNavn;
@@ -202,18 +202,18 @@ public class AvtaleTilPdf {
                 spaceIndex = skrivText.length();
             String subString = skrivText.substring(0, spaceIndex);
             float size = fontSize * font.getStringWidth(subString) / 1000;
-            System.out.printf("'%s' - %f of %f\n", subString, size, width);
+           // System.out.printf("'%s' - %f of %f\n", subString, size, width);
             if (size > width) {
                 if (lastSpace < 0)
                     lastSpace = spaceIndex;
                 subString = skrivText.substring(0, lastSpace);
                 lines.add(subString);
                 skrivText = skrivText.substring(lastSpace).trim();
-                System.out.printf("'%s' is line\n", subString);
+             //   System.out.printf("'%s' is line\n", subString);
                 lastSpace = -1;
             } else if (spaceIndex == skrivText.length()) {
                 lines.add(skrivText);
-                System.out.printf("'%s' is line\n", skrivText);
+              //  System.out.printf("'%s' is line\n", skrivText);
                 skrivText = "";
             } else {
                 lastSpace = spaceIndex;

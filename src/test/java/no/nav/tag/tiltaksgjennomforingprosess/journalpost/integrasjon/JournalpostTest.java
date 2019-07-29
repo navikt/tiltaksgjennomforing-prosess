@@ -1,15 +1,14 @@
 package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 
+import no.nav.tag.tiltaksgjennomforingprosess.TestData;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.AvtaleTilPdf;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JournalpostTest {
@@ -17,18 +16,11 @@ public class JournalpostTest {
     private Journalpost journalpost;
 
     @Test
-    @Ignore
+    // @Ignore
     public void oppretter_journalpost() throws Exception {
+        Avtale avtale = TestData.opprettAvtale();
+        JournalpostFactory journalpostFactory = new JournalpostFactory();
 
-         System.out.println(encodeToBase64());
+        Assert.assertTrue("Kunne ikke lese Pdf filen", journalpostFactory.encodeToBase64(new AvtaleTilPdf().generererPdf(avtale), true) != "");
     }
-
-    private String encodeToBase64() throws Exception {
-        Path fil = Paths.get(getClass().getClassLoader()
-                .getResource("dummy.pdf").toURI());
-
-        byte[] bytes = Files.readAllBytes(fil);
-        return Base64.getEncoder().encodeToString(bytes);
-    }
-
 }

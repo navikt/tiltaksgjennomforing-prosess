@@ -41,7 +41,7 @@ public class JournalpostFactory {
         return journalpost;
     }
 
-    private String encodeToBase64(String dokument, boolean isPdf) {
+    public String encodeToBase64(String dokument, boolean isPdf) {
         if (isPdf) {
             return testEncodePdfFileToBase64(dokument);
         }
@@ -52,8 +52,7 @@ public class JournalpostFactory {
     private String testEncodePdfFileToBase64(String dokument) {
         byte[] bytes = new byte[0];
         try {
-            Path fil = Paths.get(getClass().getClassLoader()
-                    .getResource(dokument).toURI());
+            Path fil = Paths.get(dokument);
             bytes = Files.readAllBytes(fil);
         } catch (Exception e) {
             e.printStackTrace();
