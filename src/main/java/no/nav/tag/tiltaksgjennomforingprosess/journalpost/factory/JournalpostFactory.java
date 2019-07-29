@@ -48,7 +48,7 @@ public class JournalpostFactory {
         return Base64.getEncoder().encodeToString(dokument.getBytes());
     }
 
-    //TODO Denne er temporær for testing. Bytt ut med pdf generering
+
     private String testEncodePdfFileToBase64(String dokument) {
         byte[] bytes = new byte[0];
         try {
