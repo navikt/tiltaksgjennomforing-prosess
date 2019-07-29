@@ -19,6 +19,7 @@ public class JournalpostFactory {
 
     @Autowired
     private AvtaleTilXml avtaleTilXml;
+    private AvtaleTilPdf avtaleTilPdf;
 
     public Journalpost konverterTilJournalpost(Avtale avtale) {
 
@@ -28,32 +29,31 @@ public class JournalpostFactory {
         Journalpost journalpost = new Journalpost();
         journalpost.setBruker(bruker);
 
-        //TODO Sette i gang PDF konvertering av avtale her
 
+        String dokumentPdf = avtaleTilPdf.generererPdf(avtale);
         String dokumentXml = avtaleTilXml.genererXml(avtale);
-
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(
-                new DokumentVariant("PDF", encodeToBase64(dokumentXml, false)),
-                new DokumentVariant("XML", encodeToBase64("dokument", true)))
+                new DokumentVariant("XML", encodeToBase64(dokumentXml, false)),
+                new DokumentVariant("PDF", encodeToBase64(dokumentPdf, true)))
         );
         journalpost.setDokumenter(Arrays.asList(dokument));
         return journalpost;
     }
 
     private String encodeToBase64(String dokument, boolean isPdf) {
-        if(isPdf) {
-            return testEncodeDummyFileToBase64();
+        if (isPdf) {
+            return testEncodePdfFileToBase64(dokument);
         }
         return Base64.getEncoder().encodeToString(dokument.getBytes());
     }
 
     //TODO Denne er temporær for testing. Bytt ut med pdf generering
-    private String testEncodeDummyFileToBase64() {
+    private String testEncodePdfFileToBase64(String dokument) {
         byte[] bytes = new byte[0];
         try {
             Path fil = Paths.get(getClass().getClassLoader()
-                    .getResource("dummy.pdf").toURI());
+                    .getResource(dokument).toURI());
             bytes = Files.readAllBytes(fil);
         } catch (Exception e) {
             e.printStackTrace();

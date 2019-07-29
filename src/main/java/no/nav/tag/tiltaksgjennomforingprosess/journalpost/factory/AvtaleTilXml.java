@@ -20,7 +20,8 @@ public class AvtaleTilXml {
         JAXBContext context = null;
         Marshaller marshaller = null;
         try {
-            context = JAXBContext.newInstance(Melding.class);
+            if (JAXBContext.newInstance(Melding.class) != null)
+                context = JAXBContext.newInstance(Melding.class);
             marshaller = context.createMarshaller();
             marshaller.marshal(melding, stringWriter);
         } catch (Exception e) {
