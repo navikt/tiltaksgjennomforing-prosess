@@ -4,9 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.journalpost.builder.JournalpostFactory;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ import java.util.Arrays;
 @Slf4j
 @Service
 public class JoarkService {
+
+    @Autowired
+    private JournalpostFactory journalpostFactory;
 
     private static final String PATH = "/rest/journalpostapi/v1/journalpost";
     private static final String QUERY_PARAM = "forsoekFerdigstill=false";
@@ -39,7 +43,7 @@ public class JoarkService {
     }
 
     public String opprettOgSendJournalpost(final String token, final Avtale avtale) {
-        Journalpost journalpost = new JournalpostFactory().konverterTilJournalpost(avtale);
+        Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
         debugLogJournalpost(journalpost);
         headers.setBearerAuth(token);
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);

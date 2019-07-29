@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<melding>
+  <innhold>
+    <skjemaInfo>
+      <tiltaksType>arbeidstrening</tiltaksType>
+      <typeBehandling>ab0000</typeBehandling>
+    </skjemaInfo>
+    <generelt>
+      <arbeidsgiver>
+        <organisasjonsnummer>12345678</organisasjonsnummer>
+      </arbeidsgiver>
+      <arbeidstaker>
+        <foedselsnummer>88888899999</foedselsnummer>
+      </arbeidstaker>
+      <avtale>
+        <deltakerFnr>88888899999</deltakerFnr>
+        <bedriftNr>12345678</bedriftNr>
+        <veilederNavIdent>navIdent</veilederNavIdent>
+        <opprettetTidspunkt/>
+        <id>72c365e7-177a-43ad-9d91-48c6479a6cf0</id>
+        <versjon>1</versjon>
+        <deltakerFornavn>DeltakerFornavn</deltakerFornavn>
+        <deltakerEtternavn>DeltakerEtternavn</deltakerEtternavn>
+        <bedriftNavn>Bedriftnavn</bedriftNavn>
+        <arbeidsgiverFornavn>AG fornavn</arbeidsgiverFornavn>
+        <arbeidsgiverEtternavn>AG etternavn</arbeidsgiverEtternavn>
+        <arbeidsgiverTlf>AG tlf</arbeidsgiverTlf>
+        <veilederFornavn>Veilederfornavn</veilederFornavn>
+        <veilederEtternavn>Veilederetternavn</veilederEtternavn>
+        <veilederTlf>Veiledertlf</veilederTlf>
+        <oppfolging>Oppfolging</oppfolging>
+        <tilrettelegging>Tilrettelegging</tilrettelegging>
+        <startDato/>
+        <arbeidstreningLengde>2</arbeidstreningLengde>
+        <arbeidstreningStillingprosent>50</arbeidstreningStillingprosent>
+        <maal>
+          <beskrivelse>MaalBeskrivelse</beskrivelse>
+          <id>161de513-9df5-4ea6-b0ac-7d5ce5a02805</id>
+          <kategori>Kategori</kategori>
+          <opprettetTidspunkt/>
+        </maal>
+        <maal>
+          <beskrivelse>MaalBeskrivelse</beskrivelse>
+          <id>eb0f0ceb-4a17-4dca-85f3-13b38fdeebe3</id>
+          <kategori>Kategori</kategori>
+          <opprettetTidspunkt/>
+        </maal>
+        <oppgaver>
+          <beskrivelse>OppgaveBeskrivelse</beskrivelse>
+          <id>a63ce05a-8337-400a-86d4-3b4a6459e263</id>
+          <opplaering>Opplæring</opplaering>
+          <opprettetTidspunkt/>
+        </oppgaver>
+        <oppgaver>
+          <beskrivelse>OppgaveBeskrivelse</beskrivelse>
+          <id>8eea897f-40f9-472b-beb1-de64ab632075</id>
+          <opplaering>Opplæring</opplaering>
+          <opprettetTidspunkt/>
+        </oppgaver>
+        <godkjentAvDeltaker>true</godkjentAvDeltaker>
+        <godkjentAvArbeidsgiver>true</godkjentAvArbeidsgiver>
+        <godkjentAvVeileder>true</godkjentAvVeileder>
+      </avtale>
+    </generelt>
+  </innhold>
+</melding>
