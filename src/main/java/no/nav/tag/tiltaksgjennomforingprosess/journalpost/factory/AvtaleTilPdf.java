@@ -61,7 +61,6 @@ public class AvtaleTilPdf {
             try {
                 if (Files.exists(Path.of(ikonfil), LinkOption.NOFOLLOW_LINKS)) {
                     pdImage = PDImageXObject.createFromFile(ikonfil, document);
-                    System.out.println("Ikonfil ikke eksist, logo blir ikke laget");
                 }
             } catch (NullPointerException e) {
                 System.out.println(e.getMessage());
