@@ -10,6 +10,6 @@ import java.util.UUID;
 
 public interface AvtaleRepository extends CrudRepository<Avtale, UUID> {
 
-    @Query("SELECT * FROM avtale a WHERE a.journalpost_id is null AND a.godkjent_av_veileder")
+    @Query("SELECT * FROM avtale a WHERE a.journalpost_id is null AND a.godkjent_av_veileder is not null")
     List<Avtale> finnIkkeJournalfoerte();
 }
