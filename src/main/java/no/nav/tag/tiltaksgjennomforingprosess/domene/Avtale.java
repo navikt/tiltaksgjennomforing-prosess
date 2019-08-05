@@ -29,6 +29,7 @@ public class Avtale {
     private Integer versjon;
     private String deltakerFornavn;
     private String deltakerEtternavn;
+    private String deltakerTlf;
     private String bedriftNavn;
     private String arbeidsgiverFornavn;
     private String arbeidsgiverEtternavn;
@@ -50,9 +51,24 @@ public class Avtale {
     @Column(keyColumn = "id")
     private List<Oppgave> oppgaver = new ArrayList<>();
 
-    private boolean godkjentAvDeltaker;
-    private boolean godkjentAvArbeidsgiver;
-    private boolean godkjentAvVeileder;
+    private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
+
+    private LocalDateTime godkjentAvDeltaker;
+    private LocalDateTime godkjentAvArbeidsgiver;
+    private LocalDateTime godkjentAvVeileder;
+    private boolean godkjentPaVegneAv;
+
+    public boolean erGodkjentAvDeltaker() {
+        return godkjentAvDeltaker != null;
+    }
+
+    public boolean erGodkjentAvArbeidsgiver() {
+        return godkjentAvArbeidsgiver != null;
+    }
+
+    public boolean erGodkjentAvVeileder() {
+        return godkjentAvVeileder != null;
+    }
 }
 
 
