@@ -181,9 +181,8 @@ public class AvtaleTilPdf {
             return filNavn;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     List<String> possibleWrapText(String skrivText, PDPage page) throws IOException {
@@ -201,18 +200,15 @@ public class AvtaleTilPdf {
                 spaceIndex = skrivText.length();
             String subString = skrivText.substring(0, spaceIndex);
             float size = fontSize * font.getStringWidth(subString) / 1000;
-           // System.out.printf("'%s' - %f of %f\n", subString, size, width);
             if (size > width) {
                 if (lastSpace < 0)
                     lastSpace = spaceIndex;
                 subString = skrivText.substring(0, lastSpace);
                 lines.add(subString);
                 skrivText = skrivText.substring(lastSpace).trim();
-             //   System.out.printf("'%s' is line\n", subString);
                 lastSpace = -1;
             } else if (spaceIndex == skrivText.length()) {
                 lines.add(skrivText);
-              //  System.out.printf("'%s' is line\n", skrivText);
                 skrivText = "";
             } else {
                 lastSpace = spaceIndex;
