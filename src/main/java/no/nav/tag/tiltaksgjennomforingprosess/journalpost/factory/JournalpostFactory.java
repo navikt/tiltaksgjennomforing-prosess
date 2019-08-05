@@ -1,10 +1,12 @@
-package no.nav.tag.tiltaksgjennomforingprosess.journalpost.builder;
+package no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory;
 
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Bruker;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.DokumentVariant;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,7 +14,12 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
 
+@Component
 public class JournalpostFactory {
+
+    @Autowired
+    private AvtaleTilXml avtaleTilXml;
+    private AvtaleTilPdf avtaleTilPdf;
 
     public Journalpost konverterTilJournalpost(Avtale avtale) {
 
@@ -22,32 +29,30 @@ public class JournalpostFactory {
         Journalpost journalpost = new Journalpost();
         journalpost.setBruker(bruker);
 
-        //TODO Sette i gang PDF konvertering av avtale her
-        //TODO Sette i gang XML konvertering av avtale her
 
+        String dokumentPdf = avtaleTilPdf.generererPdf(avtale);
+        String dokumentXml = avtaleTilXml.genererXml(avtale);
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(
-                new DokumentVariant("PDF", encodeToBase64(avtale, true)),
-                new DokumentVariant("XML", encodeToBase64(avtale, false)))
+                new DokumentVariant("XML", encodeToBase64(dokumentXml, false)),
+                new DokumentVariant("PDF", encodeToBase64(dokumentPdf, true)))
         );
         journalpost.setDokumenter(Arrays.asList(dokument));
         return journalpost;
     }
 
-    private static String encodeToBase64(Avtale avtale, boolean isPdf) {
-        if(isPdf) {
-            return Base64.getEncoder().encodeToString("dokument".getBytes());
+    public String encodeToBase64(String dokument, boolean isPdf) {
+        if (isPdf) {
+            return testEncodePdfFileToBase64(dokument);
         }
-        return Base64.getEncoder().encodeToString("<dokument/>".getBytes());
+        return Base64.getEncoder().encodeToString(dokument.getBytes());
     }
 
-    //TODO Denne er temporær for testing. Bytt ut med pdf generering
 
-    private String testEncodeDummyFileToBase64() {
+    private String testEncodePdfFileToBase64(String dokument) {
         byte[] bytes = new byte[0];
         try {
-            Path fil = Paths.get(getClass().getClassLoader()
-                    .getResource("dummy.pdf").toURI());
+            Path fil = Paths.get(dokument);
             bytes = Files.readAllBytes(fil);
         } catch (Exception e) {
             e.printStackTrace();

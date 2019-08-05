@@ -28,9 +28,9 @@ public class AvtaleRepositoryTest {
         List<Avtale> avtaler = avtaleRepository.finnIkkeJournalfoerte();
         assertFalse("Ingen avtaler funnet", avtaler.isEmpty());
         avtaler.forEach(avtale -> {
-            assertNotNull(avtale.getGodkjentAvArbeidsgiver());
-            assertNotNull(avtale.getGodkjentAvDeltaker());
-            assertNotNull(avtale.getGodkjentAvVeileder());
+            assertTrue(avtale.erGodkjentAvArbeidsgiver());
+            assertTrue(avtale.erGodkjentAvDeltaker());
+            assertTrue(avtale.erGodkjentAvVeileder());
             assertNull(avtale.getJournalpostId());
         });
     }

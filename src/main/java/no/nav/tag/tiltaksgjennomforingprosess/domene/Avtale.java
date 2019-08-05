@@ -2,16 +2,21 @@ package no.nav.tag.tiltaksgjennomforingprosess.domene;
 
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @Data
+@ToString
 public class Avtale {
 
     private String deltakerFnr;
@@ -24,6 +29,7 @@ public class Avtale {
     private Integer versjon;
     private String deltakerFornavn;
     private String deltakerEtternavn;
+    private String deltakerTlf;
     private String bedriftNavn;
     private String arbeidsgiverFornavn;
     private String arbeidsgiverEtternavn;
@@ -45,9 +51,24 @@ public class Avtale {
     @Column(keyColumn = "id")
     private List<Oppgave> oppgaver = new ArrayList<>();
 
-    private LocalDate godkjentAvDeltaker;
-    private LocalDate godkjentAvArbeidsgiver;
-    private LocalDate godkjentAvVeileder;
+    private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
+
+    private LocalDateTime godkjentAvDeltaker;
+    private LocalDateTime godkjentAvArbeidsgiver;
+    private LocalDateTime godkjentAvVeileder;
+    private boolean godkjentPaVegneAv;
+
+    public boolean erGodkjentAvDeltaker() {
+        return godkjentAvDeltaker != null;
+    }
+
+    public boolean erGodkjentAvArbeidsgiver() {
+        return godkjentAvArbeidsgiver != null;
+    }
+
+    public boolean erGodkjentAvVeileder() {
+        return godkjentAvVeileder != null;
+    }
 }
 
 
