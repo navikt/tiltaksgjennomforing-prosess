@@ -14,3 +14,14 @@ spring:
     driverClassName: org.postgresql.Driver
   flyway:
     enabled: false
+
+journalpost:
+  jobb:
+    cron: 5,10,20,30,40,50 * * ? * *
+  integrasjon:
+    joark:
+      uri: http://localhost:8090
+    sts:
+      uri: http://localhost:8090
+      bruker: ${srvbruker}
+      passord: ${srvpassord}

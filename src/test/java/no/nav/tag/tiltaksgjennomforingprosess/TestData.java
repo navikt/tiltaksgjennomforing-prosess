@@ -1,37 +1,48 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.GodkjentPaVegneGrunn;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Maal;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Oppgave;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 public class TestData {
 
+    private static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+    private static final LocalDateTime GODKJENT_DATO = LocalDateTime.of(2019, 8, 16, 12,0);
+
+    public static String avtaleTilJSON(Avtale avtale) throws JsonProcessingException {
+       return objectMapper.writeValueAsString(avtale);
+    }
+
     public static Avtale opprettAvtale() {
         Avtale avtale = new Avtale();
         avtale.setId(UUID.randomUUID());
         avtale.setVersjon(1);
         avtale.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
-        avtale.setDeltakerFornavn("DeltakerFornavn");
-        avtale.setDeltakerEtternavn("DeltakerEtternavn");
+        avtale.setDeltakerFornavn("Lillehans");
+        avtale.setDeltakerEtternavn("Hansen");
         avtale.setDeltakerFnr("88888899999");
-        avtale.setBedriftNavn("Bedriftnavn");
+        avtale.setBedriftNavn("Hansen AS");
         avtale.setBedriftNr("12345678");
-        avtale.setArbeidsgiverFornavn("AG fornavn");
-        avtale.setArbeidsgiverEtternavn("AG etternavn");
-        avtale.setArbeidsgiverTlf("AG tlf");
-        avtale.setVeilederNavIdent("navIdent");
-        avtale.setVeilederFornavn("Veilederfornavn");
-        avtale.setVeilederEtternavn("Veilederetternavn");
-        avtale.setVeilederTlf("Veiledertlf");
+        avtale.setArbeidsgiverFornavn("Hans");
+        avtale.setArbeidsgiverEtternavn("Frøland Hansen");
+        avtale.setArbeidsgiverTlf("99990000");
+        avtale.setVeilederNavIdent("T123456");
+        avtale.setVeilederFornavn("Nils");
+        avtale.setVeilederEtternavn("Nilsen");
+        avtale.setVeilederTlf("22223333");
         avtale.setOppfolging("Dette er veldig lang. .oppfølging tekst for test,");
-        avtale.setTilrettelegging("Dette er veldig lang tilrettelegging tekst for test, For 3 år siden kunne jeg ikke sett for meg at jeg kom til å sitte 2 timer å gråte på grunn av en 5er i norsk. 5 i norsk var helt uoppnåelig for meg på den tiden. Men etter hvert som jeg begynte å skrive og lese, fant jeg fort ut at dette var meg. ");
-        avtale.setStartDato(LocalDate.now());
+        avtale.setTilrettelegging("Dette er lang tilrettelegging tekst for test");
+        avtale.setStartDato(GODKJENT_DATO.plusMonths(1).toLocalDate());
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);
         avtale.setGodkjentAvArbeidsgiver(LocalDateTime.now());
@@ -41,25 +52,26 @@ public class TestData {
         avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.enOppgave()));
         avtale.setGodkjentPaVegneAv(true);
         avtale.setGodkjentPaVegneGrunn(enGrunn());
+        avtale.setGodkjentAvArbeidsgiver(GODKJENT_DATO);
+        avtale.setGodkjentAvDeltaker(GODKJENT_DATO.plusDays(1));
+        avtale.setGodkjentAvVeileder(GODKJENT_DATO.plusDays(2));
         return avtale;
     }
 
     public static Oppgave enOppgave() {
         Oppgave oppgave = new Oppgave();
-        oppgave.setId(UUID.randomUUID());
         oppgave.setTittel("OppgaveTittel");
-        oppgave.setBeskrivelse("Dette er veldig lang Oppgave beskrivelse for test,  ");
-        oppgave.setOpplaering("Dette er veldig lang opplæring beskrivelse for test, For 3 år siden kunne jeg ikke sett for meg at jeg kom til å s ");
+        oppgave.setBeskrivelse("Dette er veldig lang Oppgave beskrivelse for test,");
+        oppgave.setOpplaering("Dette er veldig lang opplæring");
         oppgave.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
         return oppgave;
     }
 
     public static Maal etMaal() {
         Maal maal = new Maal();
-        maal.setId(UUID.randomUUID());
         maal.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
         maal.setKategori("Kategori");
-        maal.setBeskrivelse("Dette er veldig lang beskrivelse for test, For 3 år siden kunne jeg ikke sett for meg at jeg kom til å ");
+        maal.setBeskrivelse("Dette er veldig lang Mål beskrivelse for test,");
         return maal;
     }
 

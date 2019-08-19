@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class SkjemaInfo {
 
     private static final String TILTAKSTYPE = "arbeidstrening";
-    private static final String TYPE_BEHANDLING = "ab0000"; //TODO Sett inn riktig
+    private static final String TYPE_BEHANDLING = "ab0422";
 
     private String tiltaksType = TILTAKSTYPE;
     private String typeBehandling = TYPE_BEHANDLING;

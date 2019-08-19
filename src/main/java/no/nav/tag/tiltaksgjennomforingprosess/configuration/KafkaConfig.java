@@ -1,0 +1,26 @@
+package no.nav.tag.tiltaksgjennomforingprosess.configuration;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.test.EmbeddedKafkaBroker;
+
+@Configuration
+@Profile("dev")
+@Slf4j
+public class KafkaConfig {
+
+    @Value(value = "${spring.kafka.template.default-topic}")
+    private String topic;
+
+    @Autowired
+    public EmbeddedKafkaBroker kafkaBroker() {
+        log.info("Starter embedded Kafka");
+        EmbeddedKafkaBroker embeddedKafka = new EmbeddedKafkaBroker(1, true, topic);
+        embeddedKafka.afterPropertiesSet();
+        return embeddedKafka;
+    }
+
+}

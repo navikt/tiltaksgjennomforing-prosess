@@ -29,10 +29,10 @@ public class AvtaleTilPdfTest {
     public void lagerAvtalePdf() {
         Avtale avtale = TestData.opprettAvtale();
         avtale.setId(UUID.fromString(ID_AVTALE));
-        avtale.getMaal().get(0).setId(UUID.fromString(ID_MAAL_1));
-        avtale.getMaal().get(1).setId(UUID.fromString(ID_MAAL_2));
-        avtale.getOppgaver().get(0).setId(UUID.fromString(ID_OPPG_1));
-        avtale.getOppgaver().get(1).setId(UUID.fromString(ID_OPPG_2));
+//        avtale.getMaal().get(0).setId(UUID.fromString(ID_MAAL_1));
+//        avtale.getMaal().get(1).setId(UUID.fromString(ID_MAAL_2));
+//        avtale.getOppgaver().get(0).setId(UUID.fromString(ID_OPPG_1));
+//        avtale.getOppgaver().get(1).setId(UUID.fromString(ID_OPPG_2));
 
         String pdfFilNavn = avtaleTilPdf.generererPdf(avtale);
         Assert.assertTrue("Fil ikke eksisteres", sjekkOmPdfFilEksist(pdfFilNavn));

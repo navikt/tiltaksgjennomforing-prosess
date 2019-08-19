@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.AvtaleTilPdf;
@@ -22,5 +23,13 @@ public class JournalpostTest {
         JournalpostFactory journalpostFactory = new JournalpostFactory();
 
         Assert.assertTrue("Kunne ikke lese Pdf filen", journalpostFactory.encodeToBase64(new AvtaleTilPdf().generererPdf(avtale), true) != "");
+    }
+
+
+    @Test
+    public void whenSerializingJava8Date_thenCorrect() throws JsonProcessingException {
+
+    String avtale = TestData.avtaleTilJSON(TestData.opprettAvtale());
+        System.out.println(avtale);
     }
 }

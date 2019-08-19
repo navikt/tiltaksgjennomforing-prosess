@@ -47,16 +47,4 @@ public class JoarkServiceIntTest {
         assertEquals("001", jounalpostId);
     }
 
-    @Ignore
-    @Test(expected = HttpServerErrorException.class)
-    public void oppretter_journalpost_status_500() {
-
-        Avtale avtale = TestData.opprettAvtale();
-
-        journalpostProperties.setUri(URI.create("http://localhost:8091"));
-
-    //    joarkService = new JoarkService(journalpostProperties);
-        joarkService.opprettOgSendJournalpost(TOKEN, avtale);
-    }
-
 }

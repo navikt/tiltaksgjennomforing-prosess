@@ -8,7 +8,7 @@ import java.net.URI;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "journalpost.integrasjon")
+@ConfigurationProperties(prefix = "journalpost.integrasjon.joark")
 public class JournalpostProperties {
     private URI uri;
 }

@@ -8,7 +8,7 @@ import java.net.URI;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "sts")
+@ConfigurationProperties(prefix = "journalpost.integrasjon.sts")
 public class StsProperties {
     private URI uri;
     private String bruker;

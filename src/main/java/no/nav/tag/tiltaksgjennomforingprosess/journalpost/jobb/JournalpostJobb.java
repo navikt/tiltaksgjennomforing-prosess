@@ -1,20 +1,22 @@
 package no.nav.tag.tiltaksgjennomforingprosess.journalpost.jobb;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
-import no.nav.tag.tiltaksgjennomforingprosess.AvtaleRepository;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.sts.StsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpServerErrorException;
 
-import java.util.List;
+import java.io.IOException;
 
 @Slf4j
 @Component
-public class JournalpostJobb { //TODO Denne utgår til fordel for avtalemottak vha kafka.
+public class JournalpostJobb {
+
+    private static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule()).disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
 
     @Autowired
     private JoarkService joarkService;
@@ -22,32 +24,10 @@ public class JournalpostJobb { //TODO Denne utgår til fordel for avtalemottak v
     @Autowired
     private StsService stsService;
 
-    @Autowired
-    private AvtaleRepository avtaleRepository;
-
-   // @Scheduled(cron = "${journalpost.jobb.cron}")
-    public void kjoerJobb() {
-        List<Avtale> avtaler = avtaleRepository.finnIkkeJournalfoerte();
-
-        if(avtaler.isEmpty()){
-            return;
-        }
-
-        log.info("Hentet {} avtaler", avtaler.size());
+    public void prosesserAvtale(String avtaleJson) throws IOException {
+        Avtale avtale = objectMapper.readValue(avtaleJson, Avtale.class);
         String token = stsService.hentToken();
-
-        //TODO Test hvordan integrasjon håndterer parallelle kall
-        avtaler.parallelStream().forEach(avtale -> {
-            try {
-                String jornalpostId = joarkService.opprettOgSendJournalpost(token, avtale);
-                avtale.setJournalpostId(jornalpostId);
-                avtaleRepository.save(avtale);
-            } catch (HttpServerErrorException e){
-                log.error("Feil ved journalføring av avtale {}: {}", avtale.getId(), e.getMessage());
-            }
-
-        });
-
+        joarkService.opprettOgSendJournalpost(token, avtale);
     }
 }
 

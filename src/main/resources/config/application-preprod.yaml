@@ -23,5 +23,3 @@ journalpost:
 
 sts:
   uri: https://security-token-service.nais.preprod.local
-  bruker: ${srvbruker}
-  passord: ${srvpassord}

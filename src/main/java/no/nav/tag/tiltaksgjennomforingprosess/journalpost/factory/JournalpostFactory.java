@@ -19,6 +19,8 @@ public class JournalpostFactory {
 
     @Autowired
     private AvtaleTilXml avtaleTilXml;
+
+    @Autowired
     private AvtaleTilPdf avtaleTilPdf;
 
     public Journalpost konverterTilJournalpost(Avtale avtale) {

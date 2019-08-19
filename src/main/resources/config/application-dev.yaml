@@ -13,23 +13,20 @@ spring:
 
   kafka:
     consumer:
-      group-id: arbeidsAvtale
+      group-id: tag-tiltak
       auto-offset-reset: earliest
-#    bootstrap-servers: ${spring.embedded.kafka.brokers}
-#    consumer:
-#      group-id: arbeidsAvtale
-#    producer:
-#      bootstrap-servers: ${spring.embedded.kafka.brokers}
+      bootstrap-servers: ${spring.embedded.kafka.brokers}
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      properties-spring-json-value-default-type: no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale
+    template:
+      default-topic: "godkjentArbeidsAvtale"
 
-  main:
     banner-mode: "console"
 
 journalpost:
-  jobb:
-    cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
     joark:
       uri: http://localhost:8090
     sts:
       uri: http://localhost:8090
-

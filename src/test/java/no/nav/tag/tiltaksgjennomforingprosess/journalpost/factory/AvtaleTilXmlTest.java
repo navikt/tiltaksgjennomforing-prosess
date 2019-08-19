@@ -4,9 +4,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import org.junit.Test;
 import org.xmlunit.builder.DiffBuilder;
-import org.xmlunit.builder.Input;
 import org.xmlunit.diff.Diff;
-import org.xmlunit.diff.DifferenceEvaluator;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -14,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class AvtaleTilXmlTest {
 
@@ -31,26 +28,25 @@ public class AvtaleTilXmlTest {
     public void lagerAvtaleXml() {
         Avtale avtale = TestData.opprettAvtale();
         avtale.setId(UUID.fromString(ID_AVTALE));
-        avtale.getMaal().get(0).setId(UUID.fromString(ID_MAAL_1));
-        avtale.getMaal().get(1).setId(UUID.fromString(ID_MAAL_2));
-        avtale.getOppgaver().get(0).setId(UUID.fromString(ID_OPPG_1));
-        avtale.getOppgaver().get(1).setId(UUID.fromString(ID_OPPG_2));
-
-
 
         String xml = avtaleTilXml.genererXml(avtale);
 
-        Diff myDiff = DiffBuilder.compare(FASIT_XML).withTest(xml)
-                .ignoreWhitespace()
+
+        Diff myDiff = DiffBuilder.compare(FASIT_XML)
+                .withTest(xml)
+              //  .ignoreWhitespace()
+                .ignoreElementContentWhitespace()
+                .checkForSimilar()
                 .build();
 
+        myDiff.getDifferences().forEach(difference -> System.out.println(difference));
         assertFalse(myDiff.hasDifferences());
     }
 
     private static String lesFraXmlFil() {
         StringBuilder sb = new StringBuilder();
         try {
-            Files.lines(Paths.get(AvtaleTilXmlTest.class.getClassLoader().getResource("journalpost.xml").toURI()), StandardCharsets.UTF_8).forEach(str -> sb.append(str));
+            Files.lines(Paths.get(AvtaleTilXmlTest.class.getClassLoader().getResource("journalpost-2.xml").toURI()), StandardCharsets.UTF_8).forEach(str -> sb.append(str));
         } catch (Exception e) {
             e.printStackTrace();
         }
