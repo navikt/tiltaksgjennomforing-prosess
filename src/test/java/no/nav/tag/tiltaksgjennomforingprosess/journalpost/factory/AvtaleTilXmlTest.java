@@ -4,7 +4,9 @@ import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import org.junit.Test;
 import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.builder.Input;
 import org.xmlunit.diff.Diff;
+import org.xmlunit.diff.DifferenceEvaluator;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -12,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AvtaleTilXmlTest {
 
@@ -32,6 +35,8 @@ public class AvtaleTilXmlTest {
         avtale.getMaal().get(1).setId(UUID.fromString(ID_MAAL_2));
         avtale.getOppgaver().get(0).setId(UUID.fromString(ID_OPPG_1));
         avtale.getOppgaver().get(1).setId(UUID.fromString(ID_OPPG_2));
+
+
 
         String xml = avtaleTilXml.genererXml(avtale);
 

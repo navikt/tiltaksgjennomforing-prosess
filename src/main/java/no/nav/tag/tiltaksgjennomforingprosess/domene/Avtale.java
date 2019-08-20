@@ -3,11 +3,14 @@ package no.nav.tag.tiltaksgjennomforingprosess.domene;
 
 import lombok.Data;
 import lombok.ToString;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.LocalDateAdapter;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.LocalDateTimeAdapter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ public class Avtale {
     private String veilederNavIdent;
 
     private LocalDateTime opprettetTidspunkt;
-    @Id
+
     private UUID id;
     private Integer versjon;
     private String deltakerFornavn;
@@ -37,38 +40,30 @@ public class Avtale {
     private String veilederFornavn;
     private String veilederEtternavn;
     private String veilederTlf;
-
     private String oppfolging;
     private String tilrettelegging;
-
-    private LocalDate startDato;
+    private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
     private Integer arbeidstreningLengde;
     private Integer arbeidstreningStillingprosent;
     private String journalpostId;
 
-    @Column(keyColumn = "id")
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    private LocalDate startDato;
+
+
     private List<Maal> maal = new ArrayList<>();
-    @Column(keyColumn = "id")
+
     private List<Oppgave> oppgaver = new ArrayList<>();
 
-    private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
-
+    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
     private LocalDateTime godkjentAvDeltaker;
+
+    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
     private LocalDateTime godkjentAvArbeidsgiver;
+
+    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
     private LocalDateTime godkjentAvVeileder;
     private boolean godkjentPaVegneAv;
-
-    public boolean erGodkjentAvDeltaker() {
-        return godkjentAvDeltaker != null;
-    }
-
-    public boolean erGodkjentAvArbeidsgiver() {
-        return godkjentAvArbeidsgiver != null;
-    }
-
-    public boolean erGodkjentAvVeileder() {
-        return godkjentAvVeileder != null;
-    }
 }
 
 

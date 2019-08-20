@@ -14,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class JournalpostJobb {
+public class JournalpostJobb { //TODO Denne utgår til fordel for avtalemottak vha kafka.
 
     @Autowired
     private JoarkService joarkService;
@@ -25,7 +25,7 @@ public class JournalpostJobb {
     @Autowired
     private AvtaleRepository avtaleRepository;
 
-    @Scheduled(cron = "${journalpost.jobb.cron}")
+   // @Scheduled(cron = "${journalpost.jobb.cron}")
     public void kjoerJobb() {
         List<Avtale> avtaler = avtaleRepository.finnIkkeJournalfoerte();
 

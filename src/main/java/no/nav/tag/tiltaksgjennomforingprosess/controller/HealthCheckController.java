@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthCheckController {
-    private final JdbcTemplate jdbcTemplate;
+//    private final JdbcTemplate jdbcTemplate;
 
-    public HealthCheckController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public HealthCheckController() {
+
     }
 
     @GetMapping(value = "/internal/healthcheck")
     public String healthcheck() {
 
-
+        return "ok";
 
         //TODO 'pinge' sts og joark
-        return jdbcTemplate.queryForObject("select 'ok'", String.class);
+//        return jdbcTemplate.queryForObject("select 'ok'", String.class);
     }
 }

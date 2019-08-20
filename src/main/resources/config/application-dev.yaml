@@ -1,15 +1,25 @@
 spring:
   datasource:
-    platform: postgres
     url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
     username: sa
     password: sa
-    driverClassName: org.h2.Driver
+    driver-class-name: org.h2.Driver
   h2:
     console:
       enabled: true
   flyway:
     enabled: true
+
+
+  kafka:
+    consumer:
+      group-id: arbeidsAvtale
+      auto-offset-reset: earliest
+#    bootstrap-servers: ${spring.embedded.kafka.brokers}
+#    consumer:
+#      group-id: arbeidsAvtale
+#    producer:
+#      bootstrap-servers: ${spring.embedded.kafka.brokers}
 
   main:
     banner-mode: "console"
@@ -18,9 +28,8 @@ journalpost:
   jobb:
     cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
-    uri: http://localhost:8090
+    joark:
+      uri: http://localhost:8090
+    sts:
+      uri: http://localhost:8090
 
-sts:
-  uri: http://localhost:8090
-  bruker: ${SRVBRUKER}
-  passord: ${SRVPASSORD}
