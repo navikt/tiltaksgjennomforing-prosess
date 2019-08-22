@@ -19,13 +19,8 @@ public class FerdigTiltakLytter {
     @Autowired
     private JournalpostJobb journalpostJobb;
 
-    private CountDownLatch latch;
+    private CountDownLatch latch; //TODO For test: Heller få til noe stubbing
 
-    private void countdownLatch(){
-        if(latch != null){
-            latch.countDown();
-        }
-    }
 
     @KafkaListener(topics = "godkjentArbeidsAvtale", groupId = "tag-tiltak")
     public void lyttPaFerdigAvtale(ConsumerRecord<String, String> avtaleMelding){
@@ -34,7 +29,15 @@ public class FerdigTiltakLytter {
             journalpostJobb.prosesserAvtale(avtaleMelding.value());
         } catch (IOException e) {
             log.error("Feil ved deserialisering av avtale fra kafka kø - avtaleId=" + avtaleMelding.key(), e);
+        } finally {
+            this.countdownLatch();
         }
-        this.countdownLatch();
     }
+
+    private void countdownLatch(){
+        if(latch != null){
+            latch.countDown();
+        }
+    }
+
 }

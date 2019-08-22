@@ -9,6 +9,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.JoarkServi
 import no.nav.tag.tiltaksgjennomforingprosess.sts.StsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.io.IOException;
 
@@ -25,9 +26,14 @@ public class JournalpostJobb {
     private StsService stsService;
 
     public void prosesserAvtale(String avtaleJson) throws IOException {
+
         Avtale avtale = objectMapper.readValue(avtaleJson, Avtale.class);
-        String token = stsService.hentToken();
-        joarkService.opprettOgSendJournalpost(token, avtale);
+        try {
+            String token = stsService.hentToken();
+            joarkService.opprettOgSendJournalpost(token, avtale);
+        } catch (Exception e){
+            log.error("Feil ved sending av melding til Joark - avtaleId=" + avtale.getId(), e);
+        }
     }
 }
 

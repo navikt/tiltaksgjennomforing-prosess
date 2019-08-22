@@ -19,6 +19,7 @@ public class KafkaConfig {
     public EmbeddedKafkaBroker kafkaBroker() {
         log.info("Starter embedded Kafka");
         EmbeddedKafkaBroker embeddedKafka = new EmbeddedKafkaBroker(1, true, topic);
+        System.setProperty("spring.kafka.bootstrap-servers", embeddedKafka.getBrokersAsString());
         embeddedKafka.afterPropertiesSet();
         return embeddedKafka;
     }

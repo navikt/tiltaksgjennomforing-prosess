@@ -22,7 +22,7 @@ spring:
     template:
       default-topic: "godkjentArbeidsAvtale"
 
-    banner-mode: "console"
+  banner-mode: "console"
 
 journalpost:
   integrasjon:
