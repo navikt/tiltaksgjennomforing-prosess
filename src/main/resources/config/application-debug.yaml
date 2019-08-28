@@ -24,7 +24,12 @@ spring:
   main:
     banner-mode: "console"
 
-journalpost-integrasjon:
-  joark-uri: https://dokarkiv-q1.nais.preprod.local
-  sts-uri: https://security-token-service.nais.preprod.local
+journalpost:
+  jobb-cron: 5,10,20,30,40,50 * * ? * *
+  integrasjon:
+    joark-uri: https://dokarkiv-q1.nais.preprod.local
+    sts-uri: https://security-token-service.nais.preprod.local
 
+tiltaksgjennomforing:
+  integrasjon:
+    uri: http://localhost:8080

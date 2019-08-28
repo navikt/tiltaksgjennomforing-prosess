@@ -23,8 +23,14 @@ spring:
     banner-mode: "console"
 
 journalpost:
+  jobb-cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
     joark:
       uri: http://localhost:8090
     sts:
       uri: http://localhost:8090
+
+
+tiltaksgjennomforing:
+  integrasjon:
+    uri: http://localhost:8080

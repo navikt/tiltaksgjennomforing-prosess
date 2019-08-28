@@ -29,11 +29,16 @@ tiltaksgjennomforing:
     maximum-pool-size: 5
     max-lifetime: 300000
 
+  integrasjon:
+    uri: http://localhost:8080
+
 journalpost:
   jobb:
     cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
     uri:  https://dokarkiv-q1.nais.preprod.local
+
+
 
 
 

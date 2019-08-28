@@ -24,8 +24,7 @@ spring:
 
 
 journalpost:
-  jobb:
-    cron: 5,10,20,30,40,50 * * ? * *
+  jobb-cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
     joark:
       uri: http://localhost:8090
@@ -33,4 +32,8 @@ journalpost:
       uri: http://localhost:8090
       bruker: ${srvbruker}
       passord: ${srvpassord}
+
+tiltaksgjennomforing:
+  integrasjon:
+    uri: http://localhost:8080
 
