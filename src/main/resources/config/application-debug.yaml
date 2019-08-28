@@ -1,0 +1,30 @@
+server:
+  port: 8081
+  ssl:
+    key-store: file:${KEYSTORE_FIL}
+    key-store-password: ${KEYSTORE_PWD}
+    trust-store: file:${TRUSTSTORE_FIL}
+    trust-store-password: ${TRUSTSTORE_PWD}
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  datasource:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  flyway:
+    enabled: true
+  main:
+    banner-mode: "console"
+
+journalpost-integrasjon:
+  joark-uri: https://dokarkiv-q1.nais.preprod.local
+  sts-uri: https://security-token-service.nais.preprod.local
+

@@ -1,3 +1,5 @@
+
+
 spring:
   datasource:
     platform: postgres
@@ -5,6 +7,18 @@ spring:
   h2:
     console:
       enabled: true
+
+  kafka:
+    bootstrap-servers: b27apvl00045.preprod.local:8443, b27apvl00046.preprod.local:8443, b27apvl00047.preprod.local:8443
+    properties:
+      security.protocol: SASL_SSL
+      sasl:
+        mechanism: PLAIN
+        jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${tiltaksgjennomforing.serviceuser.username}" password="${tiltaksgjennomforing.serviceuser.password}";
+      ssl.truststore:
+        location: ${javax.net.ssl.trustStore}
+        password: ${javax.net.ssl.trustStorePassword}
+
 
 tiltaksgjennomforing:
   database:
@@ -19,7 +33,10 @@ journalpost:
   jobb:
     cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
-    uri: https://dokarkiv-q1.nais.preprod.local
+    uri:  https://dokarkiv-q1.nais.preprod.local
 
-sts:
-  uri: https://security-token-service.nais.preprod.local
+
+
+
+
+

@@ -12,8 +12,7 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 @Slf4j
 public class KafkaConfig {
 
-    @Value(value = "${spring.kafka.template.default-topic}")
-    private String topic;
+    private final String topic = "privat-tiltaksgjennomforing-godkjentAvtale";
 
     @Autowired
     public EmbeddedKafkaBroker kafkaBroker() {

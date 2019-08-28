@@ -3,24 +3,14 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import org.junit.Test;
-import org.xmlunit.builder.DiffBuilder;
-import org.xmlunit.diff.Diff;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.UUID;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AvtaleTilXmlTest {
 
     private final static String ID_AVTALE = "72c365e7-177a-43ad-9d91-48c6479a6cf0";
-    private final static String ID_MAAL_1 = "161de513-9df5-4ea6-b0ac-7d5ce5a02805";
-    private final static String ID_MAAL_2 = "eb0f0ceb-4a17-4dca-85f3-13b38fdeebe3";
-    private final static String ID_OPPG_1 = "a63ce05a-8337-400a-86d4-3b4a6459e263";
-    private final static String ID_OPPG_2 = "8eea897f-40f9-472b-beb1-de64ab632075";
-    private final static String FASIT_XML = lesFraXmlFil();
 
     private AvtaleTilXml avtaleTilXml = new AvtaleTilXml();
 
@@ -31,26 +21,10 @@ public class AvtaleTilXmlTest {
 
         String xml = avtaleTilXml.genererXml(avtale);
 
-
-        Diff myDiff = DiffBuilder.compare(FASIT_XML)
-                .withTest(xml)
-              //  .ignoreWhitespace()
-                .ignoreElementContentWhitespace()
-                .checkForSimilar()
-                .build();
-
-        myDiff.getDifferences().forEach(difference -> System.out.println(difference));
-        assertFalse(myDiff.hasDifferences());
-    }
-
-    private static String lesFraXmlFil() {
-        StringBuilder sb = new StringBuilder();
-        try {
-            Files.lines(Paths.get(AvtaleTilXmlTest.class.getClassLoader().getResource("journalpost-2.xml").toURI()), StandardCharsets.UTF_8).forEach(str -> sb.append(str));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
+        assertTrue(xml.contains(ID_AVTALE));
+        assertTrue(xml.contains(avtale.getDeltakerFnr()));
+        assertTrue(xml.contains(avtale.getBedriftNr()));
+        assertTrue(xml.contains(avtale.getDeltakerFornavn()));
     }
 
 }

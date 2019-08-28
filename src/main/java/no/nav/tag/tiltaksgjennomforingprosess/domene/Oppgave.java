@@ -6,7 +6,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale.DATETIME_PATTERN;
+//import static no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale.DATETIME_PATTERN;
 
 @Data
 @ToString
@@ -16,6 +16,6 @@ public class Oppgave {
     private String beskrivelse;
     private String opplaering;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATETIME_PATTERN)
-    private LocalDateTime opprettetTidspunkt;
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATETIME_PATTERN)
+//    private LocalDateTime opprettetTidspunkt;
 }

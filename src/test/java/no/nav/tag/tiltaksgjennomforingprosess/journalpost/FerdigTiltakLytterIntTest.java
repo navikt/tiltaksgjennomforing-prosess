@@ -35,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 @Slf4j
 public class FerdigTiltakLytterIntTest {
 
-    private static String TOPIC = "godkjentArbeidsAvtale";
+    private static String TOPIC = "privat-tiltaksgjennomforing-godkjentAvtale";
 
     @ClassRule
     public static EmbeddedKafkaRule embeddedKafkaRule = new EmbeddedKafkaRule(1,true, TOPIC);

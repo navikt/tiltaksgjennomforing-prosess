@@ -27,7 +27,7 @@ public class TestData {
         Avtale avtale = new Avtale();
         avtale.setId(UUID.randomUUID());
         avtale.setVersjon(1);
-        avtale.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
+    //    avtale.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
         avtale.setDeltakerFornavn("Lillehans");
         avtale.setDeltakerEtternavn("Hansen");
         avtale.setDeltakerFnr("88888899999");
@@ -42,19 +42,19 @@ public class TestData {
         avtale.setVeilederTlf("22223333");
         avtale.setOppfolging("Dette er veldig lang. .oppfølging tekst for test,");
         avtale.setTilrettelegging("Dette er lang tilrettelegging tekst for test");
-        avtale.setStartDato(GODKJENT_DATO.plusMonths(1).toLocalDate());
+ //       avtale.setStartDato(GODKJENT_DATO.plusMonths(1).toLocalDate());
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);
-        avtale.setGodkjentAvArbeidsgiver(LocalDateTime.now());
-        avtale.setGodkjentAvDeltaker(LocalDateTime.now());
-        avtale.setGodkjentAvVeileder(LocalDateTime.now());
+//        avtale.setGodkjentAvArbeidsgiver(LocalDateTime.now());
+//        avtale.setGodkjentAvDeltaker(LocalDateTime.now());
+//        avtale.setGodkjentAvVeileder(LocalDateTime.now());
         avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
         avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.enOppgave()));
         avtale.setGodkjentPaVegneAv(true);
         avtale.setGodkjentPaVegneGrunn(enGrunn());
-        avtale.setGodkjentAvArbeidsgiver(GODKJENT_DATO);
-        avtale.setGodkjentAvDeltaker(GODKJENT_DATO.plusDays(1));
-        avtale.setGodkjentAvVeileder(GODKJENT_DATO.plusDays(2));
+//        avtale.setGodkjentAvArbeidsgiver(GODKJENT_DATO);
+//        avtale.setGodkjentAvDeltaker(GODKJENT_DATO.plusDays(1));
+//        avtale.setGodkjentAvVeileder(GODKJENT_DATO.plusDays(2));
         return avtale;
     }
 
@@ -63,13 +63,13 @@ public class TestData {
         oppgave.setTittel("OppgaveTittel");
         oppgave.setBeskrivelse("Dette er veldig lang Oppgave beskrivelse for test,");
         oppgave.setOpplaering("Dette er veldig lang opplæring");
-        oppgave.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
+//        oppgave.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
         return oppgave;
     }
 
     public static Maal etMaal() {
         Maal maal = new Maal();
-        maal.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
+//        maal.setOpprettetTidspunkt(LocalDateTime.now().minusDays(2));
         maal.setKategori("Kategori");
         maal.setBeskrivelse("Dette er veldig lang Mål beskrivelse for test,");
         return maal;

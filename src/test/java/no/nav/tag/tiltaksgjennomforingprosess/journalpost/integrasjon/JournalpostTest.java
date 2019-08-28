@@ -22,7 +22,7 @@ public class JournalpostTest {
         Avtale avtale = TestData.opprettAvtale();
         JournalpostFactory journalpostFactory = new JournalpostFactory();
 
-        Assert.assertTrue("Kunne ikke lese Pdf filen", journalpostFactory.encodeToBase64(new AvtaleTilPdf().generererPdf(avtale), true) != "");
+        Assert.assertTrue("Kunne ikke lese Pdf filen", journalpostFactory.encodeToBase64(new AvtaleTilPdf().generererPdf(avtale)) != "");
     }
 
 

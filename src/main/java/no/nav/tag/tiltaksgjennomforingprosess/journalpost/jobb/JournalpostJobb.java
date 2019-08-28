@@ -29,12 +29,12 @@ public class JournalpostJobb {
 
         Avtale avtale = objectMapper.readValue(avtaleJson, Avtale.class);
         try {
-            String token = stsService.hentToken();
+            //String token = stsService.hentToken();
+            String token = "";
             joarkService.opprettOgSendJournalpost(token, avtale);
         } catch (Exception e){
             log.error("Feil ved sending av melding til Joark - avtaleId=" + avtale.getId(), e);
         }
     }
 }
-
 

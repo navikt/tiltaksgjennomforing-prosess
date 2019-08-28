@@ -22,7 +22,7 @@ public class FerdigTiltakLytter {
     private CountDownLatch latch; //TODO For test: Heller få til noe stubbing
 
 
-    @KafkaListener(topics = "godkjentArbeidsAvtale", groupId = "tag-tiltak")
+    @KafkaListener(topics = "privat-tiltaksgjennomforing-godkjentAvtale", groupId = "tag-tiltak") //TODO Hent fra config
     public void lyttPaFerdigAvtale(ConsumerRecord<String, String> avtaleMelding){
         log.info("Henter avtale med id {}", avtaleMelding.key());
         try {
