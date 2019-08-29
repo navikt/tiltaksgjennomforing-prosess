@@ -25,6 +25,9 @@ import java.util.Arrays;
 public class JoarkService {
 
     @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
     private JournalpostFactory journalpostFactory;
 
     private static final String PATH = "/rest/journalpostapi/v1/journalpost";
@@ -49,7 +52,7 @@ public class JoarkService {
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
         JournalpostResponse response;
         try {
-            response = new RestTemplate().postForObject(uri, entity, JournalpostResponse.class);
+            response = restTemplate.postForObject(uri, entity, JournalpostResponse.class);
         } catch (Exception e) {
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til Joark feilet: " + e.getMessage());
         }

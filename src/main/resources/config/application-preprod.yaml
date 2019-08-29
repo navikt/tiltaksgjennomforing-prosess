@@ -1,36 +1,6 @@
 
 
 spring:
-  datasource:
-    platform: postgres
-    driverClassName: org.postgresql.Driver
-  h2:
-    console:
-      enabled: true
-
-  kafka:
-    bootstrap-servers: b27apvl00045.preprod.local:8443, b27apvl00046.preprod.local:8443, b27apvl00047.preprod.local:8443
-    properties:
-      security.protocol: SASL_SSL
-      sasl:
-        mechanism: PLAIN
-        jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${tiltaksgjennomforing.serviceuser.username}" password="${tiltaksgjennomforing.serviceuser.password}";
-      ssl.truststore:
-        location: ${javax.net.ssl.trustStore}
-        password: ${javax.net.ssl.trustStorePassword}
-
-
-tiltaksgjennomforing:
-  database:
-    database-navn: tiltaksgjennomforing-preprod
-    database-url: ${spring.datasource.url}
-    vault-sti: postgresql/preprod-fss
-    minimum-idle: 1
-    maximum-pool-size: 5
-    max-lifetime: 300000
-
-  integrasjon:
-    uri: http://localhost:8080
 
 journalpost:
   jobb:

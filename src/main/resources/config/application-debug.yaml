@@ -6,21 +6,6 @@ server:
     trust-store: file:${TRUSTSTORE_FIL}
     trust-store-password: ${TRUSTSTORE_PWD}
 
-spring:
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
-  datasource:
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-  flyway:
-    enabled: true
   main:
     banner-mode: "console"
 
@@ -32,4 +17,4 @@ journalpost:
 
 tiltaksgjennomforing:
   integrasjon:
-    uri: http://localhost:8080
+    uri: http://localhost:8080/tiltaksgjennomforing-api

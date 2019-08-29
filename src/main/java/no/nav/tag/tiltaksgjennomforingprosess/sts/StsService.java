@@ -1,6 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess.sts;
 
 import no.nav.tag.tiltaksgjennomforingprosess.properties.StsProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
@@ -12,6 +13,9 @@ import java.util.Arrays;
 
 @Service
 public class StsService {
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     private static final String PATH = "/rest/v1/sts/token";
     private static final String PARAM_GRANT_TYPE = "grant_type=client_credentials";
@@ -36,7 +40,7 @@ public class StsService {
         ResponseEntity<StsTokenResponse> response;
         HttpEntity<String> entity = new HttpEntity<>(headers);
         try {
-            response = new RestTemplate().exchange(uri, HttpMethod.GET, entity, StsTokenResponse.class);
+            response = restTemplate.exchange(uri, HttpMethod.GET, entity, StsTokenResponse.class);
         } catch (Exception e) {
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til STS feilet: " + e.getMessage());
         }

@@ -3,6 +3,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ import java.util.UUID;
 @Service
 public class TiltaksgjennomfoeringApiService {
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     private static final String PATH = "/internal/avtaler";
     private URI uri;
     private final HttpHeaders headers = new HttpHeaders();
@@ -32,10 +36,11 @@ public class TiltaksgjennomfoeringApiService {
         headers.setContentType((MediaType.APPLICATION_JSON));
     }
 
-    public List<Avtale> finnAvtalerTilJournalfoering(){
+    public List<Avtale> finnAvtalerTilJournalfoering(String stsToken){
         ResponseEntity<List<Avtale>> response;
+        headers.setBearerAuth(stsToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        response = new RestTemplate().exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Avtale>>() {});
+        response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Avtale>>() {});
         return response.getBody();
     }
 
