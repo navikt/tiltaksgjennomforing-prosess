@@ -6,15 +6,19 @@ server:
     trust-store: file:${TRUSTSTORE_FIL}
     trust-store-password: ${TRUSTSTORE_PWD}
 
+spring:
   main:
     banner-mode: "console"
 
-journalpost:
-  jobb-cron: 5,10,20,30,40,50 * * ? * *
+prosess:
+  jobb:
+    cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
-    joark-uri: https://dokarkiv-q1.nais.preprod.local
-    sts-uri: https://security-token-service.nais.preprod.local
-
-tiltaksgjennomforing:
-  integrasjon:
-    uri: http://localhost:8080/tiltaksgjennomforing-api
+    joark:
+      uri: https://dokarkiv-q1.nais.preprod.local
+    sts:
+      uri: http://localhost:8090
+      bruker: ${srvbruker}
+      passord: ${srvpassord}
+    api:
+      uri: http://localhost:8080/tiltaksgjennomforing-api

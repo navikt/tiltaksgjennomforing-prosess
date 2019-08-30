@@ -1,12 +1,11 @@
-
-
-spring:
-
-journalpost:
-  jobb:
-    cron: 5,10,20,30,40,50 * * ? * *
+prosess:
+  jobb-cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
-    uri:  https://dokarkiv-q1.nais.preprod.local
+    joark-uri: https://dokarkiv-q1.nais.preprod.local
+    sts:
+      uri:
+    api-uri:
+
 
 
 

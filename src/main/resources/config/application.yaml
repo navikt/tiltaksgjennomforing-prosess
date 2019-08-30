@@ -10,18 +10,15 @@ spring:
   main:
     banner-mode: "off"
 
-
-journalpost:
-  jobb-cron: 5,10,20,30,40,50 * * ? * *
+prosess:
+  jobb:
+    cron: 5,10,20,30,40,50 * * ? * *
   integrasjon:
     joark:
-      uri: http://localhost:8090
+      uri: url
     sts:
-      uri: http://localhost:8090
+      uri: url
       bruker: ${srvbruker}
       passord: ${srvpassord}
-
-tiltaksgjennomforing:
-  integrasjon:
-    uri: http://localhost:8080
-
+    tiltaksgjennomforing:
+      uri: url

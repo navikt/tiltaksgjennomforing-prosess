@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -36,33 +37,35 @@ public class JournalpostJobb {
     @Autowired
     private StsService stsService;
 
-//    @Scheduled(cron = "${journalpost.jobb.cron}")
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(cron = "${prosess.jobb.cron}")
     public void hentAvtalerTilJournalfoering() {
-
         log.debug("Ser etter avtaler til journalfoering");
 
-        final String stsToken = "fjasogvas.fjasogvas.fjasogvas"; //stsService.hentToken();
+        final String stsToken = stsService.hentToken();
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
-        log.info("Hentet {} avtaler som skal journalføres: {}",avtalerTilJournalforing.size(), avtalerTilJournalforing.stream().map(Avtale::getId));
-        prosesserAvtaler(stsToken, avtalerTilJournalforing);
-        log.info("Ferdig journalført {} avtaler", avtalerTilJournalforing.size());
+
+        log.info("Hentet {} avtaler som skal journalføres: {}",
+                avtalerTilJournalforing.size(),
+                avtalerTilJournalforing.stream().map(avtale -> avtale.getId().toString()).collect(Collectors.toList()));
+
+        try {
+            prosesserAvtaler(stsToken, avtalerTilJournalforing);
+            log.info("Ferdig journalført {} avtaler", avtalerTilJournalforing.size());
+        } catch (HttpServerErrorException e) {
+            log.error("Feil ved journalføring av avtalene: {}", e.getMessage());
+        }
     }
 
     private void prosesserAvtaler(String stsToken, List<Avtale> avtalerTilJournalforing) {
         Map<UUID, String> journalfoeringer = avtalerTilJournalforing
                 .parallelStream()
                 .map(avtale -> {
-                    try {
-                        log.info("Sender journalpost til Joark. AvtaleId=", avtale.getId());
-                        String jornalpostId = joarkService.opprettOgSendJournalpost(stsToken, avtale);
-                        avtale.setJournalpostId(jornalpostId);
-                    } catch (HttpServerErrorException e) {
-                        log.error("Feil ved journalføring av avtale {}: {}", avtale.getId(), e.getMessage());
-                    }
+                    String jornalpostId = joarkService.opprettOgSendJournalpost(stsToken, avtale);
+                    avtale.setJournalpostId(jornalpostId);
                     return avtale;
                 })
                 .collect(Collectors.toMap(Avtale::getId, Avtale::getJournalpostId));
+
         log.info("Oppdaterer avtaler i Tiltaksgjennomforing-api");
         tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
     }

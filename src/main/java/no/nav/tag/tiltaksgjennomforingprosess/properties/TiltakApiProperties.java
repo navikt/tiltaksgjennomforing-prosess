@@ -9,7 +9,7 @@ import java.net.URI;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "tiltaksgjennomforing.integrasjon")
+@ConfigurationProperties(prefix = "prosess.integrasjon.api")
 public class TiltakApiProperties {
     private URI uri;
 }
