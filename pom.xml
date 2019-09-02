@@ -12,7 +12,7 @@
     <artifactId>tiltaksgjennomforing-prosess</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>tiltaksgjennomforing-prosess</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Sender avtaler til journalføring</description>
 
     <properties>
         <java.version>11</java.version>

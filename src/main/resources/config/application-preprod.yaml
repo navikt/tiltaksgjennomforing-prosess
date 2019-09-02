@@ -1,10 +1,12 @@
 prosess:
-  jobb-cron: 5,10,20,30,40,50 * * ? * *
+  jobb-cron: 15/15 0 0 ? * * *
   integrasjon:
     joark-uri: https://dokarkiv-q1.nais.preprod.local
     sts:
-      uri:
-    api-uri:
+      uri: https://security-token-service.nais.preprod.local
+      bruker: ${tiltaksgjennomforing.consumer.user}
+      passord: ${tiltaksgjennomforing.consumer.password}
+    api-uri: https://arbeidsgiver.nais.preprod.local
 
 
 
