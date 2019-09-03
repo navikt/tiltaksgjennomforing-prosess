@@ -39,7 +39,7 @@ public class JournalpostJobb {
 
     @Scheduled(cron = "${prosess.jobb.cron}")
     public void hentAvtalerTilJournalfoering() {
-        log.debug("Ser etter avtaler til journalfoering");
+        log.info("Ser etter avtaler til journalfoering");
 
         final String stsToken = stsService.hentToken();
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
