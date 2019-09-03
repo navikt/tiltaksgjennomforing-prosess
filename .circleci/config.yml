@@ -72,7 +72,6 @@ workflows:
               ignore:
                 - master
       - deploy-til-dev:
-          context: NAIS deployment
           requires:
             - godkjenn-deploy-til-dev
 
@@ -86,15 +85,15 @@ workflows:
                 - master
 
       # På master kreves det approval for å deploye til prod-fss
-#      - godkjenn-deploy-til-prod:
-#          type: approval
-#          requires:
-#            - bygg
-#          filters:
-#            branches:
-#              only:
-#                - master
-#      - deploy-til-prod:
-#          requires:
-#            - godkjenn-deploy-til-prod
+      - godkjenn-deploy-til-prod:
+          type: approval
+          requires:
+            - bygg
+          filters:
+            branches:
+              only:
+                - master
+      - deploy-til-prod:
+          requires:
+            - godkjenn-deploy-til-prod
 

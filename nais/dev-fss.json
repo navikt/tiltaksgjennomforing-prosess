@@ -1,3 +1,4 @@
 {
+  "ingress": "https://arbeidsgiver.nais.preprod.local/tiltaksgjennomforing-prosess/",
   "spring-profil": "preprod"
 }
