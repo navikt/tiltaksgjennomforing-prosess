@@ -4,7 +4,7 @@ spring:
 
 prosess:
   jobb:
-    cron: 15/15 0 0 ? * *
+    cron: "15 * * * * *"
   integrasjon:
     joark:
       uri: http://localhost:8090
