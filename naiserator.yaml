@@ -9,6 +9,8 @@ spec:
   image: navikt/tiltaksgjennomforing-prosess:{{version}}
   team: teamtag
   port: 8080
+  replicas:
+    max: 1
   liveness:
     path: /tiltaksgjennomforing-prosess/internal/healthcheck
     initialDelay: 30
@@ -24,3 +26,5 @@ spec:
   prometheus:
     enabled: true
     path: /tiltaksgjennomforing-prosess/internal/actuator/prometheus
+
+
