@@ -19,9 +19,6 @@ public class JournalpostFactory {
     @Autowired
     private AvtaleTilXml avtaleTilXml;
 
-    @Autowired
-    private AvtaleTilPdf avtaleTilPdf;
-
     public Journalpost konverterTilJournalpost(Avtale avtale) {
 
         Bruker bruker = new Bruker();
@@ -29,9 +26,9 @@ public class JournalpostFactory {
         Journalpost journalpost = new Journalpost();
         journalpost.setBruker(bruker);
 
-        String dokumentPdf;
+        final byte[] dokumentPdfAsBytes;
         try {
-            dokumentPdf = avtaleTilPdf.generererPdf(avtale);
+            dokumentPdfAsBytes = new AvtaleTilPdf().tilBytesAvPdf(avtale);
         } catch (Exception e) {
             log.error("Feil ved generering av pdf fil: AvtaleId={}", avtale.getId(), e.getMessage());
             throw new RuntimeException(e);
@@ -40,14 +37,14 @@ public class JournalpostFactory {
         final String dokumentXml = avtaleTilXml.genererXml(avtale);
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(
-                new DokumentVariant("XML", encodeToBase64(dokumentXml)),
-                new DokumentVariant("PDF", encodeToBase64(dokumentPdf)))
+                new DokumentVariant("XML", encodeToBase64(dokumentXml.getBytes())),
+                new DokumentVariant("PDF", encodeToBase64(dokumentPdfAsBytes)))
         );
         journalpost.setDokumenter(Arrays.asList(dokument));
         return journalpost;
     }
 
-    public String encodeToBase64(final String dokument) {
-        return Base64.getEncoder().encodeToString(dokument.getBytes());
+    private String encodeToBase64(final byte[] dokumentBytes) {
+        return Base64.getEncoder().encodeToString(dokumentBytes);
     }
 }

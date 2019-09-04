@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
+import java.io.Writer;
 
 @Component
 public class AvtaleTilXml {
@@ -24,6 +25,7 @@ public class AvtaleTilXml {
                 context = JAXBContext.newInstance(Melding.class);
             marshaller = context.createMarshaller();
             marshaller.marshal(melding, stringWriter);
+            stringWriter.close();
         } catch (Exception e) {
             throw new RuntimeException("Feil ved oppretting av dokument xml: ", e); //TODO Feilhåndter
         }

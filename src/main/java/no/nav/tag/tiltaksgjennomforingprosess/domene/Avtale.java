@@ -17,6 +17,8 @@ import java.util.UUID;
 @ToString
 public class Avtale {
 
+    public final static String DATOFORMAT_NORGE = "dd.MM.YYYY";
+
     private UUID id;
     private String deltakerFnr;
     private String bedriftNr;

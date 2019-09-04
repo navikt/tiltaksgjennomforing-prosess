@@ -3,6 +3,8 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.JournalpostFactory;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Bruker;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,9 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpServerErrorException;
-
-import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 @ActiveProfiles("dev")
 @DirtiesContext
+@Ignore
 public class JoarkServiceIntTest {
 
     private final String TOKEN = "eyxXxx";
@@ -41,9 +41,8 @@ public class JoarkServiceIntTest {
 
     @Test
     public void oppretter_journalpost() {
-        Avtale avtale = TestData.opprettAvtale();
-
-        String jounalpostId = joarkService.opprettOgSendJournalpost(TOKEN, avtale);
+        Journalpost journalpost = new Journalpost();
+        String jounalpostId = joarkService.sendJournalpost(TOKEN, journalpost);
         assertEquals("001", jounalpostId);
     }
 

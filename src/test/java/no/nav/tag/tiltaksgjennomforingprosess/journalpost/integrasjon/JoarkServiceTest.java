@@ -3,6 +3,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.JournalpostFactory;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -40,12 +41,12 @@ public class JoarkServiceTest {
     @Test(expected = HttpServerErrorException.class)
     public void oppretter_journalpost_status_500() {
 
-        Avtale avtale = TestData.opprettAvtale();
+        Journalpost journalpost = new Journalpost();
 
 
         when(journalpostProperties.getUri()).thenReturn(URI.create("http://localhost:8090"));
-        when(journalpostFactory.konverterTilJournalpost(eq(avtale))).thenReturn(any());
+        when(journalpostFactory.konverterTilJournalpost(any(Avtale.class))).thenReturn(any());
 
-        joarkService.opprettOgSendJournalpost(TOKEN, avtale);
+        joarkService.sendJournalpost(TOKEN, journalpost);
     }
 }

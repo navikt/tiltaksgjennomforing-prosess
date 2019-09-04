@@ -1,10 +1,8 @@
 package no.nav.tag.tiltaksgjennomforingprosess.journalpost.jobb;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.TiltaksgjennomfoeringApiService;
 import no.nav.tag.tiltaksgjennomforingprosess.sts.StsService;
@@ -14,11 +12,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpServerErrorException;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,7 +25,8 @@ public class JournalpostJobb {
     @Autowired
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService;
 
-    private static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule()).disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
+    @Autowired
+    private JournalpostFactory journalpostFactory;
 
     @Autowired
     private JoarkService joarkService;
@@ -60,26 +57,17 @@ public class JournalpostJobb {
         Map<UUID, String> journalfoeringer = avtalerTilJournalforing
                 .parallelStream()
                 .map(avtale -> {
-                    String jornalpostId = joarkService.opprettOgSendJournalpost(stsToken, avtale);
-                    avtale.setJournalpostId(jornalpostId);
+                    avtale.setJournalpostId(
+                            joarkService.sendJournalpost(
+                                    stsToken,
+                                    journalpostFactory.konverterTilJournalpost(avtale)
+                            ));
                     return avtale;
                 })
                 .collect(Collectors.toMap(Avtale::getId, Avtale::getJournalpostId));
 
         log.info("Oppdaterer avtaler i Tiltaksgjennomforing-api");
         tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
-    }
-
-
-    public void prosesserAvtale(String avtaleJson) throws IOException {
-
-        Avtale avtale = objectMapper.readValue(avtaleJson, Avtale.class);
-        try {
-            final String token = stsService.hentToken();
-            joarkService.opprettOgSendJournalpost(token, avtale);
-        } catch (Exception e) {
-            log.error("Feil ved sending av melding til Joark - avtaleId=" + avtale.getId(), e);
-        }
     }
 }
 

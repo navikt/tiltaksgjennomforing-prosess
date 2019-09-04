@@ -24,9 +24,6 @@ import java.util.Arrays;
 @Service
 public class JoarkService {
 
-    @Autowired
-    private JournalpostFactory journalpostFactory;
-
     private static final String PATH = "/rest/journalpostapi/v1/journalpost";
     private static final String QUERY_PARAM = "forsoekFerdigstill=false";
     private URI uri;
@@ -42,8 +39,7 @@ public class JoarkService {
         headers.setContentType((MediaType.APPLICATION_JSON));
     }
 
-    public String opprettOgSendJournalpost(final String token, final Avtale avtale) {
-        Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
+    public String sendJournalpost(final String token, final Journalpost journalpost) {
         debugLogJournalpost(journalpost);
         headers.setBearerAuth(token);
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);

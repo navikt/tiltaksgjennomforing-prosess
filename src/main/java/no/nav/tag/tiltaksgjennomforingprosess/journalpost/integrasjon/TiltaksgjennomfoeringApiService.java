@@ -44,9 +44,9 @@ public class TiltaksgjennomfoeringApiService {
         return response.getBody();
     }
 
+    //TA ned hvis feiler
     public void settAvtalerTilJournalfoert(String stsToken, Map<UUID, String> avtalerTilJournalfoert){
         ResponseEntity<List<Avtale>> response;
-        HttpEntity<String> entity = new HttpEntity<>(headers);
         new RestTemplate().put(uri, avtalerTilJournalfoert);
     }
 }
