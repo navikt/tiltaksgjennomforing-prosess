@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   main:
@@ -14,6 +14,6 @@ prosess:
     sts:
       uri: http://localhost:8090
     api:
-      uri: http://localhost:8080/tiltaksgjennomforing-api
+      uri: http://localhost:8091
 
 

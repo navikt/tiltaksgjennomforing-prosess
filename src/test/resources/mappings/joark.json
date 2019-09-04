@@ -19,7 +19,7 @@
             "matchesJsonPath": "[?(@.journalposttype == 'INNGAAENDE')]"
           } ,
           {
-            "matchesJsonPath": "[?(@.behandlingsTema == 'ab01600')]"
+            "matchesJsonPath": "[?(@.behandlingsTema == 'ab0422')]"
           },
           {
             "matchesJsonPath": "[?(@.kanal == 'NAV_NO')]"

@@ -37,16 +37,16 @@ public class TiltaksgjennomfoeringApiService {
     }
 
     public List<Avtale> finnAvtalerTilJournalfoering(String stsToken){
-        ResponseEntity<List<Avtale>> response;
         headers.setBearerAuth(stsToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Avtale>>() {});
+        ResponseEntity<List<Avtale>> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Avtale>>() {});
         return response.getBody();
     }
 
-    //TA ned hvis feiler
     public void settAvtalerTilJournalfoert(String stsToken, Map<UUID, String> avtalerTilJournalfoert){
-        ResponseEntity<List<Avtale>> response;
-        new RestTemplate().put(uri, avtalerTilJournalfoert);
+        ResponseEntity response;
+        headers.setBearerAuth(stsToken);
+        HttpEntity<Map<UUID, String>> entity = new HttpEntity<>(avtalerTilJournalfoert, headers);
+        restTemplate.exchange(uri, HttpMethod.PUT, entity, Void.class);
     }
 }

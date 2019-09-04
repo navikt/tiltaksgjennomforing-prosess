@@ -67,7 +67,13 @@ public class JournalpostJobb {
                 .collect(Collectors.toMap(Avtale::getId, Avtale::getJournalpostId));
 
         log.info("Oppdaterer avtaler i Tiltaksgjennomforing-api");
-        tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
+        try {
+            tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
+        }catch (Exception e){
+            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført: {}", journalfoeringer, e);
+            //Ta ned applikasjonene for å hindre den i å journalføre de samme avtalene flere ganger
+            System.exit(1);
+        }
     }
 }
 
