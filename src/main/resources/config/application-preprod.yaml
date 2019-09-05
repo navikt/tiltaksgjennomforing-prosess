@@ -9,7 +9,7 @@ prosess:
       bruker: ${tiltaksgjennomforing.consumer.user}
       passord: ${tiltaksgjennomforing.consumer.password}
     api:
-      uri: https://arbeidsgiver.nais.preprod.local
+      uri: https://arbeidsgiver.nais.preprod.local/tiltaksgjennomforing-api
 
 
 
