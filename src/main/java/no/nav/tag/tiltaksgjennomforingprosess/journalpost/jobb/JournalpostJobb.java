@@ -35,7 +35,7 @@ public class JournalpostJobb {
     private StsService stsService;
 
     @Scheduled(cron = "${prosess.jobb.cron}")
-    public void hentAvtalerTilJournalfoering() {
+    public void JournalfoerAvtaler() {
         log.info("Ser etter avtaler til journalfoering");
 
         final String stsToken = stsService.hentToken();
@@ -71,9 +71,13 @@ public class JournalpostJobb {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
         }catch (Exception e){
             log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført: {}", journalfoeringer, e);
-            //Ta ned applikasjonene for å hindre den i å journalføre de samme avtalene flere ganger
-            System.exit(1);
+            stopServer();
         }
+    }
+
+    private void stopServer(){
+        log.info("Tar ned server - hindrer ny journalføring av de samme avtalene");
+        System.exit(1);
     }
 }
 

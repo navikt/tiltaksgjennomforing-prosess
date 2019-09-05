@@ -25,7 +25,7 @@
             "matchesJsonPath": "[?(@.kanal == 'NAV_NO')]"
           },
           {
-            "matchesJsonPath": "[?(@.tema == 'AAP')]"
+            "matchesJsonPath": "[?(@.tema == 'ARBTREN')]"
           },
           {
             "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"

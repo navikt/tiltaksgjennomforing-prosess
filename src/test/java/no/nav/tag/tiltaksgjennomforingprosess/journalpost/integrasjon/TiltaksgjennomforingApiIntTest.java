@@ -2,6 +2,8 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.matching.ContainsPattern;
+import no.nav.tag.tiltaksgjennomforingprosess.IntegrasjonerMockServer;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +28,14 @@ public class TiltaksgjennomforingApiIntTest {
 
     @ClassRule
     public static WireMockRule wireMockRule = new WireMockRule(8091); //Fordi mvn install gir SocketException med embedded MockServer :(
+
+    @Autowired
+    private IntegrasjonerMockServer integrasjonerMockServer;
+
+    @Before
+    public void taNedMockServerenSomIkkeBrukes(){
+        integrasjonerMockServer.destroy();
+    }
 
     @Autowired
     TiltaksgjennomfoeringApiService service;
