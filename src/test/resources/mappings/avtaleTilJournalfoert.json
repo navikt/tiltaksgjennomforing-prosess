@@ -1,0 +1,30 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "PUT",
+        "urlPathPattern": "/internal/avtaler",
+        "headers": {
+          "Authorization": {
+            "equalTo": "Bearer eyxXxx"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "equalToJson": {
+              "c34250d3-d68f-4389-b4ff-13a73032212e": "1",
+              "c18abcb0-e1b4-43af-be51-7bfeced2efe5": "2"
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}
+
