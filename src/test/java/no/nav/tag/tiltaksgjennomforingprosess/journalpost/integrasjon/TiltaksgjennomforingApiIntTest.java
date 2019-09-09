@@ -3,8 +3,10 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.matching.ContainsPattern;
 import no.nav.tag.tiltaksgjennomforingprosess.IntegrasjonerMockServer;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,6 +44,25 @@ public class TiltaksgjennomforingApiIntTest {
     TiltaksgjennomfoeringApiService service;
 
     private final String TOKEN = "eyxXxx";
+
+    @Test
+    @Ignore
+    public void finnerAvtalerTilJournalfoering() {
+
+        stubFor(get(urlPathMatching("/internal/avtaler"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBodyFile("/mappings/avtalerTilJournalfoering.json")
+
+                ));
+
+        try {
+            List<Avtale> avtaler = service.finnAvtalerTilJournalfoering(TOKEN);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+    }
 
     @Test
     public void setterAvtalerTilJournalfoert() {

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Map;
@@ -45,12 +44,9 @@ public class JournalpostJobb {
                 avtalerTilJournalforing.size(),
                 avtalerTilJournalforing.stream().map(avtale -> avtale.getId().toString()).collect(Collectors.toList()));
 
-        try {
-            prosesserAvtaler(stsToken, avtalerTilJournalforing);
-            log.info("Ferdig journalført {} avtaler", avtalerTilJournalforing.size());
-        } catch (HttpServerErrorException e) {
-            log.error("Feil ved journalføring av avtalene: {}", e.getMessage());
-        }
+
+        prosesserAvtaler(stsToken, avtalerTilJournalforing);
+        log.info("Ferdig journalført {} avtaler", avtalerTilJournalforing.size());
     }
 
     private void prosesserAvtaler(String stsToken, List<Avtale> avtalerTilJournalforing) {
@@ -67,13 +63,13 @@ public class JournalpostJobb {
         log.info("Oppdaterer avtaler i Tiltaksgjennomforing-api");
         try {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført: {}", journalfoeringer, e);
             stopServer();
         }
     }
 
-    private void stopServer(){
+    private void stopServer() {
         log.info("Tar ned server - hindrer ny journalføring av de samme avtalene");
         System.exit(1);
     }
