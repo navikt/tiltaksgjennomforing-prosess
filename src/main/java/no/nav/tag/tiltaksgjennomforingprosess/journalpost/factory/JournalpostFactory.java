@@ -7,7 +7,9 @@ import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.DokumentVariant;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Arrays;
 import java.util.Base64;
@@ -26,22 +28,34 @@ public class JournalpostFactory {
         Journalpost journalpost = new Journalpost();
         journalpost.setBruker(bruker);
 
-        final byte[] dokumentPdfAsBytes;
-        try {
-            dokumentPdfAsBytes = new AvtaleTilPdf().tilBytesAvPdf(avtale);
-        } catch (Exception e) {
-            log.error("Feil ved generering av pdf fil: AvtaleId={}", avtale.getId(), e.getMessage());
-            throw new RuntimeException(e);
-        }
+        final byte[] dokumentPdfAsBytes = avtaleTilPdfBytes(avtale);
+        final byte[] dokumentXmlAsBytes = avtaleTilXmlBytes(avtale);
 
-        final String dokumentXml = avtaleTilXml.genererXml(avtale);
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(
-                new DokumentVariant("XML", encodeToBase64(dokumentXml.getBytes())),
+                new DokumentVariant("XML", encodeToBase64(dokumentXmlAsBytes)),
                 new DokumentVariant("PDF", encodeToBase64(dokumentPdfAsBytes)))
         );
         journalpost.setDokumenter(Arrays.asList(dokument));
         return journalpost;
+    }
+
+    private byte[] avtaleTilXmlBytes(Avtale avtale) {
+        try{
+            return avtaleTilXml.genererXml(avtale);
+        } catch (Exception e) {
+            log.error("Feil ved generering til xml fil: AvtaleId={}", avtale.getId(), e);
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private byte[] avtaleTilPdfBytes(Avtale avtale) {
+        try {
+            return new AvtaleTilPdf().tilBytesAvPdf(avtale);
+        } catch (Exception e) {
+            log.error("Feil ved generering til pdf fil: AvtaleId={}", avtale.getId(), e);
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     private String encodeToBase64(final byte[] dokumentBytes) {

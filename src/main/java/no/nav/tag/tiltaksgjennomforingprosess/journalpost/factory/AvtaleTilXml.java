@@ -5,30 +5,22 @@ import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.ByteArrayOutputStream;
 
 @Component
 public class AvtaleTilXml {
 
-    public String genererXml(Avtale avtale) {
+    byte[] genererXml(Avtale avtale) throws Exception {
 
         Generelt generelt = new Generelt(new Arbeidsgiver(avtale.getBedriftNr()), new Arbeidstaker(avtale.getDeltakerFnr()), avtale);
         Innhold innhold = new Innhold(new SkjemaInfo(), generelt);
         Melding melding = new Melding(innhold);
 
-        StringWriter stringWriter = new StringWriter();
-        JAXBContext context = null;
-        Marshaller marshaller = null;
-        try {
-            if (JAXBContext.newInstance(Melding.class) != null)
-                context = JAXBContext.newInstance(Melding.class);
-            marshaller = context.createMarshaller();
-            marshaller.marshal(melding, stringWriter);
-            stringWriter.close();
-        } catch (Exception e) {
-            throw new RuntimeException("Feil ved oppretting av dokument xml: ", e); //TODO Feilhåndter
-        }
-        return stringWriter.getBuffer().toString();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JAXBContext context = JAXBContext.newInstance(Melding.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.marshal(melding, baos);
+        baos.close();
+        return baos.toByteArray();
     }
 }

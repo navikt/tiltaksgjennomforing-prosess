@@ -58,10 +58,8 @@ public class JournalpostJobb {
                 .parallelStream()
                 .map(avtale -> {
                     avtale.setJournalpostId(
-                            joarkService.sendJournalpost(
-                                    stsToken,
-                                    journalpostFactory.konverterTilJournalpost(avtale)
-                            ));
+                            joarkService.sendJournalpost(stsToken, journalpostFactory.konverterTilJournalpost(avtale))
+                    );
                     return avtale;
                 })
                 .collect(Collectors.toMap(Avtale::getId, Avtale::getJournalpostId));

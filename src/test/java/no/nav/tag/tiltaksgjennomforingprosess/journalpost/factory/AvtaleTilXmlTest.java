@@ -15,11 +15,12 @@ public class AvtaleTilXmlTest {
     private AvtaleTilXml avtaleTilXml = new AvtaleTilXml();
 
     @Test
-    public void lagerAvtaleXml() {
+    public void lagerAvtaleXml() throws Exception {
         Avtale avtale = TestData.opprettAvtale();
         avtale.setId(UUID.fromString(ID_AVTALE));
 
-        String xml = avtaleTilXml.genererXml(avtale);
+        byte[] xmlBytes = avtaleTilXml.genererXml(avtale);
+        String xml = new String(xmlBytes);
 
         assertTrue(xml.contains(ID_AVTALE));
         assertTrue(xml.contains(avtale.getDeltakerFnr()));

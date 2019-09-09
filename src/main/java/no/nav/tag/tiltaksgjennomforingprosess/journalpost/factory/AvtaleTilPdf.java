@@ -24,7 +24,7 @@ import java.util.List;
 
 @Data
 @Slf4j
-public class AvtaleTilPdf {
+class AvtaleTilPdf {
     private final static String PA_VEGNE_GRUNN_TXT = "    NB: Avtalen er godkjent av veileder på vegne av deltaker fordi : ";
     private final static String IKKE_BANKID_TXT = "     Deltaker ikke har bankID";
     private final static String RESERVERT_TXT = "     Deltaker har reservert seg mot digitale tjenester";
@@ -49,8 +49,7 @@ public class AvtaleTilPdf {
     private int aktulLinjerISiden = 10;
     private int totalSider = 1;
 
-
-    public byte[] tilBytesAvPdf(Avtale avtale) {
+    byte[] tilBytesAvPdf(Avtale avtale) {
         PDDocument dokument = generererPdf(avtale);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
@@ -63,13 +62,6 @@ public class AvtaleTilPdf {
         return baos.toByteArray();
     }
 
-
-    /**
-     * Genrerer PDF fil fra sendte avtale.
-     *
-     * @param avtale
-     * @return filNavn
-     */
     private PDDocument generererPdf(Avtale avtale) {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
@@ -80,12 +72,11 @@ public class AvtaleTilPdf {
             byte[] iconBytes = getClass().getClassLoader().getResourceAsStream(ikonfil).readAllBytes();
             pdImage = PDImageXObject.createFromByteArray(document, iconBytes, ikonfil);
         } catch (Exception e) {
-            log.error("Feil ved generering av PDF fil format, logo blir ikke laget");
+            log.error("Feil ved generering av PDF fil format, logo blir ikke laget: {}", e.getMessage());
         }
 
-        PDPageContentStream contentStream = null;
         try {
-            contentStream = new PDPageContentStream(document, page);
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
             if (pdImage != null) {
                 contentStream.drawImage(pdImage, logoposition[0], logoposition[1], logoStorrelse[0], logoStorrelse[1]);
@@ -108,7 +99,7 @@ public class AvtaleTilPdf {
             contentStream.showTextWithPositioning(text.toArray());
             contentStream.newLine();
             contentStream.newLineAtOffset(-0, -30);
-            contentStream = startNyttAvsnitt("Avtalens parter", contentStream);
+            startNyttAvsnitt("Avtalens parter", contentStream);
             contentStream = skrivTekst("Deltaker  ", contentStream, document, font, fontSize);
             contentStream = skrivTekst(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn(), contentStream, document, font_Bold, fontSize);
             contentStream = skrivTekst("Fødselsnummer: " + avtale.getDeltakerFnr(), contentStream, document, font, fontSize);
@@ -124,7 +115,7 @@ public class AvtaleTilPdf {
             contentStream = skrivTekst(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn(), contentStream, document, font_Bold, fontSize);
             contentStream = skrivTekst("Telefon: " + blankForNull(avtale.getVeilederTlf()), contentStream, document, font, fontSize);
             contentStream.newLine();
-            contentStream = startNyttAvsnitt("Mål  ", contentStream);
+            startNyttAvsnitt("Mål  ", contentStream);
 
             for (Maal maal : avtale.getMaal()
             ) {
@@ -135,7 +126,7 @@ public class AvtaleTilPdf {
                 contentStream = skrivTekst(maal.getBeskrivelse(), contentStream, document, font, fontSize);
                 contentStream.newLine();
             }
-            contentStream = startNyttAvsnitt("Arbeidsoppgaver ", contentStream);
+            startNyttAvsnitt("Arbeidsoppgaver ", contentStream);
             for (Oppgave oppgave : avtale.getOppgaver()
             ) {
                 contentStream = skrivTekst(oppgave.getTittel(), contentStream, document, font_Bold, fontSize);
@@ -152,12 +143,12 @@ public class AvtaleTilPdf {
             contentStream = skrivTekst("Varighet: " + avtale.getArbeidstreningLengde() + " uker ", contentStream, document, font, fontSize);
             contentStream = skrivTekst("Stillingsprosent: " + avtale.getArbeidstreningStillingprosent() + "%", contentStream, document, font, fontSize);
             contentStream.newLine();
-            contentStream = startNyttAvsnitt("Oppfølging ", contentStream);
+            startNyttAvsnitt("Oppfølging ", contentStream);
             String oppfolging = avtale.getOppfolging();
             contentStream = skrivTekst(oppfolging, contentStream, document, font, fontSize);
             contentStream.newLine();
             aktulLinjerISiden += 2;
-            contentStream = startNyttAvsnitt("Tilrettelegging ", contentStream);
+            startNyttAvsnitt("Tilrettelegging ", contentStream);
             String tilrettelegging = avtale.getTilrettelegging();
             contentStream = skrivTekst(tilrettelegging, contentStream, document, font, fontSize);
             //Vi trenger å sjekke at det er nok plass til Godkjenning i siden, upraktisk at godkjenning blir delt inn 2 sider
@@ -165,7 +156,7 @@ public class AvtaleTilPdf {
                 contentStream = openNewPage(contentStream, document);
             }
             contentStream.newLine();
-            contentStream = startNyttAvsnitt("Godkjenning ", contentStream);
+            startNyttAvsnitt("Godkjenning ", contentStream);
             contentStream = skrivTekst(" Godkjent av deltaker: " + avtale.getGodkjentAvDeltaker(), contentStream, document, font, fontSize);
             contentStream = skrivTekst(" Godkjent av Arbeidsgiver: " + avtale.getGodkjentAvArbeidsgiver(), contentStream, document, font, fontSize);
             contentStream.showText(" Godkjent av NAV-veileder: " + avtale.getGodkjentAvVeileder());
@@ -187,7 +178,7 @@ public class AvtaleTilPdf {
             } catch (Exception e) {
                 log.error("Kan være avtale fra gamle versjon som mangler mulighet for godkjenning på vegne av " + e.getMessage());
             }
-            contentStream = skrivFooter("Referanse:  " + avtale.getId().toString(), contentStream);
+            skrivFooter("Referanse:  " + avtale.getId().toString(), contentStream);
             contentStream.endText();
             contentStream.close();
 
@@ -203,7 +194,7 @@ public class AvtaleTilPdf {
         float margin = 72;
         float width = mediabox.getWidth() - 2 * margin;
 
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         int lastSpace = -1;
         while (skrivText.length() > 0) {
             int spaceIndex = skrivText.indexOf(' ', lastSpace + 1);
@@ -243,17 +234,6 @@ public class AvtaleTilPdf {
         return contentStream;
     }
 
-
-    /**
-     * Skriver korte og lange String som kan innholde lange tekster med flere linjer og oppretter ny side om det trengs
-     * Lager nylinje og øke aktuellLinjerISiden
-     *
-     * @param skrivTekst    tekst til skriving
-     * @param contentStream bruk samme contentStream for å roftsette med samme context
-     * @param document      document til å skrive inn
-     * @return Må bruke returnert contentStream for å fortsette i samme rekkefølge
-     * @throws IOException
-     */
     private PDPageContentStream skrivTekst(String skrivTekst, PDPageContentStream contentStream, PDDocument document, PDFont fontIBruk, int fontSizeIBruk) throws Exception {
         for (String lineText : possibleWrapText(skrivTekst, new PDPage(PDRectangle.A4))) {
             aktulLinjerISiden = Integer.sum(aktulLinjerISiden, 1);
@@ -267,7 +247,7 @@ public class AvtaleTilPdf {
         return contentStream;
     }
 
-    private PDPageContentStream startNyttAvsnitt(String avsnitt, PDPageContentStream contentStream) throws IOException {
+    private void startNyttAvsnitt(String avsnitt, PDPageContentStream contentStream) throws IOException {
         contentStream.newLine();
         contentStream.setFont(font_Bold, fontSizeMellomStor);
         contentStream.showText(avsnitt);
@@ -278,10 +258,9 @@ public class AvtaleTilPdf {
         contentStream.newLine();
         contentStream.newLine();
         aktulLinjerISiden += 3;
-        return contentStream;
     }
 
-    private PDPageContentStream skrivFooter(String footer, PDPageContentStream contentStream) throws IOException {
+    private void skrivFooter(String footer, PDPageContentStream contentStream) throws IOException {
         while (aktulLinjerISiden < 45) {
             contentStream.newLine();
             aktulLinjerISiden++;
@@ -292,7 +271,6 @@ public class AvtaleTilPdf {
         contentStream.setFont(font, fontSizeSmaa);
         contentStream.setNonStrokingColor(fontColor);
         contentStream.showText(footer);
-        return contentStream;
     }
 
     private static String blankForNull(String muligNullVerdi) {
