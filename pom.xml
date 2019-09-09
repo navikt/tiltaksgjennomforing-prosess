@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <jaxb.api.version>2.3.0</jaxb.api.version>
+        <jaxb.api.version>2.3.1</jaxb.api.version>
     </properties>
 
     <dependencies>
