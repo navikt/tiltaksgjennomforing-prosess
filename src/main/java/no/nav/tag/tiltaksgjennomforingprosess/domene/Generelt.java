@@ -3,13 +3,6 @@ package no.nav.tag.tiltaksgjennomforingprosess.domene;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.xml.bind.annotation.XmlType;
-
-@XmlType(propOrder = {
-        "arbeidsgiver",
-        "arbeidstaker",
-        "avtale"
-})
 @Data
 @NoArgsConstructor
 public class Generelt {

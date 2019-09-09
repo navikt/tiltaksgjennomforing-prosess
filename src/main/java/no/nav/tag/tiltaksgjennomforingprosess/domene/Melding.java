@@ -1,13 +1,12 @@
 package no.nav.tag.tiltaksgjennomforingprosess.domene;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 @Data
 @NoArgsConstructor
+@XStreamAlias("melding")
 public class Melding {
 
     private Innhold innhold;

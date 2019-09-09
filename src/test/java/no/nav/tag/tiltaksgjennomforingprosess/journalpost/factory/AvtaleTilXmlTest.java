@@ -18,9 +18,7 @@ public class AvtaleTilXmlTest {
     public void lagerAvtaleXml() throws Exception {
         Avtale avtale = TestData.opprettAvtale();
         avtale.setId(UUID.fromString(ID_AVTALE));
-
-        byte[] xmlBytes = avtaleTilXml.genererXml(avtale);
-        String xml = new String(xmlBytes);
+        String xml = avtaleTilXml.genererXml(avtale);
 
         assertTrue(xml.contains(ID_AVTALE));
         assertTrue(xml.contains(avtale.getDeltakerFnr()));

@@ -29,24 +29,15 @@ public class JournalpostFactory {
         journalpost.setBruker(bruker);
 
         final byte[] dokumentPdfAsBytes = avtaleTilPdfBytes(avtale);
-        final byte[] dokumentXmlAsBytes = avtaleTilXmlBytes(avtale);
+        final String dokumentXml = avtaleTilXml.genererXml(avtale);
 
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(
-                new DokumentVariant("XML", encodeToBase64(dokumentXmlAsBytes)),
+                new DokumentVariant("XML", encodeToBase64(dokumentXml.getBytes())),
                 new DokumentVariant("PDF", encodeToBase64(dokumentPdfAsBytes)))
         );
         journalpost.setDokumenter(Arrays.asList(dokument));
         return journalpost;
-    }
-
-    private byte[] avtaleTilXmlBytes(Avtale avtale) {
-        try{
-            return avtaleTilXml.genererXml(avtale);
-        } catch (Exception e) {
-            log.error("Feil ved generering til xml fil: AvtaleId={}", avtale.getId(), e);
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     private byte[] avtaleTilPdfBytes(Avtale avtale) {

@@ -2,12 +2,6 @@ package no.nav.tag.tiltaksgjennomforingprosess.domene;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlType;
-
-@XmlType(name = "Innhold", propOrder = {
-    "skjemaInfo",
-    "generelt"
-})
 @Data
 public class Innhold {
 

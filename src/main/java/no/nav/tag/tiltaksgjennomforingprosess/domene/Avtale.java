@@ -1,18 +1,14 @@
 package no.nav.tag.tiltaksgjennomforingprosess.domene;
 
 
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @Data
 @ToString
 public class Avtale {
@@ -44,9 +40,12 @@ public class Avtale {
 
     private String startDato;
 
+    @XStreamImplicit(itemFieldName="maal")
     private List<Maal> maal = new ArrayList<>();
 
+    @XStreamImplicit(itemFieldName="oppgave")
     private List<Oppgave> oppgaver = new ArrayList<>();
+
     private String godkjentAvDeltaker;
     private String godkjentAvArbeidsgiver;
 
