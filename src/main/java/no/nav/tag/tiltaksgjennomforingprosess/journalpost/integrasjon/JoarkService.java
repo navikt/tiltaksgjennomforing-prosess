@@ -29,6 +29,9 @@ public class JoarkService {
     private URI uri;
     private final HttpHeaders headers = new HttpHeaders();
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public JoarkService(JournalpostProperties journalpostProperties) {
         uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri())
                 .path(PATH)
@@ -45,8 +48,9 @@ public class JoarkService {
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
         JournalpostResponse response;
         try {
-            response = new RestTemplate().postForObject(uri, entity, JournalpostResponse.class);
+            response = restTemplate.postForObject(uri, entity, JournalpostResponse.class);
         } catch (Exception e) {
+            log.error("Kall til Joark feilet: ", e);
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til Joark feilet: " + e.getMessage());
         }
         return response.getJournalpostId();

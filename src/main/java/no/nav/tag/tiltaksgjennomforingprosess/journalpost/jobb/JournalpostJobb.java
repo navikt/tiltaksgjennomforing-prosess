@@ -64,7 +64,8 @@ public class JournalpostJobb {
         try {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
         } catch (Exception e) {
-            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført: {}", journalfoeringer, e);
+            List<String> journalfoerteStr = journalfoeringer.keySet().stream().map(uuid -> uuid.toString() + " :: " + journalfoeringer.get(uuid)).collect(Collectors.toList());
+            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", journalfoerteStr, e);
             stopServer();
         }
     }
