@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertTrue;
@@ -55,7 +56,7 @@ public class AvtaleTilPdfTest {
                     && sjekkPdfMaalListInnhold(textInPdf, avtale)
                     && sjekkPdfOppgaveListInnhold(textInPdf, avtale);
             assertTrue(harAlt);
-            assertTrue("StartDato",textInPdf.contains(avtale.getStartDato()));
+            assertTrue("StartDato",textInPdf.contains(avtale.getStartDato().format(DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE))));
             assertTrue("GodkjentAvDeltaker", textInPdf.contains(avtale.getGodkjentAvDeltaker()));
             assertTrue("GodkjentAvArbeidsgiver", textInPdf.contains(avtale.getGodkjentAvArbeidsgiver()));
             assertTrue("GodkjentAvVeileder", textInPdf.contains(avtale.getGodkjentAvVeileder()));

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @XStreamAlias("melding")
 public class Melding {
 
+    @XStreamAlias("Innhold")
     private Innhold innhold;
 
     public Melding(Innhold innhold) {

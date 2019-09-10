@@ -2,10 +2,16 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory;
 
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import static no.nav.tag.tiltaksgjennomforingprosess.TestData.START_DATO;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.SkjemaInfo.DATOFORMAT_ARENA;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class AvtaleTilXmlTest {
@@ -13,6 +19,8 @@ public class AvtaleTilXmlTest {
     private final static String ID_AVTALE = "72c365e7-177a-43ad-9d91-48c6479a6cf0";
 
     private AvtaleTilXml avtaleTilXml = new AvtaleTilXml();
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATOFORMAT_ARENA);
 
     @Test
     public void lagerAvtaleXml() throws Exception {
@@ -24,6 +32,10 @@ public class AvtaleTilXmlTest {
         assertTrue(xml.contains(avtale.getDeltakerFnr()));
         assertTrue(xml.contains(avtale.getBedriftNr()));
         assertTrue(xml.contains(avtale.getDeltakerFornavn()));
+
+        String faktStartDatoStr = StringUtils.substringBetween(xml,"<fraDato>", "</fraDato>");
+        LocalDate faktStartDato = LocalDate.parse(faktStartDatoStr);
+        assertEquals(START_DATO, faktStartDato);
     }
 
 }

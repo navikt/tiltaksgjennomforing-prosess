@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +39,7 @@ public class Avtale {
     private String journalpostId;
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
 
-    private String startDato;
+    private LocalDate startDato;
 
     @XStreamImplicit(itemFieldName="maal")
     private List<Maal> maal = new ArrayList<>();

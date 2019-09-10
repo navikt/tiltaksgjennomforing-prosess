@@ -18,8 +18,11 @@ import org.springframework.web.client.HttpServerErrorException;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale.DATOFORMAT_NORGE;
 
 
 @Data
@@ -45,6 +48,8 @@ class AvtaleTilPdf {
     private static final float[] logoposition = new float[]{50, 750};
     private static final float[] logoStorrelse = new float[]{60, 38};
     private static final String ikonfil = "navikon.png";
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATOFORMAT_NORGE);
 
     private int aktulLinjerISiden = 10;
     private int totalSider = 1;
@@ -90,7 +95,7 @@ class AvtaleTilPdf {
             List<Object> text = new ArrayList<>();
             float moveToPositionX = -32000;
             text.add(moveToPositionX);
-            text.add("Startdato: " + avtale.getStartDato());
+            text.add("Startdato: " + avtale.getStartDato().format(DATE_TIME_FORMATTER));
             contentStream.showTextWithPositioning(text.toArray());
             contentStream.newLine();
             text = new ArrayList<>();

@@ -39,8 +39,13 @@ public class JournalpostFactoryTest {
         assertEquals(1, journalpost.getDokumenter().size());
 
         journalpost.getDokumenter().get(0).getDokumentVarianter().forEach(dokumentVariant -> {
-            assertEquals("ARKIV", dokumentVariant.getVariantformat());
-            assertTrue(dokumentVariant.getFiltype().equals("XML") || dokumentVariant.getFiltype().equals("PDF"));
+            if(dokumentVariant.getFiltype().equals("XML")){
+                assertEquals("ORIGINAL", dokumentVariant.getVariantformat());
+            } else if(dokumentVariant.getFiltype().equals("PDF")){
+                assertEquals("ARKIV", dokumentVariant.getVariantformat());
+            } else{
+                fail("DokumentType: " + dokumentVariant.getFiltype());
+            }
             assertFalse(dokumentVariant.getFysiskDokument().isEmpty());
         });
     }

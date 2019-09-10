@@ -21,7 +21,9 @@ public class TestData {
 
     private static final LocalDate GODKJENT_DATO = LocalDate.of(2019, 8, 16);
 
-    final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE);
+    public static final LocalDate START_DATO = GODKJENT_DATO.plusMonths(1);
+
+    public final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE);
 
     public static String avtaleTilJSON(Avtale avtale) throws JsonProcessingException {
        return objectMapper.writeValueAsString(avtale);
@@ -46,7 +48,7 @@ public class TestData {
         avtale.setVeilederTlf("22223333");
         avtale.setOppfolging("Dette er veldig lang. .oppfølging tekst for test,");
         avtale.setTilrettelegging("Dette er lang tilrettelegging tekst for test");
-        avtale.setStartDato(GODKJENT_DATO.plusMonths(1).format(dateTimeFormatter));
+        avtale.setStartDato(START_DATO);
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);
         avtale.setGodkjentAvArbeidsgiver(LocalDateTime.now().format(dateTimeFormatter));
