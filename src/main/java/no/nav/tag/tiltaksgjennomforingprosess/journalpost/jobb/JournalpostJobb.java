@@ -40,9 +40,14 @@ public class JournalpostJobb {
         final String stsToken = stsService.hentToken();
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
 
+        if(avtalerTilJournalforing.isEmpty()){
+            return;
+        }
+
         log.info("Hentet {} avtaler som skal journalføres: {}",
                 avtalerTilJournalforing.size(),
                 avtalerTilJournalforing.stream().map(avtale -> avtale.getId().toString()).collect(Collectors.toList()));
+
 
 
         prosesserAvtaler(stsToken, avtalerTilJournalforing);
