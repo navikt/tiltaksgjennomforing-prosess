@@ -48,7 +48,7 @@ public class JoarkService {
         try {
             response = restTemplate.postForObject(uri, entity, JournalpostResponse.class);
         } catch (Exception e) {
-            log.error("Kall til Joark feilet: ", response != null ? response.getMelding() : "");
+            log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e);
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til Joark feilet: " + e.getMessage());
         }
         return response.getJournalpostId();

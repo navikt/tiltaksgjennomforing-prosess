@@ -36,7 +36,7 @@ public class JournalpostFactory {
 
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(
-                new DokumentVariant(FILTYPE_XML, VARIANFORMAT_PDF ,encodeToBase64(dokumentXml.getBytes())),
+                new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML ,encodeToBase64(dokumentXml.getBytes())),
                 new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, encodeToBase64(dokumentPdfAsBytes)))
         );
         journalpost.setDokumenter(Collections.singletonList(dokument));
