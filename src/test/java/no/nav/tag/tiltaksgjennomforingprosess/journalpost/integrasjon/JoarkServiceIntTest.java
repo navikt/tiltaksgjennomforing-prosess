@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 
+import static no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.DokumentVariant.*;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -48,7 +49,7 @@ public class JoarkServiceIntTest {
         journalpost.setBruker(bruker);
 
         Dokument dokument = new Dokument();
-        dokument.setDokumentVarianter(Arrays.asList(new DokumentVariant("xml", "xmlxmlxml"), new DokumentVariant("pdf", "pdfpdfpdf")));
+        dokument.setDokumentVarianter(Arrays.asList(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, "xmlxmlxml"), new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, "pdfpdfpdf")));
         journalpost.setDokumenter(Arrays.asList(dokument));
 
         String jounalpostId = joarkService.sendJournalpost(TOKEN, journalpost);

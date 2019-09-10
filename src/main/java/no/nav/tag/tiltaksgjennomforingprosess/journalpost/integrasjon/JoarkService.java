@@ -3,8 +3,6 @@ package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +44,11 @@ public class JoarkService {
         debugLogJournalpost(journalpost);
         headers.setBearerAuth(token);
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
-        JournalpostResponse response;
+        JournalpostResponse response = null;
         try {
             response = restTemplate.postForObject(uri, entity, JournalpostResponse.class);
         } catch (Exception e) {
-            log.error("Kall til Joark feilet: ", e);
+            log.error("Kall til Joark feilet: ", response != null ? response.getMelding() : "");
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til Joark feilet: " + e.getMessage());
         }
         return response.getJournalpostId();

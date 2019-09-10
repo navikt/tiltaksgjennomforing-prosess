@@ -13,6 +13,9 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
+
+import static no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.DokumentVariant.*;
 
 @Slf4j
 @Component
@@ -33,10 +36,10 @@ public class JournalpostFactory {
 
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(
-                new DokumentVariant("XML", encodeToBase64(dokumentXml.getBytes())),
-                new DokumentVariant("PDF", encodeToBase64(dokumentPdfAsBytes)))
+                new DokumentVariant(FILTYPE_XML, VARIANFORMAT_PDF ,encodeToBase64(dokumentXml.getBytes())),
+                new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, encodeToBase64(dokumentPdfAsBytes)))
         );
-        journalpost.setDokumenter(Arrays.asList(dokument));
+        journalpost.setDokumenter(Collections.singletonList(dokument));
         return journalpost;
     }
 
