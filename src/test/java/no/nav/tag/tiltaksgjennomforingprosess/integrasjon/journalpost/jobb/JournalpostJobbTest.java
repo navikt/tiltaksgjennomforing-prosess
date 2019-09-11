@@ -1,4 +1,4 @@
-package no.nav.tag.tiltaksgjennomforingprosess.integrasjon.journalpost.jobb;
+package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.jobb;
 
 
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon.JoarkService;
