@@ -23,6 +23,7 @@ import java.util.UUID;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.fail;
 
+@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("dev")
@@ -44,25 +45,6 @@ public class TiltaksgjennomforingApiIntTest {
     TiltaksgjennomfoeringApiService service;
 
     private final String TOKEN = "eyxXxx";
-
-    @Test
-    @Ignore
-    public void finnerAvtalerTilJournalfoering() {
-
-        stubFor(get(urlPathMatching("/internal/avtaler"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withBodyFile("/mappings/avtalerTilJournalfoering.json")
-
-                ));
-
-        try {
-            List<Avtale> avtaler = service.finnAvtalerTilJournalfoering(TOKEN);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-
-    }
 
     @Test
     public void setterAvtalerTilJournalfoert() {

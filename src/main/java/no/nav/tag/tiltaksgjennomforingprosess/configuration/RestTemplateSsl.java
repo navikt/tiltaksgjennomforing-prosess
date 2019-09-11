@@ -30,7 +30,7 @@ public class RestTemplateSsl {
 
     @Bean(name = "restTemplate")
     public RestTemplate restTemplate() {
-        SSLContext sslContext = null;
+        SSLContext sslContext;
 
         try {
             sslContext = new SSLContextBuilder().loadTrustMaterial(truststore.getURL(), truststorePwd.toCharArray()).build();

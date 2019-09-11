@@ -48,8 +48,6 @@ public class JournalpostJobb {
                 avtalerTilJournalforing.size(),
                 avtalerTilJournalforing.stream().map(avtale -> avtale.getId().toString()).collect(Collectors.toList()));
 
-
-
         prosesserAvtaler(stsToken, avtalerTilJournalforing);
         log.info("Ferdig journalført {} avtaler", avtalerTilJournalforing.size());
     }

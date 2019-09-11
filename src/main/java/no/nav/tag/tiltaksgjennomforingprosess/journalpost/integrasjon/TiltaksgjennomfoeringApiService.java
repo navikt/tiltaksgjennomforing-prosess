@@ -44,7 +44,6 @@ public class TiltaksgjennomfoeringApiService {
     }
 
     public void settAvtalerTilJournalfoert(String stsToken, Map<UUID, String> avtalerTilJournalfoert){
-        ResponseEntity response;
         headers.setBearerAuth(stsToken);
         HttpEntity<Map<UUID, String>> entity = new HttpEntity<>(avtalerTilJournalfoert, headers);
         restTemplate.exchange(uri, HttpMethod.PUT, entity, Void.class);
