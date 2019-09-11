@@ -17,9 +17,11 @@ public class SkjemaInfo {
     private String tiltaksType = TILTAKSTYPE;
     private String typeBehandling = TYPE_BEHANDLING;
     private String fraDato;
+    private String tilDato;
 
     public SkjemaInfo(LocalDate fraDato) {
         this.fraDato = fraDato.format(dateTimeFormatter);
+        this.tilDato = fraDato.plusMonths(3).format(dateTimeFormatter);
     }
 
 }
