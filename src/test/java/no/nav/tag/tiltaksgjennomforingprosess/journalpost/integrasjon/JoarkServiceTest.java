@@ -1,6 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess.journalpost.integrasjon;
 
-import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.journalpost.request.Journalpost;
@@ -17,7 +16,6 @@ import org.springframework.web.client.HttpServerErrorException;
 import java.net.URI;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 

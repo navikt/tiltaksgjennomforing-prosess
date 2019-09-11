@@ -35,21 +35,15 @@ public class JournalpostJobb {
 
     @Scheduled(cron = "${prosess.jobb.cron}")
     public void JournalfoerAvtaler() {
-        log.info("Ser etter avtaler til journalfoering");
 
         final String stsToken = stsService.hentToken();
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
+        log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
 
         if(avtalerTilJournalforing.isEmpty()){
             return;
         }
-
-        log.info("Hentet {} avtaler som skal journalføres: {}",
-                avtalerTilJournalforing.size(),
-                avtalerTilJournalforing.stream().map(avtale -> avtale.getId().toString()).collect(Collectors.toList()));
-
         prosesserAvtaler(stsToken, avtalerTilJournalforing);
-        log.info("Ferdig journalført {} avtaler", avtalerTilJournalforing.size());
     }
 
     private void prosesserAvtaler(String stsToken, List<Avtale> avtalerTilJournalforing) {
@@ -67,15 +61,19 @@ public class JournalpostJobb {
         try {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
         } catch (Exception e) {
-            List<String> journalfoerteStr = journalfoeringer.keySet().stream().map(uuid -> uuid.toString() + " :: " + journalfoeringer.get(uuid)).collect(Collectors.toList());
-            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", journalfoerteStr, e);
+            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
             stopServer();
         }
+        log.info("Ferdig journalført {} avtaler: {}", avtalerTilJournalforing.size(), avtalerJournalfortInfo(journalfoeringer));
     }
 
     private void stopServer() {
         log.info("Tar ned server - hindrer ny journalføring av de samme avtalene");
         System.exit(1);
+    }
+
+    private List<String> avtalerJournalfortInfo(Map<UUID, String> journalfoeringer){
+        return journalfoeringer.keySet().stream().map(uuid -> uuid.toString() + " :: " + journalfoeringer.get(uuid)).collect(Collectors.toList());
     }
 }
 
