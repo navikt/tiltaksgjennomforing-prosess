@@ -13,5 +13,6 @@ public class Journalpost {
     private final String tittel = "Avtale om arbeidstrening";
 
     private Bruker bruker;
+    private List<Tilleggsopplysning> tilleggsopplysninger;
     private List<Dokument> dokumenter;
 }
