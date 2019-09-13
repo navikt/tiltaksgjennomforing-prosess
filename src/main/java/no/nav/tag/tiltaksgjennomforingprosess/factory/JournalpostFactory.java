@@ -2,7 +2,10 @@ package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.*;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Bruker;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -13,7 +16,6 @@ import java.util.Base64;
 import java.util.Collections;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.*;
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Tilleggsopplysning.NØKKEL_KANALREFERANSE;
 
 @Slf4j
 @Component
@@ -26,12 +28,8 @@ public class JournalpostFactory {
 
         Bruker bruker = new Bruker();
         bruker.setId(avtale.getDeltakerFnr());
-
         Journalpost journalpost = new Journalpost();
         journalpost.setBruker(bruker);
-        journalpost.setTilleggsopplysninger(
-                Collections.singletonList(new Tilleggsopplysning(NØKKEL_KANALREFERANSE, avtale.getId().toString()))
-        );
 
         final byte[] dokumentPdfAsBytes = avtaleTilPdfBytes(avtale);
         final String dokumentXml = avtaleTilXml.genererXml(avtale);
