@@ -6,7 +6,7 @@ import lombok.Data;
 public class DokumentVariant {
 
     public static final String FILTYPE_XML = "XML";
-    public static final String FILTYPE_PDF = "PDF";
+    public static final String FILTYPE_PDF = "PDFA";
     public static final String VARIANFORMAT_XML = "ORIGINAL";
     public static final String VARIANFORMAT_PDF = "ARKIV";
 
