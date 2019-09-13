@@ -1,6 +1,5 @@
 prosess:
-  jobb:
-    cron: "15 * * * * *"
+  cron: ${tiltaksgjennomforing.prosess.cron}
   integrasjon:
     joark:
       uri: https://dokarkiv-q1.nais.preprod.local

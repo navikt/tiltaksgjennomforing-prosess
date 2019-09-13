@@ -11,8 +11,7 @@ spring:
     banner-mode: "off"
 
 prosess:
-  jobb:
-    cron:
+  cron:
   integrasjon:
     joark:
       uri: url
