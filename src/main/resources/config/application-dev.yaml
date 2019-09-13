@@ -6,7 +6,7 @@ spring:
     banner-mode: "console"
 
 prosess:
-    cron: "5 * * * * *"
+  cron: "5 * * * * *"
   integrasjon:
     joark:
       uri: http://localhost:8090
