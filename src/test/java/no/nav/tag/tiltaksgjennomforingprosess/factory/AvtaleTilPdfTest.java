@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertTrue;
@@ -23,13 +24,17 @@ public class AvtaleTilPdfTest {
 
     private AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
 
-    @Ignore("Til manuell sjekk av pdf layout")
+    //@Ignore("Til manuell sjekk av pdf layout")
     @Test
     public void lagerForventetPDF() throws Exception {
         Avtale avtale = TestData.opprettAvtale();
 
         byte[] bytes = avtaleTilPdf.tilBytesAvPdf(avtale);
-        PDDocument pdf = PDDocument.load(new ByteArrayInputStream(bytes));
+
+        String encAvtale = Base64.getEncoder().encodeToString(bytes);
+        byte[] decAvtale = Base64.getDecoder().decode(encAvtale);
+
+        PDDocument pdf = PDDocument.load(new ByteArrayInputStream(decAvtale));
         pdf.save("src/test/resources/Resultat.pdf");
         pdf.close();
     }

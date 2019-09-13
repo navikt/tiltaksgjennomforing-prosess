@@ -90,7 +90,7 @@ class AvtaleTilPdf {
             contentStream.beginText();
             contentStream.newLineAtOffset(startSidenXY[0], startSidenXY[1]);
             contentStream.setLeading(leadingNormal);
-            contentStream = skrivTekst("Avtale for arbeidstrening", contentStream, document, font_Bold, fontSizeStor);
+            contentStream = skrivTekst("Avtale om arbeidstrening", contentStream, document, font_Bold, fontSizeStor);
             contentStream.setFont(font, fontSize);
             List<Object> text = new ArrayList<>();
             float moveToPositionX = -32000;
