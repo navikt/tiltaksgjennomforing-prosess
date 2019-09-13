@@ -33,7 +33,7 @@ public class JournalpostJobb {
     @Autowired
     private StsService stsService;
 
-    @Scheduled(cron = "${prosess.jobb.cron}")
+    @Scheduled(cron = "${prosess.cron}")
     public void JournalfoerAvtaler() {
 
         final String stsToken = stsService.hentToken();
