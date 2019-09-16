@@ -16,6 +16,7 @@ public class HealthCheckController {
     private RestTemplate restTemplate;
 
     private static final String PATH = "/internal/healthcheck";
+    private static final String API_FEIL = "Ikke kontakt med tiltaksgjennomfoering-api";
     private URI uri;
 
     public HealthCheckController(TiltakApiProperties properties){
@@ -27,12 +28,17 @@ public class HealthCheckController {
 
     @GetMapping(value = PATH)
     public String healthcheck() {
-        String ping = restTemplate.getForObject(uri, String.class);
-
-        if(!ping.equals("ok")){
-            return "Ikke kontakt med tiltaksgjennomfoering-api";
+        String ping = null;
+        try{
+            ping = restTemplate.getForObject(uri, String.class);
+        } catch (Throwable t){
+            return API_FEIL;
         }
-        return "ok";
+
+        if(ping == null || !ping.equals("ok")){
+            return API_FEIL;
+        }
+        return ping;
 
         //TODO 'pinge' sts og joark
     }
