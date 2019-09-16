@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class JournalpostJobb {
 
-    private static boolean enabled = true;
+    private static boolean enabled = false;
 
     @Autowired
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService;
