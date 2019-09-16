@@ -36,7 +36,7 @@ public class JournalpostJobb {
     private StsService stsService;
 
     @Scheduled(cron = "${prosess.cron}")
-    public void JournalfoerAvtaler() {
+    public void avtalerTilJournalfoering() {
 
         if(!enabled){
             log.warn("Prosessen ble skrudd av pga. en feil. Sjekk tidligere feilmelding i loggen");
@@ -45,17 +45,18 @@ public class JournalpostJobb {
 
         final String stsToken = stsService.hentToken();
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
-        log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
 
+        log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
         if(avtalerTilJournalforing.isEmpty()){
             return;
         }
-        prosesserAvtaler(stsToken, avtalerTilJournalforing);
+
+        Map<UUID, String> journalfoerteAvtaler = journalfoerAvtaler(stsToken, avtalerTilJournalforing);
+        registrerAvtalerSomJournalfoert(stsToken, journalfoerteAvtaler);
     }
 
-    private void prosesserAvtaler(String stsToken, List<Avtale> avtalerTilJournalforing) {
-
-        Map<UUID, String> journalfoeringer = avtalerTilJournalforing
+    private Map<UUID, String> journalfoerAvtaler(String stsToken, List<Avtale> avtalerTilJournalforing) {
+        return avtalerTilJournalforing
                 .parallelStream()
                 .map(avtale -> {
                     avtale.setJournalpostId(
@@ -64,7 +65,9 @@ public class JournalpostJobb {
                     return avtale;
                 })
                 .collect(Collectors.toMap(Avtale::getId, Avtale::getJournalpostId));
+    }
 
+    private void registrerAvtalerSomJournalfoert(final String stsToken, Map<UUID, String> journalfoeringer) {
         log.info("Oppdaterer avtaler i Tiltaksgjennomforing-api");
         try {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
@@ -72,7 +75,7 @@ public class JournalpostJobb {
             log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
             deaktiverJobb();
         }
-        log.info("Ferdig journalført {} avtaler: {}", avtalerTilJournalforing.size(), avtalerJournalfortInfo(journalfoeringer));
+        log.info("Ferdig journalført {} avtaler: {}", journalfoeringer.size(), avtalerJournalfortInfo(journalfoeringer));
     }
 
     private void deaktiverJobb() {
