@@ -1,5 +1,5 @@
 prosess:
-  cron: ${tiltaksgjennomforing.prosess.cron}
+  cron: "0 10 * * * *"
   integrasjon:
     joark:
       uri: https://dokarkiv.nais.adeo.no
