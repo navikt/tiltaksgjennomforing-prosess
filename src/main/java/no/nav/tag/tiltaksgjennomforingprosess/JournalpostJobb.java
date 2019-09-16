@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class JournalpostJobb {
 
-    private static boolean enabled = false;
+    private static boolean enabled = true;
 
     @Autowired
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService;
@@ -79,7 +79,7 @@ public class JournalpostJobb {
     }
 
     private void deaktiverJobb() {
-        log.info("Tar ned server - hindrer ny journalføring av de samme avtalene");
+        log.info("Deaktiverer jobb - hindrer ny journalføring av de samme avtalene");
         enabled = false;
     }
 
