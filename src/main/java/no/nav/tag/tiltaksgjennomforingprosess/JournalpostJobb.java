@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class JournalpostJobb {
 
+    private static boolean enabled = true;
+
     @Autowired
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService;
 
@@ -36,6 +38,11 @@ public class JournalpostJobb {
     @Scheduled(cron = "${prosess.cron}")
     public void JournalfoerAvtaler() {
 
+        if(!enabled){
+            log.warn("Prosessen ble skrudd av pga. en feil. Sjekk tidligere feilmelding i loggen");
+            return;
+        }
+
         final String stsToken = stsService.hentToken();
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
         log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
@@ -47,6 +54,7 @@ public class JournalpostJobb {
     }
 
     private void prosesserAvtaler(String stsToken, List<Avtale> avtalerTilJournalforing) {
+
         Map<UUID, String> journalfoeringer = avtalerTilJournalforing
                 .parallelStream()
                 .map(avtale -> {
@@ -62,14 +70,14 @@ public class JournalpostJobb {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
         } catch (Exception e) {
             log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
-            stopServer();
+            deaktiverJobb();
         }
         log.info("Ferdig journalført {} avtaler: {}", avtalerTilJournalforing.size(), avtalerJournalfortInfo(journalfoeringer));
     }
 
-    private void stopServer() {
+    private void deaktiverJobb() {
         log.info("Tar ned server - hindrer ny journalføring av de samme avtalene");
-        System.exit(1);
+        enabled = false;
     }
 
     private List<String> avtalerJournalfortInfo(Map<UUID, String> journalfoeringer){

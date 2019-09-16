@@ -25,7 +25,7 @@ spec:
       value: {{spring-profil}}
   webproxy: true
   prometheus:
-    enabled: true
+    enabled: false
     path: /tiltaksgjennomforing-prosess/internal/actuator/prometheus
 
 

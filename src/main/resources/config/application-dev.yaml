@@ -9,9 +9,9 @@ prosess:
   cron: "5 * * * * *"
   integrasjon:
     joark:
-      uri: http://localhost:8090
+      uri: http://localhost:8091
     sts:
-      uri: http://localhost:8090
+      uri: http://localhost:8091
     api:
       uri: http://localhost:8090/tiltaksgjennomforing-api
 

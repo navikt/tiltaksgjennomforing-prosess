@@ -15,7 +15,7 @@ public class IntegrasjonerMockServer implements DisposableBean {
 
     public IntegrasjonerMockServer() {
         log.info("Starter mockserver for eksterne integrasjoner.");
-        server = new WireMockServer(WireMockConfiguration.options().usingFilesUnderClasspath(".").port(8090));
+        server = new WireMockServer(WireMockConfiguration.options().usingFilesUnderClasspath(".").port(8091));
         server.start();
     }
 

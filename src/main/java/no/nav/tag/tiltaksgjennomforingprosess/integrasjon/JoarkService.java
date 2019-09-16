@@ -22,8 +22,8 @@ import java.util.Arrays;
 @Service
 public class JoarkService {
 
-    private static final String PATH = "/rest/journalpostapi/v1/journalpost";
-    private static final String QUERY_PARAM = "forsoekFerdigstill=false";
+    static final String PATH = "/rest/journalpostapi/v1/journalpost";
+    static final String QUERY_PARAM = "forsoekFerdigstill=false";
     private URI uri;
     private final HttpHeaders headers = new HttpHeaders();
 
@@ -54,11 +54,12 @@ public class JoarkService {
         return response.getJournalpostId();
     }
 
-    private void debugLogJournalpost(Journalpost journalpost){
-        if(log.isDebugEnabled()){
+    private void debugLogJournalpost(Journalpost journalpost) {
+        if (log.isDebugEnabled()) {
             try {
                 log.info("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
-            } catch (JsonProcessingException e) {}
+            } catch (JsonProcessingException e) {
+            }
         }
     }
 

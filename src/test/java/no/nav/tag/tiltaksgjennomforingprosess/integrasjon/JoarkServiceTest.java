@@ -1,51 +1,42 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
-import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
+import static no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService.PATH;
+import static no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService.QUERY_PARAM;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-
-
-@Ignore
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class JoarkServiceTest {
 
     private final String TOKEN = "eyxXxx";
+    private final URI uri = URI.create("http://localhost:8090");
+    private final URI expUri = UriComponentsBuilder.fromUri(uri).path(PATH).query(QUERY_PARAM).build().toUri();
 
-    @MockBean
-    private JournalpostFactory journalpostFactory;
-
-    @MockBean
-    private JournalpostProperties journalpostProperties;
+    @Mock
+    private RestTemplate restTemplate;
 
     @InjectMocks
-    private JoarkService joarkService = new JoarkService(journalpostProperties);
+    private JoarkService joarkService = new JoarkService(new JournalpostProperties(uri));
 
     @Test(expected = HttpServerErrorException.class)
-    public void oppretter_journalpost_status_500() {
+    public void oppretterJournalpost_status_500() {
 
-        Journalpost journalpost = new Journalpost();
-
-
-        when(journalpostProperties.getUri()).thenReturn(URI.create("http://localhost:8090"));
-        when(journalpostFactory.konverterTilJournalpost(any(Avtale.class))).thenReturn(any());
-
-        joarkService.sendJournalpost(TOKEN, journalpost);
+        when(restTemplate.postForObject(eq(expUri), any(HttpEntity.class), any())).thenThrow(RuntimeException.class);
+        joarkService.sendJournalpost(TOKEN, new Journalpost());
     }
 }

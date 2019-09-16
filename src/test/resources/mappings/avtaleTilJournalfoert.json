@@ -3,7 +3,7 @@
     {
       "request": {
         "method": "PUT",
-        "urlPathPattern": "/internal/avtaler",
+        "urlPathPattern": "/tiltaksgjennomforing-api/internal/avtaler",
         "headers": {
           "Authorization": {
             "equalTo": "Bearer eyxXxx"

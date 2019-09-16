@@ -24,7 +24,7 @@ public class AvtaleTilPdfTest {
 
     private AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
 
-    //@Ignore("Til manuell sjekk av pdf layout")
+    @Ignore("Til manuell sjekk av pdf layout")
     @Test
     public void lagerForventetPDF() throws Exception {
         Avtale avtale = TestData.opprettAvtale();

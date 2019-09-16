@@ -1,5 +1,4 @@
 prosess:
-  #cron: ${tiltaksgjennomforing.prosess.cron}
   cron: "15 * * * * *"
   integrasjon:
     joark:
