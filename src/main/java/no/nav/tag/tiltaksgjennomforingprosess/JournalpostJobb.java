@@ -46,11 +46,11 @@ public class JournalpostJobb {
         final String stsToken = stsService.hentToken();
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
 
-        log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
         if(avtalerTilJournalforing.isEmpty()){
             return;
         }
 
+        log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
         Map<UUID, String> journalfoerteAvtaler = journalfoerAvtaler(stsToken, avtalerTilJournalforing);
         registrerAvtalerSomJournalfoert(stsToken, journalfoerteAvtaler);
     }
