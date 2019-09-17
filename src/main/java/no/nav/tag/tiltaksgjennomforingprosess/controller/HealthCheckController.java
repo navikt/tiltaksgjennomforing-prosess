@@ -2,8 +2,10 @@ package no.nav.tag.tiltaksgjennomforingprosess.controller;
 
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -32,11 +34,11 @@ public class HealthCheckController {
         try{
             ping = restTemplate.getForObject(uri, String.class);
         } catch (Throwable t){
-            return API_FEIL;
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, API_FEIL);
         }
 
         if(ping == null || !ping.equals("ok")){
-            return API_FEIL;
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, API_FEIL);
         }
         return ping;
 
