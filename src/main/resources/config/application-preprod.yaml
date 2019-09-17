@@ -1,5 +1,5 @@
 prosess:
-  cron: "0 0/15 * * * *"
+  cron: "0/5 * * * * *"
   integrasjon:
     joark:
       uri: https://dokarkiv-q1.nais.preprod.local
