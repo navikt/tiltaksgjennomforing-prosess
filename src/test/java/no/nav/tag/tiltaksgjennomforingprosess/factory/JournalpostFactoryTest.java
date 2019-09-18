@@ -34,6 +34,7 @@ public class JournalpostFactoryTest {
         assertEquals("NAV_NO", journalpost.getKanal());
         assertEquals("TIL", journalpost.getTema());
         assertEquals("Avtale om arbeidstrening", journalpost.getTittel());
+        assertEquals("AVT" + avtale.getId(), journalpost.getEksternReferanseId());
         assertEquals(avtale.getDeltakerFnr(), journalpost.getBruker().getId());
         assertEquals("FNR", journalpost.getBruker().getIdType());
         assertEquals(1, journalpost.getDokumenter().size());

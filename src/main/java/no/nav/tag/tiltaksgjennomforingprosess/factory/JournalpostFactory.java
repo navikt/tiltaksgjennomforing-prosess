@@ -16,6 +16,7 @@ import java.util.Base64;
 import java.util.Collections;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.*;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost.EKSTREF_PREFIKS;
 
 @Slf4j
 @Component
@@ -30,7 +31,7 @@ public class JournalpostFactory {
         bruker.setId(avtale.getDeltakerFnr());
         Journalpost journalpost = new Journalpost();
         journalpost.setBruker(bruker);
-        journalpost.setEksternReferanseId(avtale.getId().toString());
+        journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getId().toString());
 
         final byte[] dokumentPdfAsBytes = avtaleTilPdfBytes(avtale);
         final String dokumentXml = avtaleTilXml.genererXml(avtale);
