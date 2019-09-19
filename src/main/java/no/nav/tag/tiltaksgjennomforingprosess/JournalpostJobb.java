@@ -68,7 +68,7 @@ public class JournalpostJobb {
     }
 
     private void registrerAvtalerSomJournalfoert(final String stsToken, Map<UUID, String> journalfoeringer) {
-        log.info("Oppdaterer avtaler i Tiltaksgjennomforing-api");
+
         try {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
         } catch (Exception e) {
