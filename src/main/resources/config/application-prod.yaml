@@ -4,7 +4,7 @@ prosess:
     joark:
       uri: https://dokarkiv.nais.adeo.no
     sts:
-      uri: http://security-token-service.default.svc.nais.local/rest/v1/sts/token
+      uri: http://security-token-service.default.svc.nais.local
       bruker: ${tiltaksgjennomforing.consumer.user}
       passord: ${tiltaksgjennomforing.consumer.password}
     api:
