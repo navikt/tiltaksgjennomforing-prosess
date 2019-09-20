@@ -1,5 +1,5 @@
 prosess:
-  cron: "0/5 * * * * *"
+  cron: "0/20 * * * * *"
   integrasjon:
     joark:
       uri: https://dokarkiv.nais.adeo.no
