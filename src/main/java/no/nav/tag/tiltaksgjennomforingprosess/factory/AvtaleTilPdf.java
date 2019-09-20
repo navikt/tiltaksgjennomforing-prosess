@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,6 @@ class AvtaleTilPdf {
     private final static String LINJE = "_________________________________________________________________________________";
 
     private final static int paragraphWidth = 90;
-    private final static PDFont font = PDType1Font.TIMES_ROMAN;
-    private final static PDFont font_Bold = PDType1Font.TIMES_BOLD;
     private final static int fontSizeSmaa = 10;
     private final static int fontSize = 12;
     private final static int fontSizeMellomStor = 14;
@@ -47,12 +47,30 @@ class AvtaleTilPdf {
     private static final float leadingSmaa = 1f;
     private static final float[] logoposition = new float[]{50, 750};
     private static final float[] logoStorrelse = new float[]{60, 38};
-    private static final String ikonfil = "navikon.png";
+    private static final String ikonfil = "pdf/navikon.png";
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATOFORMAT_NORGE);
 
+    private static PDFont font;
+    private static PDFont font_Bold;
+
     private int aktulLinjerISiden = 10;
     private int totalSider = 1;
+    private PDDocument document;
+
+    private InputStream fontIS = AvtaleTilPdf.class.getResourceAsStream("/pdf/times_new_roman.ttf");
+    private InputStream fontBoldIS = AvtaleTilPdf.class.getResourceAsStream("/pdf/times_new_roman_bold.ttf");
+
+
+    AvtaleTilPdf(){
+        document = new PDDocument();
+        try {
+            font = PDType0Font.load(document, fontIS, true);
+            font_Bold = PDType0Font.load(document, fontBoldIS, true);
+        } catch (IOException e) {
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved generering av PDF fil: " + e.getMessage());
+        }
+    }
 
     byte[] tilBytesAvPdf(Avtale avtale) {
         PDDocument dokument = generererPdf(avtale);
@@ -68,7 +86,6 @@ class AvtaleTilPdf {
     }
 
     private PDDocument generererPdf(Avtale avtale) {
-        PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
 
