@@ -15,7 +15,6 @@
         <logger name="jsonLogger" additivity="false" level="DEBUG">
             <appender-ref ref="consoleAppender"/>
         </logger>
-        <logger name="org.apache.pdfbox" level="ERROR" />
     </springProfile>
     <root level="INFO">
         <appender-ref ref="consoleAppender"/>

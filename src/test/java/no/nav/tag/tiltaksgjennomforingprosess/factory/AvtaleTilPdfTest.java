@@ -55,12 +55,14 @@ public class AvtaleTilPdfTest {
                     && textInPdf.contains(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn())
                     && textInPdf.contains(avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn()) && textInPdf.contains(avtale.getArbeidsgiverTlf())
                     && textInPdf.contains(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn())
-                    && sjekkPdfOppfolgingInnhold(textInPdf, avtale) && sjekkPdfTilretteleggingInnhold(textInPdf, avtale)
                     && textInPdf.contains(avtale.getArbeidstreningLengde().toString())
-                    && textInPdf.contains(avtale.getArbeidstreningStillingprosent().toString())
-                    && sjekkPdfMaalListInnhold(textInPdf, avtale)
-                    && sjekkPdfOppgaveListInnhold(textInPdf, avtale);
+                    && textInPdf.contains(avtale.getArbeidstreningStillingprosent().toString());
             assertTrue(harAlt);
+
+            assertTrue("Oppfølging", sjekkPdfOppfolgingInnhold(textInPdf, avtale));
+            assertTrue("Tilrettelegging", sjekkPdfTilretteleggingInnhold(textInPdf, avtale));
+            assertTrue("Mål", sjekkPdfMaalListInnhold(textInPdf, avtale));
+            assertTrue("Oppgaver",sjekkPdfOppgaveListInnhold(textInPdf, avtale));
             assertTrue("StartDato",textInPdf.contains(avtale.getStartDato().format(DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE))));
             assertTrue("GodkjentAvDeltaker", textInPdf.contains(avtale.getGodkjentAvDeltaker()));
             assertTrue("GodkjentAvArbeidsgiver", textInPdf.contains(avtale.getGodkjentAvArbeidsgiver()));
@@ -104,9 +106,11 @@ public class AvtaleTilPdfTest {
     private boolean sjekkPdfOppfolgingInnhold(String textInPdf, Avtale avtale) throws IOException {
         boolean result = true;
         AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
-        for (String str : avtaleTilPdf.possibleWrapText(avtale.getOppfolging(), new PDPage(PDRectangle.A4))
+        String oppfolging = avtale.getOppfolging().replace("\n", "");
+
+        for (String str : avtaleTilPdf.possibleWrapText(oppfolging, new PDPage(PDRectangle.A4))
         ) {
-            result = result && textInPdf.contains(str);
+            result = result && textInPdf.contains("Her kommer resten i ny linje");
         }
         return result;
     }
@@ -114,7 +118,7 @@ public class AvtaleTilPdfTest {
     private boolean sjekkPdfTilretteleggingInnhold(String textInPdf, Avtale avtale) throws IOException {
         boolean result = true;
         AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
-        for (String str : avtaleTilPdf.possibleWrapText(avtale.getOppfolging(), new PDPage(PDRectangle.A4))
+        for (String str : avtaleTilPdf.possibleWrapText(avtale.getTilrettelegging(), new PDPage(PDRectangle.A4))
         ) {
             result = result && textInPdf.contains(str);
         }

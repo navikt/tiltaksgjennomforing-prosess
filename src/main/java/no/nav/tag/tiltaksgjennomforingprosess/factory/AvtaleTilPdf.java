@@ -11,7 +11,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpServerErrorException;
@@ -35,6 +34,7 @@ class AvtaleTilPdf {
     private final static String RESERVERT_TXT = "     Deltaker har reservert seg mot digitale tjenester";
     private final static String DIGITA_KOMPETANSE_TXT = "     Deltaker mangler digital kompetanse";
     private final static String LINJE = "_________________________________________________________________________________";
+    private final static String regexNyLinje = "\n";
 
     private final static int paragraphWidth = 90;
     private final static int fontSizeSmaa = 10;
@@ -145,8 +145,7 @@ class AvtaleTilPdf {
                 contentStream = skrivTekst("Kategori", contentStream, document, font_Bold, fontSize);
                 contentStream = skrivTekst(maal.getKategori(), contentStream, document, font, fontSize);
                 contentStream = skrivTekst("Beskrivelse", contentStream, document, font_Bold, fontSize);
-                contentStream = skrivTekst(maal.getBeskrivelse(), contentStream, document, font, fontSize);
-                contentStream.newLine();
+                contentStream = skrivFritekstTilPdf(contentStream, maal.getBeskrivelse());
             }
             startNyttAvsnitt("Arbeidsoppgaver ", contentStream);
             for (Oppgave oppgave : avtale.getOppgaver()
@@ -166,9 +165,7 @@ class AvtaleTilPdf {
             contentStream = skrivTekst("Stillingsprosent: " + avtale.getArbeidstreningStillingprosent() + "%", contentStream, document, font, fontSize);
             contentStream.newLine();
             startNyttAvsnitt("Oppfølging ", contentStream);
-            String oppfolging = avtale.getOppfolging();
-            contentStream = skrivTekst(oppfolging, contentStream, document, font, fontSize);
-            contentStream.newLine();
+            contentStream = skrivFritekstTilPdf(contentStream, avtale.getOppfolging());
             aktulLinjerISiden += 2;
             startNyttAvsnitt("Tilrettelegging ", contentStream);
             String tilrettelegging = avtale.getTilrettelegging();
@@ -213,20 +210,22 @@ class AvtaleTilPdf {
     List<String> possibleWrapText(String skrivText, PDPage page) throws IOException {
 
         PDRectangle mediabox = page.getMediaBox();
-        float margin = 72;
-        float width = mediabox.getWidth() - 2 * margin;
+        final float margin = 72;
+        final float width = mediabox.getWidth() - 2 * margin;
 
         List<String> lines = new ArrayList<>();
         int lastSpace = -1;
         while (skrivText.length() > 0) {
             int spaceIndex = skrivText.indexOf(' ', lastSpace + 1);
-            if (spaceIndex < 0)
+            if (spaceIndex < 0) {
                 spaceIndex = skrivText.length();
+            }
             String subString = skrivText.substring(0, spaceIndex);
             float size = fontSize * font.getStringWidth(subString) / 1000;
             if (size > width) {
-                if (lastSpace < 0)
+                if (lastSpace < 0) {
                     lastSpace = spaceIndex;
+                }
                 subString = skrivText.substring(0, lastSpace);
                 lines.add(subString);
                 skrivText = skrivText.substring(lastSpace).trim();
@@ -239,6 +238,14 @@ class AvtaleTilPdf {
             }
         }
         return lines;
+    }
+
+    private PDPageContentStream skrivFritekstTilPdf(PDPageContentStream contentStream, String oppfolging) throws Exception {
+        String[] linjer = oppfolging.split(regexNyLinje);;
+        for(String linje : linjer) {
+            contentStream = skrivTekst(linje.trim(), contentStream, document, font, fontSize);
+        }
+        return contentStream;
     }
 
     private PDPageContentStream openNewPage(PDPageContentStream contentStream, PDDocument document) throws IOException {
