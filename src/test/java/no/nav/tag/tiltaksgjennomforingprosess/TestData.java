@@ -46,7 +46,7 @@ public class TestData {
         avtale.setVeilederFornavn("Nils");
         avtale.setVeilederEtternavn("Nilsen");
         avtale.setVeilederTlf("22223333");
-        avtale.setOppfolging("Dette er veldig lang. .oppfølging tekst for test,");
+        avtale.setOppfolging("Linje-1\nlinje-2 \n linje-3\n \nHer kommer resten i ny linje");
         avtale.setTilrettelegging("Dette er lang tilrettelegging tekst for test");
         avtale.setStartDato(START_DATO);
         avtale.setArbeidstreningLengde(2);
