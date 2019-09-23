@@ -64,7 +64,7 @@ public class TestData {
     public static Oppgave enOppgave() {
         Oppgave oppgave = new Oppgave();
         oppgave.setTittel("OppgaveTittel");
-        oppgave.setBeskrivelse("Dette er veldig lang Oppgave beskrivelse for test,");
+        oppgave.setBeskrivelse("Kandidaten blir fulgt opp av linje ledere / mentor-er Er plassert på Linje A3   Lindal treindustri Akland");
         oppgave.setOpplaering("Dette er veldig lang opplæring");
         return oppgave;
     }
