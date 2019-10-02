@@ -92,7 +92,6 @@ public class AvtaleTilPdfTest {
     }
 
     private boolean sjekkPdfOppgaveListInnhold(String textInPdf, Avtale avtale) throws IOException {
-        textInPdf = textInPdf.replace("\n", " ");
         boolean result = true;
         AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
         for (Oppgave oppgave : avtale.getOppgaver()
