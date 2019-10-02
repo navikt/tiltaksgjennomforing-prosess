@@ -40,7 +40,6 @@ public class AvtaleTilPdfTest {
         pdf.close();
     }
 
-    @Ignore
     @Test
     public void lagerAvtalePdf() throws IOException {
         Avtale avtale = TestData.opprettAvtale();
@@ -54,8 +53,7 @@ public class AvtaleTilPdfTest {
     @Test(expected = HttpServerErrorException.class)
     public void lagerIkkeAvtalePdf() throws IOException {
         Avtale avtale = TestData.opprettAvtale();
-        avtale.setId(UUID.fromString(ID_AVTALE));
-
+        avtale.setId(null);
         avtaleTilPdf.tilBytesAvPdf(avtale);
     }
 
@@ -72,7 +70,7 @@ public class AvtaleTilPdfTest {
             assertTrue("Oppfølging", sjekkPdfOppfolgingInnhold(textInPdf, avtale));
             assertTrue("Tilrettelegging", sjekkPdfTilretteleggingInnhold(textInPdf, avtale));
             assertTrue("Mål", sjekkPdfMaalListInnhold(textInPdf, avtale));
-            //assertTrue("Oppgaver",sjekkPdfOppgaveListInnhold(textInPdf, avtale));
+            assertTrue("Oppgaver",sjekkPdfOppgaveListInnhold(textInPdf, avtale));
             assertTrue("StartDato",textInPdf.contains(avtale.getStartDato().format(DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE))));
             assertTrue("GodkjentAvDeltaker", textInPdf.contains(avtale.getGodkjentAvDeltaker()));
             assertTrue("GodkjentAvArbeidsgiver", textInPdf.contains(avtale.getGodkjentAvArbeidsgiver()));
@@ -94,21 +92,28 @@ public class AvtaleTilPdfTest {
     }
 
     private boolean sjekkPdfOppgaveListInnhold(String textInPdf, Avtale avtale) throws IOException {
+        textInPdf = textInPdf.replace("\n", " ");
         boolean result = true;
         AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
         for (Oppgave oppgave : avtale.getOppgaver()
         ) {
             result = result && textInPdf.contains(oppgave.getTittel());
-            for (String str : avtaleTilPdf.possibleWrapText(oppgave.getBeskrivelse().replace("\n", ""), new PDPage(PDRectangle.A4))
-            ) {
-                result = result && textInPdf.contains(str.trim());
-            }
-            for (String str : avtaleTilPdf.possibleWrapText(oppgave.getBeskrivelse().replace("\n", ""), new PDPage(PDRectangle.A4))
-            ) {
 
-                result = result && textInPdf.contains(str.trim());
+            String[] linjer = oppgave.getBeskrivelse().split("\n");
+            for(String linje : linjer) {
+                for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
+                ) {
+                    result = result && textInPdf.contains(str.trim());
+                }
             }
 
+            String[] linjer2 = oppgave.getOpplaering().split("\n");
+            for(String linje : linjer2) {
+                for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
+                ) {
+                    result = result && textInPdf.contains(str.trim());
+                }
+            }
         }
         return result;
     }

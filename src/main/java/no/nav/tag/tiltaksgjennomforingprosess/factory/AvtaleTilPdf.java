@@ -151,20 +151,11 @@ class AvtaleTilPdf {
             for (Oppgave oppgave : avtale.getOppgaver()
             ) {
                 contentStream = skrivTekst(oppgave.getTittel(), contentStream, document, font_Bold, fontSize);
+                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getBeskrivelse());
 
-                //TODO Fiks her
-                String oppgaveBesk = oppgave.getBeskrivelse();
-                contentStream = skrivTekst(oppgaveBesk, contentStream, document, font, fontSize);
-
-                //TODO Fiks her
                 contentStream.newLine();
                 contentStream = skrivTekst("Opplæring: ", contentStream, document, font_Bold, fontSize);
-
-
-                String opplaering = oppgave.getOpplaering();
-                contentStream = skrivTekst(opplaering, contentStream, document, font, fontSize);
-
-
+                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getOpplaering());
                 contentStream.newLine();
                 aktulLinjerISiden += 2;
             }

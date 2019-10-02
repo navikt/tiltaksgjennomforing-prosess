@@ -34,7 +34,7 @@ public class JournalpostJobb {
     @Autowired
     private StsService stsService;
 
-    static final String MAPPING_FEIL = "DATA_FEIL";
+    static final String MAPPING_FEIL = "FEILET";
 
     @Scheduled(cron = "${prosess.cron}")
     public void avtalerTilJournalfoering() {
@@ -84,7 +84,7 @@ public class JournalpostJobb {
             log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
             deaktiverJobb();
         }
-        log.info("Ferdig journalført {} avtaler: {}", journalfoeringer.size(), avtalerJournalfortInfo(journalfoeringer));
+        log.info("Ferdig journalført {} avtaler: {}", journalfoeringer.keySet().stream().filter(key -> !journalfoeringer.get(key).equals(MAPPING_FEIL)).count(), avtalerJournalfortInfo(journalfoeringer));
     }
 
     private void deaktiverJobb() {
