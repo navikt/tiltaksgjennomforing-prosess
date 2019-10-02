@@ -3,6 +3,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.factory;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -22,7 +23,8 @@ public class JournalpostFactoryTest {
     @InjectMocks
     private JournalpostFactory journalpostFactory;
 
-    //@Test
+    @Ignore
+    @Test
     public void konvertererTilJournalpost() throws Exception {
         Avtale avtale = TestData.opprettAvtale();
 
