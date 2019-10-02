@@ -46,11 +46,13 @@ public class JoarkService {
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
         JoarkResponse response = null;
         try {
+            log.info("Forsøker å journalføre avtale {}", journalpost.getEksternReferanseId());
             response = restTemplate.postForObject(uri, entity, JoarkResponse.class);
         } catch (Exception e) {
             log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e);
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til Joark feilet: " + e.getMessage());
         }
+        log.info("Journalført avtale {}", journalpost.getEksternReferanseId());
         return response.getJournalpostId();
     }
 

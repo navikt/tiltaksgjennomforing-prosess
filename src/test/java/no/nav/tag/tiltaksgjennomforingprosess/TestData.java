@@ -46,8 +46,8 @@ public class TestData {
         avtale.setVeilederFornavn("Nils");
         avtale.setVeilederEtternavn("Nilsen");
         avtale.setVeilederTlf("22223333");
-        avtale.setOppfolging("Linje-1\nlinje-2 \n linje-3\n \nHer kommer resten i ny linje");
-        avtale.setTilrettelegging("Dette er lang tilrettelegging tekst for test");
+        avtale.setOppfolging("Oppfølging under veis om tildelte oppgaver. Og arbeidstager har en oppfølgingsamtale med kjøpmann eller butikksjef ca hver 4 uke, da om miljø på arbeidsplass, arbeidsoppgaver samt egen helse i tildelte oppgaver.");
+        avtale.setTilrettelegging("Det er avtalt at Lillehans får tid til og gjennomføre og prioritere opplæring knyttet til sertifikatet. Videre vil NAV følge jevnlig opp.");
         avtale.setStartDato(START_DATO);
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);
@@ -64,15 +64,20 @@ public class TestData {
     public static Oppgave enOppgave() {
         Oppgave oppgave = new Oppgave();
         oppgave.setTittel("OppgaveTittel");
-        oppgave.setBeskrivelse("Kandidaten blir fulgt opp av linje ledere / mentor-er Er plassert på Linje A3   Lindal treindustri Akland");
-        oppgave.setOpplaering("Dette er veldig lang opplæring");
+        oppgave.setBeskrivelse("  nr 1 Vi skal lære hun bestille varer fra leverandører og besøker de slik hun få erfaring på det.\n" +
+                "\n" +
+                "Nr 2 vi øve hun  på typiske arbeidsoppgaver er å betjene kunder og kasseapparatet, å rydde i butikken og i hyller, å rydde på lageret, å sette priser på varer, å ta imot bestillinger og ta imot varer.");
+        oppgave.setOpplaering("Tanken bak rullering av varer og plassering av varer. \n" +
+                "Rutiner rundt fersk og kjølevarer\n" +
+                "Opplæring i kasse og kundebehandling\n" +
+                "Generell butikk rutiner og daglige oppgaver");
         return oppgave;
     }
 
     public static Maal etMaal() {
         Maal maal = new Maal();
         maal.setKategori("Her kommer kategorien");
-        maal.setBeskrivelse("Dette er veldig lang Mål beskrivelse for test,");
+        maal.setBeskrivelse("Målet med arbeidstreningen er og få opplæring i arbeidsoppgaver knyttet til sjåførjobb, lære bedriften og kjenne og får den opplæringen du trenger for og kunne tre inn i stillings funksjonen når du har fått førerkortet. Det foreligger bekreftelse på lovnad om jobb dersom kriteriene er oppfylt i forhold til krav om førerkort.");
         return maal;
     }
 
