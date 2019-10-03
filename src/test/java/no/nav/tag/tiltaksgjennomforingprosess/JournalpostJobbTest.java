@@ -44,17 +44,16 @@ public class JournalpostJobbTest {
     public void kallerIkkeJoarkMedEnAvtaleSomFeilet(){
 
         Avtale okAvtale = TestData.opprettAvtale();
-        UUID idOkAvtale = UUID.randomUUID();
-        okAvtale.setId(idOkAvtale);
+        okAvtale.setId(okAvtale.getId());
 
         Journalpost okJournalpost = new Journalpost();
-        okJournalpost.setEksternReferanseId(idOkAvtale.toString());
+        okJournalpost.setEksternReferanseId(okAvtale.getId().toString());
 
         Avtale feiletAvt = TestData.opprettAvtale();
 
         Map<UUID, String> jorurnalpostIds = new HashMap<>(2);
         final String JOURNALPOST_ID = "1234";
-        jorurnalpostIds.put(idOkAvtale, JOURNALPOST_ID);
+        jorurnalpostIds.put(okAvtale.getId(), JOURNALPOST_ID);
         jorurnalpostIds.put(feiletAvt.getId(), MAPPING_FEIL);
 
         when(stsService.hentToken()).thenReturn("");
@@ -77,9 +76,9 @@ public class JournalpostJobbTest {
         Avtale avtale2 = TestData.opprettAvtale();
 
         Journalpost journalpost1 = new Journalpost();
-        journalpost1.setEksternReferanseId(avtale1.toString());
+        journalpost1.setEksternReferanseId(avtale1.getId().toString());
         Journalpost journalpost2 = new Journalpost();
-        journalpost1.setEksternReferanseId(avtale2.toString());
+        journalpost2.setEksternReferanseId(avtale2.getId().toString());
 
 
         Map<UUID, String> jorurnalpostIds = new HashMap<>(2);
