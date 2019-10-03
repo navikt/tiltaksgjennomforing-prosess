@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.client.HttpServerErrorException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -51,10 +50,10 @@ public class JournalpostFactoryTest {
         });
     }
 
-    @Test(expected = HttpServerErrorException.class)
-    public void feiler() throws Exception {
+    @Test(expected = RuntimeException.class)
+    public void avtaleTilXmlFeiler() throws Exception {
         Avtale avtale = TestData.opprettAvtale();
-        when(avtaleTilXml.genererXml(avtale)).thenThrow(HttpServerErrorException.class);
+        when(avtaleTilXml.genererXml(avtale)).thenThrow(RuntimeException.class);
         journalpostFactory.konverterTilJournalpost(avtale);
     }
 }

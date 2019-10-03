@@ -4,7 +4,6 @@ import no.nav.tag.tiltaksgjennomforingprosess.properties.StsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -41,7 +40,7 @@ public class StsService {
         try {
             response = restTemplate.exchange(uri, HttpMethod.GET, entity, StsTokenResponse.class);
         } catch (Exception e) {
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til STS feilet: " + e.getMessage());
+            throw new RuntimeException("Kall til STS feilet: " + e.getMessage());
         }
         return response.getBody().getAccessToken();
     }

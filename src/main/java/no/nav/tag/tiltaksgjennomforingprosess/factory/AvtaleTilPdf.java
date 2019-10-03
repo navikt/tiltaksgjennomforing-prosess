@@ -155,7 +155,7 @@ class AvtaleTilPdf {
 
                 contentStream.newLine();
                 contentStream = skrivTekst("Opplæring: ", contentStream, document, font_Bold, fontSize);
-                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getBeskrivelse());
+                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getOpplaering());
                 contentStream.newLine();
                 aktulLinjerISiden += 2;
             }

@@ -7,9 +7,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Arrays;
 import java.util.Base64;
@@ -33,7 +31,7 @@ public class JournalpostFactory {
         journalpost.setBruker(bruker);
         journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getId().toString());
 
-        final byte[] dokumentPdfAsBytes = avtaleTilPdfBytes(avtale);
+        final byte[] dokumentPdfAsBytes = new AvtaleTilPdf().tilBytesAvPdf(avtale);
         final String dokumentXml = avtaleTilXml.genererXml(avtale);
 
         Dokument dokument = new Dokument();
@@ -43,15 +41,6 @@ public class JournalpostFactory {
         );
         journalpost.setDokumenter(Collections.singletonList(dokument));
         return journalpost;
-    }
-
-    private byte[] avtaleTilPdfBytes(Avtale avtale) {
-        try {
-            return new AvtaleTilPdf().tilBytesAvPdf(avtale);
-        } catch (Exception e) {
-            log.error("Feil ved generering til pdf fil: AvtaleId={}", avtale.getId(), e);
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     private String encodeToBase64(final byte[] dokumentBytes) {
