@@ -8,10 +8,8 @@ import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -50,7 +48,7 @@ public class JoarkService {
             response = restTemplate.postForObject(uri, entity, JoarkResponse.class);
         } catch (Exception e) {
             log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e);
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til Joark feilet: " + e.getMessage());
+            throw new RuntimeException("Kall til Joark feilet: " + e.getMessage());
         }
         log.info("Journalført avtale {}", journalpost.getEksternReferanseId());
         return response.getJournalpostId();

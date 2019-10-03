@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,7 +18,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.MAPPING_FEIL;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -60,7 +60,7 @@ public class JournalpostJobbTest {
         when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(anyString())).thenReturn(Arrays.asList(okAvtale, feiletAvt));
 
         when(journalpostFactory.konverterTilJournalpost(okAvtale)).thenReturn(okJournalpost);
-        when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenThrow(HttpServerErrorException.class);
+        when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenThrow(RuntimeException.class);
 
         when(joarkService.sendJournalpost(anyString(), eq(okJournalpost))).thenReturn(JOURNALPOST_ID);
 
@@ -97,6 +97,6 @@ public class JournalpostJobbTest {
         journalpostJobb.avtalerTilJournalfoering();
         verify(joarkService, times(1)).sendJournalpost(anyString(), eq(journalpost1));
         verify(joarkService, times(1)).sendJournalpost(anyString(), eq(journalpost2));
-        verify(tiltaksgjennomfoeringApiService, atLeastOnce()).settAvtalerTilJournalfoert(anyString(), eq(jorurnalpostIds));
+        verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(anyString(), eq(jorurnalpostIds));
     }
 }

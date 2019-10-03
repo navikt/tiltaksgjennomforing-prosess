@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -33,9 +32,8 @@ public class JoarkServiceTest {
     @InjectMocks
     private JoarkService joarkService = new JoarkService(new JournalpostProperties(uri));
 
-    @Test(expected = HttpServerErrorException.class)
+    @Test(expected = RuntimeException.class)
     public void oppretterJournalpost_status_500() {
-
         when(restTemplate.postForObject(eq(expUri), any(HttpEntity.class), any())).thenThrow(RuntimeException.class);
         joarkService.sendJournalpost(TOKEN, new Journalpost());
     }

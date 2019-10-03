@@ -82,12 +82,12 @@ public class JournalpostJobb {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
         } catch (Exception e) {
             log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
-            deaktiverJobb();
+            JournalpostJobb.deaktiverJobb();
         }
         log.info("Ferdig journalført {} avtaler: {}", journalfoeringer.keySet().stream().filter(key -> !journalfoeringer.get(key).equals(MAPPING_FEIL)).count(), avtalerJournalfortInfo(journalfoeringer));
     }
 
-    private void deaktiverJobb() {
+    private static void deaktiverJobb() {
         log.info("Deaktiverer jobb - hindrer ny journalføring av de samme avtalene");
         enabled = false;
     }

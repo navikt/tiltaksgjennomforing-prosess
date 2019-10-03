@@ -10,7 +10,6 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -50,7 +49,7 @@ public class AvtaleTilPdfTest {
         sjekkPdfInnhold(avtale, dokument);
     }
 
-    @Test(expected = HttpServerErrorException.class)
+    @Test(expected = RuntimeException.class)
     public void lagerIkkeAvtalePdf() throws IOException {
         Avtale avtale = TestData.opprettAvtale();
         avtale.setId(null);
