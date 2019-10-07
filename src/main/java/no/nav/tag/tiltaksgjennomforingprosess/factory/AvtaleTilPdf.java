@@ -33,6 +33,7 @@ class AvtaleTilPdf {
     private final static String DIGITA_KOMPETANSE_TXT = "     Deltaker mangler digital kompetanse";
     private final static String LINJE = "_________________________________________________________________________________";
     private final static String regexNyLinje = "\n";
+    private final static String regexTab = "\t";
 
     private final static int paragraphWidth = 90;
     private final static int fontSizeSmaa = 10;
@@ -148,7 +149,11 @@ class AvtaleTilPdf {
             startNyttAvsnitt("Arbeidsoppgaver ", contentStream);
             for (Oppgave oppgave : avtale.getOppgaver()
             ) {
-                contentStream = skrivTekst(oppgave.getTittel(), contentStream, document, font_Bold, fontSize);
+                contentStream = skrivTekst("Tittel", contentStream, document, font_Bold, fontSize);
+                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getTittel());
+
+                contentStream.newLine();
+                contentStream = skrivTekst("Beskrivelse: ", contentStream, document, font_Bold, fontSize);
                 contentStream = skrivFritekstTilPdf(contentStream, oppgave.getBeskrivelse());
 
                 contentStream.newLine();
@@ -236,8 +241,8 @@ class AvtaleTilPdf {
         return lines;
     }
 
-    private PDPageContentStream skrivFritekstTilPdf(PDPageContentStream contentStream, String oppfolging) throws Exception {
-        String[] linjer = oppfolging.split(regexNyLinje);;
+    private PDPageContentStream skrivFritekstTilPdf(PDPageContentStream contentStream, String fritekst) throws Exception {
+        String[] linjer = fritekst.replace(regexTab, "  ").split(regexNyLinje);
         for(String linje : linjer) {
             contentStream = skrivTekst(linje.trim(), contentStream, document, font, fontSize);
         }

@@ -96,8 +96,7 @@ public class AvtaleTilPdfTest {
         for (Oppgave oppgave : avtale.getOppgaver()
         ) {
             result = result && textInPdf.contains(oppgave.getTittel());
-
-            String[] linjer = oppgave.getBeskrivelse().split("\n");
+            String[] linjer = oppgave.getBeskrivelse().replace("\t", "  ").split("\n");
             for(String linje : linjer) {
                 for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
                 ) {
