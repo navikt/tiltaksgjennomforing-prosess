@@ -65,6 +65,7 @@ public class JournalpostJobb {
                     try {
                         optJournalpost = Optional.of(journalpostFactory.konverterTilJournalpost(avtale));
                     } catch (Throwable t) {
+                        log.error("Feil ved mapping av avtale {} til journalpost: ", avtale.getId(), t);
                         journalfoerteAvtaler.put(avtale.getId(), MAPPING_FEIL);
                         optJournalpost = Optional.empty();
                     }
