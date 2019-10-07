@@ -46,8 +46,14 @@ public class TestData {
         avtale.setVeilederFornavn("Nils");
         avtale.setVeilederEtternavn("Nilsen");
         avtale.setVeilederTlf("22223333");
-        avtale.setOppfolging("Oppfølging under veis om tildelte oppgaver. Og arbeidstager har en oppfølgingsamtale med kjøpmann eller butikksjef ca hver 4 uke, da om miljø på arbeidsplass, arbeidsoppgaver samt egen helse i tildelte oppgaver.");
-        avtale.setTilrettelegging("Det er avtalt at Lillehans får tid til og gjennomføre og prioritere opplæring knyttet til sertifikatet. Videre vil NAV følge jevnlig opp.");
+        avtale.setOppfolging("- Deltaker har Kollega som kontaktperson.\n" +
+                "- Deltaker utfører i hovedsak arbeidsoppgaver sammen med Kollega i starten. \n" +
+                "- Grad av oppfølging vurderes underveis. ");
+        avtale.setTilrettelegging("- Kortere dager.\n" +
+                "- Utprøvings periode på 12 uker av gangen, med mål på sikt om å øke arbeidsmengden.\n" +
+                "- Følges opp samtaler \n" +
+                "- «Aktiv på dagtid»\n" +
+                "- Fleksibel arbeidsbelastning. ");
         avtale.setStartDato(START_DATO);
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);

@@ -12,8 +12,6 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
@@ -68,7 +66,7 @@ class AvtaleTilPdf {
             font = PDType0Font.load(document, fontIS, true);
             font_Bold = PDType0Font.load(document, fontBoldIS, true);
         } catch (IOException e) {
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved generering av PDF fil: " + e.getMessage());
+            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
         }
     }
 
@@ -80,7 +78,7 @@ class AvtaleTilPdf {
             dokument.close();
         } catch (IOException e) {
             log.error("Feil oppsto ved generering av avtale " + avtale.getId(), e);
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved generering av PDF fil: " + e.getMessage());
+            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
         }
         return baos.toByteArray();
     }
@@ -167,8 +165,7 @@ class AvtaleTilPdf {
             contentStream = skrivFritekstTilPdf(contentStream, avtale.getOppfolging());
             aktulLinjerISiden += 2;
             startNyttAvsnitt("Tilrettelegging ", contentStream);
-            String tilrettelegging = avtale.getTilrettelegging();
-            contentStream = skrivTekst(tilrettelegging, contentStream, document, font, fontSize);
+            contentStream = skrivFritekstTilPdf(contentStream, avtale.getTilrettelegging());
             //Vi trenger å sjekke at det er nok plass til Godkjenning i siden, upraktisk at godkjenning blir delt inn 2 sider
             if (aktulLinjerISiden > (maksLinjerPerSide - 10)) {
                 contentStream = openNewPage(contentStream, document);
@@ -201,7 +198,7 @@ class AvtaleTilPdf {
             contentStream.close();
 
         } catch (Exception e) {
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved generering av PDF fil: " + e.getMessage());
+            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
         }
         return document;
     }

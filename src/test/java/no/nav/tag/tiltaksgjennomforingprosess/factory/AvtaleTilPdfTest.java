@@ -119,11 +119,13 @@ public class AvtaleTilPdfTest {
     private boolean sjekkPdfOppfolgingInnhold(String textInPdf, Avtale avtale) throws IOException {
         boolean result = true;
         AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
-        String oppfolging = avtale.getOppfolging().replace("\n", "");
 
-        for (String str : avtaleTilPdf.possibleWrapText(oppfolging, new PDPage(PDRectangle.A4))
-        ) {
-            result = result && textInPdf.contains("Oppfølging under veis om tildelte oppgaver");
+        String[] linjer = avtale.getOppfolging().split("\n");
+        for (String linje : linjer) {
+            for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
+            ) {
+                result = result && textInPdf.contains(str.trim());
+            }
         }
         return result;
     }
@@ -131,9 +133,13 @@ public class AvtaleTilPdfTest {
     private boolean sjekkPdfTilretteleggingInnhold(String textInPdf, Avtale avtale) throws IOException {
         boolean result = true;
         AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
-        for (String str : avtaleTilPdf.possibleWrapText(avtale.getTilrettelegging(), new PDPage(PDRectangle.A4))
-        ) {
-            result = result && textInPdf.contains(str);
+
+        String[] linjer = avtale.getTilrettelegging().split("\n");
+        for (String linje : linjer){
+            for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
+            ) {
+                result = result && textInPdf.contains(str.trim());
+            }
         }
         return result;
     }
