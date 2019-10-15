@@ -56,7 +56,7 @@ public class JournalpostJobbTest {
         jorurnalpostIds.put(okAvtale.getId(), JOURNALPOST_ID);
         jorurnalpostIds.put(feiletAvt.getId(), MAPPING_FEIL);
 
-        when(stsService.hentToken()).thenReturn("");
+        when(stsService.hentNyttStsTokenHvisUtgaatt(eq(null))).thenReturn("");
         when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(anyString())).thenReturn(Arrays.asList(okAvtale, feiletAvt));
 
         when(journalpostFactory.konverterTilJournalpost(okAvtale)).thenReturn(okJournalpost);
@@ -85,7 +85,7 @@ public class JournalpostJobbTest {
         jorurnalpostIds.put(avtale1.getId(), avtale1.getId().toString());
         jorurnalpostIds.put(avtale2.getId(), avtale2.getId().toString());
 
-        when(stsService.hentToken()).thenReturn("");
+        when(stsService.hentNyttStsTokenHvisUtgaatt(anyString())).thenReturn("");
         when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(anyString())).thenReturn(Arrays.asList(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);

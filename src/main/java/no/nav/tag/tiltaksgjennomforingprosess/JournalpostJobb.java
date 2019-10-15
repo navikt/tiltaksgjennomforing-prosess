@@ -20,6 +20,10 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class JournalpostJobb {
 
+    static final String MAPPING_FEIL = "FEILET";
+
+    private static final String DISABLED_STR = "Prosessen ble skrudd av pga. en feil. Sjekk tidligere feilmelding i loggen";
+
     private static boolean enabled = true;
 
     @Autowired
@@ -34,17 +38,18 @@ public class JournalpostJobb {
     @Autowired
     private StsService stsService;
 
-    static final String MAPPING_FEIL = "FEILET";
+
+    private static String stsToken = null;
 
     @Scheduled(cron = "${prosess.cron}")
     public void avtalerTilJournalfoering() {
 
         if (!enabled) {
-            log.warn("Prosessen ble skrudd av pga. en feil. Sjekk tidligere feilmelding i loggen");
+            log.warn(DISABLED_STR);
             return;
         }
 
-        final String stsToken = stsService.hentToken();
+        stsToken = stsService.hentNyttStsTokenHvisUtgaatt(stsToken);
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
 
         if (avtalerTilJournalforing.isEmpty()) {

@@ -1,6 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
-import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.StsService;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.StsProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +29,7 @@ public class StsServiceIntTest {
 
     @Test
     public void henter_token() {
-        String token = stsService.hentToken();
+        String token = stsService.hentNyttStsTokenHvisUtgaatt(null);
         assertEquals("eyxXxx", token);
     }
 
