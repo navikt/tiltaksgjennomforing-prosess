@@ -61,7 +61,6 @@
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock</artifactId>
             <version>2.22.0</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

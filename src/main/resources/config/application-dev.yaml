@@ -13,7 +13,5 @@ prosess:
     sts:
       uri: http://localhost:8091/
     api:
-      uri: http://localhost:8090/tiltaksgjennomforing-api
- #     uri: http://localhost:8091/
-
+      uri: http://localhost:8091/tiltaksgjennomforing-api
 
