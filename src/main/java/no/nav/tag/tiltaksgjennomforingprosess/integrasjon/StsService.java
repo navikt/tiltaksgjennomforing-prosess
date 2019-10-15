@@ -2,10 +2,13 @@ package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
 import no.nav.tag.tiltaksgjennomforingprosess.properties.StsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import static no.nav.tag.tiltaksgjennomforingprosess.integrasjon.StsCacheConfig.STS_CACHE;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -34,6 +37,7 @@ public class StsService {
         headers.setBasicAuth(stsProperties.getBruker(), stsProperties.getPassord());
     }
 
+    @Cacheable(STS_CACHE)
     public String hentToken() {
         ResponseEntity<StsTokenResponse> response;
         HttpEntity<String> entity = new HttpEntity<>(headers);
