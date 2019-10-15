@@ -6,6 +6,9 @@ import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.StsService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,6 +43,16 @@ public class JournalpostJobbTest {
     @InjectMocks
     private JournalpostJobb journalpostJobb;
 
+    @Before
+    public void setUp() {
+        JournalpostJobb.enabled = true;
+    }
+    
+    @After
+    public void tearDown() {
+        JournalpostJobb.enabled = true;
+    }
+    
     @Test
     public void kallerIkkeJoarkMedEnAvtaleSomFeilet(){
 

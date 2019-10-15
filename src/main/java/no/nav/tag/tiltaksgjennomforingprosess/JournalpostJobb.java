@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class JournalpostJobb {
 
-    private static boolean enabled = true;
+    static boolean enabled = true;
 
     @Autowired
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService;
