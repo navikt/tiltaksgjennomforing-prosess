@@ -22,12 +22,14 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class JoarkServiceTest {
 
-    private final String TOKEN = "eyxXxx";
     private final URI uri = URI.create("http://localhost:8090");
     private final URI expUri = UriComponentsBuilder.fromUri(uri).path(PATH).query(QUERY_PARAM).build().toUri();
 
     @Mock
     private RestTemplate restTemplate;
+
+    @Mock
+    private StsService stsService;
 
     @InjectMocks
     private JoarkService joarkService = new JoarkService(new JournalpostProperties(uri));
@@ -35,6 +37,6 @@ public class JoarkServiceTest {
     @Test(expected = RuntimeException.class)
     public void oppretterJournalpost_status_500() {
         when(restTemplate.postForObject(eq(expUri), any(HttpEntity.class), any())).thenThrow(RuntimeException.class);
-        joarkService.sendJournalpost(TOKEN, new Journalpost());
+        joarkService.sendJournalpost(new Journalpost());
     }
 }

@@ -28,6 +28,9 @@ public class JoarkService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private StsService stsService;
+
     public JoarkService(JournalpostProperties journalpostProperties) {
         uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri())
                 .path(PATH)
@@ -38,9 +41,9 @@ public class JoarkService {
         headers.setContentType((MediaType.APPLICATION_JSON));
     }
 
-    public String sendJournalpost(final String token, final Journalpost journalpost) {
+    public String sendJournalpost(final Journalpost journalpost) {
         debugLogJournalpost(journalpost);
-        headers.setBearerAuth(token);
+        headers.setBearerAuth(stsService.hentToken());
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
         JoarkResponse response = null;
         try {

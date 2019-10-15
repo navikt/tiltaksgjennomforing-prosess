@@ -1,12 +1,10 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
-import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Bruker;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
-import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +24,8 @@ import static org.junit.Assert.assertEquals;
 @DirtiesContext
 public class JoarkServiceIntTest {
 
-    private final String TOKEN = "eyxXxx";
+    @Autowired
     private JoarkService joarkService;
-
-    @Autowired
-    private JournalpostProperties journalpostProperties;
-
-    @Autowired
-    private JournalpostFactory journalpostFactory;
-
-    @Autowired
-    public void setJoarkService(JoarkService joarkService){
-        this.joarkService = joarkService;
-    }
-
 
     @Test
     public void oppretterJournalpost() {
@@ -53,7 +39,7 @@ public class JoarkServiceIntTest {
         dokument.setDokumentVarianter(Arrays.asList(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, "xmlxmlxml"), new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, "pdfpdfpdf")));
         journalpost.setDokumenter(Arrays.asList(dokument));
 
-        String jounalpostId = joarkService.sendJournalpost(TOKEN, journalpost);
+        String jounalpostId = joarkService.sendJournalpost(journalpost);
         assertEquals("001", jounalpostId);
     }
 

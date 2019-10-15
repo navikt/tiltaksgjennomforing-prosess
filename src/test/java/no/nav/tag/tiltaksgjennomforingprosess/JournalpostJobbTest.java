@@ -4,7 +4,6 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
-import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.StsService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
 
 import org.junit.After;
@@ -21,7 +20,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.MAPPING_FEIL;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -36,9 +34,6 @@ public class JournalpostJobbTest {
 
     @Mock
     private JoarkService joarkService;
-
-    @Mock
-    private StsService stsService;
 
     @InjectMocks
     private JournalpostJobb journalpostJobb;
@@ -69,17 +64,16 @@ public class JournalpostJobbTest {
         jorurnalpostIds.put(okAvtale.getId(), JOURNALPOST_ID);
         jorurnalpostIds.put(feiletAvt.getId(), MAPPING_FEIL);
 
-        when(stsService.hentToken()).thenReturn("");
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(anyString())).thenReturn(Arrays.asList(okAvtale, feiletAvt));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(okAvtale, feiletAvt));
 
         when(journalpostFactory.konverterTilJournalpost(okAvtale)).thenReturn(okJournalpost);
         when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenThrow(RuntimeException.class);
 
-        when(joarkService.sendJournalpost(anyString(), eq(okJournalpost))).thenReturn(JOURNALPOST_ID);
+        when(joarkService.sendJournalpost(eq(okJournalpost))).thenReturn(JOURNALPOST_ID);
 
         journalpostJobb.avtalerTilJournalfoering();
-        verify(joarkService, times(1)).sendJournalpost(anyString(), eq(okJournalpost));
-        verify(tiltaksgjennomfoeringApiService, atLeastOnce()).settAvtalerTilJournalfoert(anyString(), eq(jorurnalpostIds));
+        verify(joarkService, times(1)).sendJournalpost(eq(okJournalpost));
+        verify(tiltaksgjennomfoeringApiService, atLeastOnce()).settAvtalerTilJournalfoert(eq(jorurnalpostIds));
     }
 
     @Test
@@ -98,18 +92,17 @@ public class JournalpostJobbTest {
         jorurnalpostIds.put(avtale1.getId(), avtale1.getId().toString());
         jorurnalpostIds.put(avtale2.getId(), avtale2.getId().toString());
 
-        when(stsService.hentToken()).thenReturn("");
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(anyString())).thenReturn(Arrays.asList(avtale1, avtale2));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
 
-        when(joarkService.sendJournalpost(anyString(), eq(journalpost1))).thenReturn(avtale1.getId().toString());
-        when(joarkService.sendJournalpost(anyString(), eq(journalpost2))).thenReturn(avtale2.getId().toString());
+        when(joarkService.sendJournalpost(eq(journalpost1))).thenReturn(avtale1.getId().toString());
+        when(joarkService.sendJournalpost(eq(journalpost2))).thenReturn(avtale2.getId().toString());
 
         journalpostJobb.avtalerTilJournalfoering();
-        verify(joarkService, times(1)).sendJournalpost(anyString(), eq(journalpost1));
-        verify(joarkService, times(1)).sendJournalpost(anyString(), eq(journalpost2));
-        verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(anyString(), eq(jorurnalpostIds));
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost1));
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2));
+        verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(eq(jorurnalpostIds));
     }
 }
