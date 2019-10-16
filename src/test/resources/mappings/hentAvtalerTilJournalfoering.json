@@ -1,0 +1,23 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/tiltaksgjennomforing-api/internal/avtaler",
+        "headers": {
+          "Authorization": {
+            "equalTo": "Bearer eyxXxx"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "[ { \"id\": \"ca3d7189-0852-4693-a3dd-d518b4ec42e4\", \"deltakerFnr\": \"01093434109\", \"bedriftNr\": \"975959171\", \"veilederNavIdent\": \"X123456\", \"opprettet\": \"09.09.2019\",\"versjon\": 7,\"deltakerFornavn\": \"Ronny\",\"deltakerEtternavn\": \"Deltaker\",\"deltakerTlf\": \"00000000\",\"bedriftNavn\": \"Ronnys butikk\",\"arbeidsgiverFornavn\": \"Ronnys\",\"arbeidsgiverEtternavn\": \"Kremmer\",\"arbeidsgiverTlf\": \"22334455\",\"veilederFornavn\": \"Jan-Ronny\", \"veilederEtternavn\": \"Veileder\",\"veilederTlf\": \"33445566\",\"oppfolging\": \"Telefon hver uke\",\"tilrettelegging\": \"Ingen\",\"startDato\": null,\"arbeidstreningLengde\": 2,\"arbeidstreningStillingprosent\": 100,\"maal\": [],\"oppgaver\": [],\"godkjentPaVegneGrunn\": null,\"godkjentAvDeltaker\": \"09.09.2019\",\"godkjentAvArbeidsgiver\": \"09.10.2019\",\"godkjentAvVeileder\": \"09.11.2019\",\"godkjentPaVegneAv\": \"false\"}]"
+      }
+    }
+  ]
+}
+

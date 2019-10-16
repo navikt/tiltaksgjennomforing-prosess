@@ -10,14 +10,13 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +32,10 @@ class AvtaleTilPdf {
     private final static String RESERVERT_TXT = "     Deltaker har reservert seg mot digitale tjenester";
     private final static String DIGITA_KOMPETANSE_TXT = "     Deltaker mangler digital kompetanse";
     private final static String LINJE = "_________________________________________________________________________________";
+    private final static String regexNyLinje = "\n";
+    private final static String regexTab = "\t";
 
     private final static int paragraphWidth = 90;
-    private final static PDFont font = PDType1Font.TIMES_ROMAN;
-    private final static PDFont font_Bold = PDType1Font.TIMES_BOLD;
     private final static int fontSizeSmaa = 10;
     private final static int fontSize = 12;
     private final static int fontSizeMellomStor = 14;
@@ -47,12 +46,30 @@ class AvtaleTilPdf {
     private static final float leadingSmaa = 1f;
     private static final float[] logoposition = new float[]{50, 750};
     private static final float[] logoStorrelse = new float[]{60, 38};
-    private static final String ikonfil = "navikon.png";
+    private static final String ikonfil = "pdf/navikon.png";
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATOFORMAT_NORGE);
 
+    private static PDFont font;
+    private static PDFont font_Bold;
+
     private int aktulLinjerISiden = 10;
     private int totalSider = 1;
+    private PDDocument document;
+
+    private InputStream fontIS = AvtaleTilPdf.class.getResourceAsStream("/pdf/times_new_roman.ttf");
+    private InputStream fontBoldIS = AvtaleTilPdf.class.getResourceAsStream("/pdf/times_new_roman_bold.ttf");
+
+
+    AvtaleTilPdf(){
+        document = new PDDocument();
+        try {
+            font = PDType0Font.load(document, fontIS, true);
+            font_Bold = PDType0Font.load(document, fontBoldIS, true);
+        } catch (IOException e) {
+            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
+        }
+    }
 
     byte[] tilBytesAvPdf(Avtale avtale) {
         PDDocument dokument = generererPdf(avtale);
@@ -62,13 +79,12 @@ class AvtaleTilPdf {
             dokument.close();
         } catch (IOException e) {
             log.error("Feil oppsto ved generering av avtale " + avtale.getId(), e);
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved generering av PDF fil: " + e.getMessage());
+            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
         }
         return baos.toByteArray();
     }
 
     private PDDocument generererPdf(Avtale avtale) {
-        PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
 
@@ -90,7 +106,7 @@ class AvtaleTilPdf {
             contentStream.beginText();
             contentStream.newLineAtOffset(startSidenXY[0], startSidenXY[1]);
             contentStream.setLeading(leadingNormal);
-            contentStream = skrivTekst("Avtale for arbeidstrening", contentStream, document, font_Bold, fontSizeStor);
+            contentStream = skrivTekst("Avtale om arbeidstrening", contentStream, document, font_Bold, fontSizeStor);
             contentStream.setFont(font, fontSize);
             List<Object> text = new ArrayList<>();
             float moveToPositionX = -32000;
@@ -128,19 +144,21 @@ class AvtaleTilPdf {
                 contentStream = skrivTekst("Kategori", contentStream, document, font_Bold, fontSize);
                 contentStream = skrivTekst(maal.getKategori(), contentStream, document, font, fontSize);
                 contentStream = skrivTekst("Beskrivelse", contentStream, document, font_Bold, fontSize);
-                contentStream = skrivTekst(maal.getBeskrivelse(), contentStream, document, font, fontSize);
-                contentStream.newLine();
+                contentStream = skrivFritekstTilPdf(contentStream, maal.getBeskrivelse());
             }
             startNyttAvsnitt("Arbeidsoppgaver ", contentStream);
             for (Oppgave oppgave : avtale.getOppgaver()
             ) {
-                contentStream = skrivTekst(oppgave.getTittel(), contentStream, document, font_Bold, fontSize);
-                String oppgaveBesk = oppgave.getBeskrivelse();
-                contentStream = skrivTekst(oppgaveBesk, contentStream, document, font, fontSize);
+                contentStream = skrivTekst("Tittel", contentStream, document, font_Bold, fontSize);
+                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getTittel());
+
+                contentStream.newLine();
+                contentStream = skrivTekst("Beskrivelse: ", contentStream, document, font_Bold, fontSize);
+                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getBeskrivelse());
+
                 contentStream.newLine();
                 contentStream = skrivTekst("Opplæring: ", contentStream, document, font_Bold, fontSize);
-                String opplaering = oppgave.getOpplaering();
-                contentStream = skrivTekst(opplaering, contentStream, document, font, fontSize);
+                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getOpplaering());
                 contentStream.newLine();
                 aktulLinjerISiden += 2;
             }
@@ -149,13 +167,10 @@ class AvtaleTilPdf {
             contentStream = skrivTekst("Stillingsprosent: " + avtale.getArbeidstreningStillingprosent() + "%", contentStream, document, font, fontSize);
             contentStream.newLine();
             startNyttAvsnitt("Oppfølging ", contentStream);
-            String oppfolging = avtale.getOppfolging();
-            contentStream = skrivTekst(oppfolging, contentStream, document, font, fontSize);
-            contentStream.newLine();
+            contentStream = skrivFritekstTilPdf(contentStream, avtale.getOppfolging());
             aktulLinjerISiden += 2;
             startNyttAvsnitt("Tilrettelegging ", contentStream);
-            String tilrettelegging = avtale.getTilrettelegging();
-            contentStream = skrivTekst(tilrettelegging, contentStream, document, font, fontSize);
+            contentStream = skrivFritekstTilPdf(contentStream, avtale.getTilrettelegging());
             //Vi trenger å sjekke at det er nok plass til Godkjenning i siden, upraktisk at godkjenning blir delt inn 2 sider
             if (aktulLinjerISiden > (maksLinjerPerSide - 10)) {
                 contentStream = openNewPage(contentStream, document);
@@ -188,7 +203,7 @@ class AvtaleTilPdf {
             contentStream.close();
 
         } catch (Exception e) {
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved generering av PDF fil: " + e.getMessage());
+            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
         }
         return document;
     }
@@ -196,20 +211,22 @@ class AvtaleTilPdf {
     List<String> possibleWrapText(String skrivText, PDPage page) throws IOException {
 
         PDRectangle mediabox = page.getMediaBox();
-        float margin = 72;
-        float width = mediabox.getWidth() - 2 * margin;
+        final float margin = 72;
+        final float width = mediabox.getWidth() - 2 * margin;
 
         List<String> lines = new ArrayList<>();
         int lastSpace = -1;
         while (skrivText.length() > 0) {
             int spaceIndex = skrivText.indexOf(' ', lastSpace + 1);
-            if (spaceIndex < 0)
+            if (spaceIndex < 0) {
                 spaceIndex = skrivText.length();
+            }
             String subString = skrivText.substring(0, spaceIndex);
             float size = fontSize * font.getStringWidth(subString) / 1000;
             if (size > width) {
-                if (lastSpace < 0)
+                if (lastSpace < 0) {
                     lastSpace = spaceIndex;
+                }
                 subString = skrivText.substring(0, lastSpace);
                 lines.add(subString);
                 skrivText = skrivText.substring(lastSpace).trim();
@@ -222,6 +239,14 @@ class AvtaleTilPdf {
             }
         }
         return lines;
+    }
+
+    private PDPageContentStream skrivFritekstTilPdf(PDPageContentStream contentStream, String fritekst) throws Exception {
+        String[] linjer = fritekst.replace(regexTab, "  ").split(regexNyLinje);
+        for(String linje : linjer) {
+            contentStream = skrivTekst(linje.trim(), contentStream, document, font, fontSize);
+        }
+        return contentStream;
     }
 
     private PDPageContentStream openNewPage(PDPageContentStream contentStream, PDDocument document) throws IOException {

@@ -8,10 +8,8 @@ import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -22,8 +20,8 @@ import java.util.Arrays;
 @Service
 public class JoarkService {
 
-    private static final String PATH = "/rest/journalpostapi/v1/journalpost";
-    private static final String QUERY_PARAM = "forsoekFerdigstill=false";
+    static final String PATH = "/rest/journalpostapi/v1/journalpost";
+    static final String QUERY_PARAM = "forsoekFerdigstill=false";
     private URI uri;
     private final HttpHeaders headers = new HttpHeaders();
 
@@ -46,19 +44,22 @@ public class JoarkService {
         HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
         JoarkResponse response = null;
         try {
+            log.info("Forsøker å journalføre avtale {}", journalpost.getEksternReferanseId());
             response = restTemplate.postForObject(uri, entity, JoarkResponse.class);
         } catch (Exception e) {
             log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e);
-            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Kall til Joark feilet: " + e.getMessage());
+            throw new RuntimeException("Kall til Joark feilet: " + e.getMessage());
         }
+        log.info("Journalført avtale {}", journalpost.getEksternReferanseId());
         return response.getJournalpostId();
     }
 
-    private void debugLogJournalpost(Journalpost journalpost){
-        if(log.isDebugEnabled()){
+    private void debugLogJournalpost(Journalpost journalpost) {
+        if (log.isDebugEnabled()) {
             try {
                 log.info("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
-            } catch (JsonProcessingException e) {}
+            } catch (JsonProcessingException e) {
+            }
         }
     }
 

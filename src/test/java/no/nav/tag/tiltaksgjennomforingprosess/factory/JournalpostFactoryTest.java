@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.client.HttpServerErrorException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -34,6 +33,7 @@ public class JournalpostFactoryTest {
         assertEquals("NAV_NO", journalpost.getKanal());
         assertEquals("TIL", journalpost.getTema());
         assertEquals("Avtale om arbeidstrening", journalpost.getTittel());
+        assertEquals("AVT" + avtale.getId(), journalpost.getEksternReferanseId());
         assertEquals(avtale.getDeltakerFnr(), journalpost.getBruker().getId());
         assertEquals("FNR", journalpost.getBruker().getIdType());
         assertEquals(1, journalpost.getDokumenter().size());
@@ -41,7 +41,7 @@ public class JournalpostFactoryTest {
         journalpost.getDokumenter().get(0).getDokumentVarianter().forEach(dokumentVariant -> {
             if(dokumentVariant.getFiltype().equals("XML")){
                 assertEquals("ORIGINAL", dokumentVariant.getVariantformat());
-            } else if(dokumentVariant.getFiltype().equals("PDF")){
+            } else if(dokumentVariant.getFiltype().equals("PDFA")){
                 assertEquals("ARKIV", dokumentVariant.getVariantformat());
             } else{
                 fail("DokumentType: " + dokumentVariant.getFiltype());
@@ -50,10 +50,10 @@ public class JournalpostFactoryTest {
         });
     }
 
-    @Test(expected = HttpServerErrorException.class)
-    public void feiler() throws Exception {
+    @Test(expected = RuntimeException.class)
+    public void avtaleTilXmlFeiler() throws Exception {
         Avtale avtale = TestData.opprettAvtale();
-        when(avtaleTilXml.genererXml(avtale)).thenThrow(HttpServerErrorException.class);
+        when(avtaleTilXml.genererXml(avtale)).thenThrow(RuntimeException.class);
         journalpostFactory.konverterTilJournalpost(avtale);
     }
 }

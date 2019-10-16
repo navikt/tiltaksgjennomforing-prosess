@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@Profile({"dev", "preprod", "prod"})
 public class RestTemplatePlain {
 
     @Bean(name = "restTemplate")

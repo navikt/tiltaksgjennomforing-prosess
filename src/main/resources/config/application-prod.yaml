@@ -1,0 +1,17 @@
+prosess:
+  cron: "5/30 * 07-19 * * MON-FRI"
+  integrasjon:
+    joark:
+      uri: https://dokarkiv.nais.adeo.no
+    sts:
+      uri: http://security-token-service.default.svc.nais.local
+      bruker: ${tiltaksgjennomforing.consumer.user}
+      passord: ${tiltaksgjennomforing.consumer.password}
+    api:
+      uri: https://arbeidsgiver.nais.adeo.no/tiltaksgjennomforing-api
+
+
+
+
+
+

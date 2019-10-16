@@ -11,8 +11,7 @@ spring:
     banner-mode: "console"
 
 prosess:
-  jobb:
-    cron: 5,10,20,30,40,50 * * ? * *
+  cron: "5 * * * * *"
   integrasjon:
     joark:
       uri: https://dokarkiv-q1.nais.preprod.local

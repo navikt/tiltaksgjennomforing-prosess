@@ -46,8 +46,16 @@ public class TestData {
         avtale.setVeilederFornavn("Nils");
         avtale.setVeilederEtternavn("Nilsen");
         avtale.setVeilederTlf("22223333");
-        avtale.setOppfolging("Dette er veldig lang. .oppfølging tekst for test,");
-        avtale.setTilrettelegging("Dette er lang tilrettelegging tekst for test");
+        avtale.setOppfolging("- Deltaker har Kollega som kontaktperson.\n" +
+                "- Deltaker utfører i hovedsak arbeidsoppgaver sammen med Kollega i starten. \n" +
+                "- Grad av oppfølging vurderes underveis. ");
+//        avtale.setTilrettelegging("- Kortere dager.\n" +
+//                "- Utprøvings periode på 12 uker av gangen, med mål på sikt om å øke arbeidsmengden.\n" +
+//                "- Følges opp samtaler \n" +
+//                "- «Aktiv på dagtid»\n" +
+//                "- Fleksibel arbeidsbelastning. ");
+        avtale.setTilrettelegging("Deltaker will be able to work to a large extent independently as soon as the on-boarding and training took place.\n" +
+                "We will define with specific tasks and further agree on 1) need for support to deliver, 2) the checkpoints and 3) the deadlines of the deliveries");
         avtale.setStartDato(START_DATO);
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);
@@ -55,7 +63,7 @@ public class TestData {
         avtale.setGodkjentAvDeltaker(LocalDateTime.now().plusDays(1).format(dateTimeFormatter));
         avtale.setGodkjentAvVeileder(LocalDateTime.now().plusDays(2).format(dateTimeFormatter));
         avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
-        avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.enOppgave()));
+        avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.endaEnOppgave()));
         avtale.setGodkjentPaVegneAv(true);
         avtale.setGodkjentPaVegneGrunn(enGrunn());
         return avtale;
@@ -63,16 +71,37 @@ public class TestData {
 
     public static Oppgave enOppgave() {
         Oppgave oppgave = new Oppgave();
-        oppgave.setTittel("OppgaveTittel");
-        oppgave.setBeskrivelse("Dette er veldig lang Oppgave beskrivelse for test,");
-        oppgave.setOpplaering("Dette er veldig lang opplæring");
+        oppgave.setTittel("Her er oppgave 1");
+        oppgave.setBeskrivelse("  nr 1 Vi skal lære hun bestille varer fra leverandører og besøker de slik hun få erfaring på det.\n" +
+                "\n" +
+                "Nr 2 vi øve hun  på typiske arbeidsoppgaver er å betjene kunder og kasseapparatet, å rydde i butikken og i hyller, å rydde på lageret, å sette priser på varer, å ta imot bestillinger og ta imot varer.");
+        oppgave.setOpplaering("Tanken bak rullering av varer og plassering av varer. \n" +
+                "Rutiner rundt fersk og kjølevarer\n" +
+                "Opplæring i kasse og kundebehandling\n" +
+                "Generell butikk rutiner og daglige oppgaver");
+        return oppgave;
+    }
+
+    public static Oppgave endaEnOppgave() {
+        Oppgave oppgave = new Oppgave();
+        oppgave.setTittel("Her er oppgave 2");
+        oppgave.setBeskrivelse("The business needs to be able to gather all the data about the performance in one place.\n" +
+                "Deltaker needs to coordinate/perform the integration of various sources of information into Google Data Studio (GDS). The current implementation is with our database.\n" +
+                "1)\t We need to evaluate how to bring in information from: mailerlite, suverymonkey, Zendesk etc.\n" +
+                "2)\t Based on the evaluation, do the actual implementation of the data source\n" +
+                "\n" +
+                "This requires as a first step to understand how data is organized and sourced in Arb. giver, which will be the base for her to perform other tasks.");
+        oppgave.setOpplaering("Tanken bak rullering av varer og plassering av varer. \n" +
+                "Rutiner rundt fersk og kjølevarer\n" +
+                "Opplæring i kasse og kundebehandling\n" +
+                "Generell butikk rutiner og daglige oppgaver");
         return oppgave;
     }
 
     public static Maal etMaal() {
         Maal maal = new Maal();
         maal.setKategori("Her kommer kategorien");
-        maal.setBeskrivelse("Dette er veldig lang Mål beskrivelse for test,");
+        maal.setBeskrivelse("Målet med arbeidstreningen er og få opplæring i arbeidsoppgaver knyttet til sjåførjobb, lære bedriften og kjenne og får den opplæringen du trenger for og kunne tre inn i stillings funksjonen når du har fått førerkortet. Det foreligger bekreftelse på lovnad om jobb dersom kriteriene er oppfylt i forhold til krav om førerkort.");
         return maal;
     }
 
