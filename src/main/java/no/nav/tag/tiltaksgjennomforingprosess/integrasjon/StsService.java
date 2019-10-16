@@ -48,4 +48,9 @@ public class StsService {
         }
         return response.getBody().getAccessToken();
     }
+ 
+    @Cacheable(STS_CACHE)
+    public void evict() {
+    }
+    
 }

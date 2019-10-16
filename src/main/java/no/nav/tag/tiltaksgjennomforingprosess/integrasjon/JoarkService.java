@@ -43,18 +43,28 @@ public class JoarkService {
 
     public String sendJournalpost(final Journalpost journalpost) {
         debugLogJournalpost(journalpost);
-        headers.setBearerAuth(stsService.hentToken());
-        HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
         JoarkResponse response = null;
         try {
             log.info("Forsøker å journalføre avtale {}", journalpost.getEksternReferanseId());
-            response = restTemplate.postForObject(uri, entity, JoarkResponse.class);
-        } catch (Exception e) {
-            log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e);
-            throw new RuntimeException("Kall til Joark feilet: " + e.getMessage());
+            response = restTemplate.postForObject(uri, entityMedStsToken(journalpost), JoarkResponse.class);
+        } catch (Exception e1) {
+            stsService.evict();
+            log.warn("Feil ved kommunikasjon mot journalpost-API. Henter nytt sts-token og forsøker igjen");
+            try {
+                response = restTemplate.postForObject(uri, entityMedStsToken(journalpost), JoarkResponse.class);
+            } catch (Exception e2) {
+                log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e2);
+                throw new RuntimeException("Kall til Joark feilet: " + e2);
+            }
         }
         log.info("Journalført avtale {}", journalpost.getEksternReferanseId());
         return response.getJournalpostId();
+    }
+
+    private HttpEntity<Journalpost> entityMedStsToken(final Journalpost journalpost) {
+        headers.setBearerAuth(stsService.hentToken());
+        HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
+        return entity;
     }
 
     private void debugLogJournalpost(Journalpost journalpost) {

@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class TiltaksgjennomfoeringApiService {
 
@@ -24,7 +27,7 @@ public class TiltaksgjennomfoeringApiService {
     @Autowired
     private StsService stsService;
 
-    private static final String PATH = "/internal/avtaler";
+    static final String PATH = "/internal/avtaler";
     private URI uri;
     private final HttpHeaders headers = new HttpHeaders();
 
@@ -39,14 +42,25 @@ public class TiltaksgjennomfoeringApiService {
 
     public List<Avtale> finnAvtalerTilJournalfoering(){
         headers.setBearerAuth(stsService.hentToken());
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<List<Avtale>> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Avtale>>() {});
-        return response.getBody();
+        try {
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {}).getBody();
+        } catch (Exception e) {
+            log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
+            stsService.evict();
+            headers.setBearerAuth(stsService.hentToken());
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {}).getBody();
+        }
     }
 
     public void settAvtalerTilJournalfoert(Map<UUID, String> avtalerTilJournalfoert){
         headers.setBearerAuth(stsService.hentToken());
-        HttpEntity<Map<UUID, String>> entity = new HttpEntity<>(avtalerTilJournalfoert, headers);
-        restTemplate.exchange(uri, HttpMethod.PUT, entity, Void.class);
+        try {
+            restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);
+        } catch (Exception e) {
+            log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
+            stsService.evict();
+            headers.setBearerAuth(stsService.hentToken());
+            restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);
+        }
     }
 }
