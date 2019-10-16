@@ -5,7 +5,6 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
-import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.StsService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -31,9 +30,6 @@ public class JournalpostJobb {
     @Autowired
     private JoarkService joarkService;
 
-    @Autowired
-    private StsService stsService;
-
     static final String MAPPING_FEIL = "FEILET";
 
     @Scheduled(cron = "${prosess.cron}")
@@ -44,19 +40,18 @@ public class JournalpostJobb {
             return;
         }
 
-        final String stsToken = stsService.hentToken();
-        List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(stsToken);
+        List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering();
 
         if (avtalerTilJournalforing.isEmpty()) {
             return;
         }
 
         log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
-        Map<UUID, String> journalfoerteAvtaler = journalfoerAvtaler(stsToken, avtalerTilJournalforing);
-        registrerAvtalerSomJournalfoert(stsToken, journalfoerteAvtaler);
+        Map<UUID, String> journalfoerteAvtaler = journalfoerAvtaler(avtalerTilJournalforing);
+        registrerAvtalerSomJournalfoert(journalfoerteAvtaler);
     }
 
-    private Map<UUID, String> journalfoerAvtaler(String stsToken, List<Avtale> avtalerTilJournalforing) {
+    private Map<UUID, String> journalfoerAvtaler(List<Avtale> avtalerTilJournalforing) {
 
         Map<UUID, String> journalfoerteAvtaler = new HashMap<>(avtalerTilJournalforing.size());
         avtalerTilJournalforing
@@ -70,17 +65,17 @@ public class JournalpostJobb {
                         optJournalpost = Optional.empty();
                     }
                     optJournalpost.ifPresent(journalpost -> {
-                        String journalpostId = joarkService.sendJournalpost(stsToken, journalpost);
+                        String journalpostId = joarkService.sendJournalpost(journalpost);
                         journalfoerteAvtaler.put(avtale.getId(), journalpostId);
                     });
                 });
         return journalfoerteAvtaler;
     }
 
-    private void registrerAvtalerSomJournalfoert(final String stsToken, Map<UUID, String> journalfoeringer) {
+    private void registrerAvtalerSomJournalfoert(Map<UUID, String> journalfoeringer) {
 
         try {
-            tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(stsToken, journalfoeringer);
+            tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(journalfoeringer);
         } catch (Exception e) {
             log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
             JournalpostJobb.deaktiverJobb();

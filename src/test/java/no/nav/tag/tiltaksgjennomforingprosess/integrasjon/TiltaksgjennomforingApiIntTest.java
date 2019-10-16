@@ -25,8 +25,6 @@ public class TiltaksgjennomforingApiIntTest {
     @Autowired
     private TiltaksgjennomfoeringApiService service;
 
-    private final String TOKEN = "eyxXxx";
-
     @Test
     public void setterAvtalerTilJournalfoert() {
 
@@ -35,7 +33,7 @@ public class TiltaksgjennomforingApiIntTest {
         avtalerTilJournalfoert.put(UUID.fromString("c18abcb0-e1b4-43af-be51-7bfeced2efe5"), "2");
 
         try {
-            service.settAvtalerTilJournalfoert(TOKEN, avtalerTilJournalfoert);
+            service.settAvtalerTilJournalfoert(avtalerTilJournalfoert);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -46,7 +44,7 @@ public class TiltaksgjennomforingApiIntTest {
 
         List<Avtale> avtaleList = null;
         try {
-            avtaleList = service.finnAvtalerTilJournalfoering(TOKEN);
+            avtaleList = service.finnAvtalerTilJournalfoering();
         } catch (Exception e) {
             fail(e.getMessage());
         }

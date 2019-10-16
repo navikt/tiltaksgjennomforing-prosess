@@ -28,6 +28,9 @@ public class JoarkService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private StsService stsService;
+
     public JoarkService(JournalpostProperties journalpostProperties) {
         uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri())
                 .path(PATH)
@@ -38,20 +41,30 @@ public class JoarkService {
         headers.setContentType((MediaType.APPLICATION_JSON));
     }
 
-    public String sendJournalpost(final String token, final Journalpost journalpost) {
+    public String sendJournalpost(final Journalpost journalpost) {
         debugLogJournalpost(journalpost);
-        headers.setBearerAuth(token);
-        HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
         JoarkResponse response = null;
         try {
             log.info("Forsøker å journalføre avtale {}", journalpost.getEksternReferanseId());
-            response = restTemplate.postForObject(uri, entity, JoarkResponse.class);
-        } catch (Exception e) {
-            log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e);
-            throw new RuntimeException("Kall til Joark feilet: " + e.getMessage());
+            response = restTemplate.postForObject(uri, entityMedStsToken(journalpost), JoarkResponse.class);
+        } catch (Exception e1) {
+            stsService.evict();
+            log.warn("Feil ved kommunikasjon mot journalpost-API. Henter nytt sts-token og forsøker igjen");
+            try {
+                response = restTemplate.postForObject(uri, entityMedStsToken(journalpost), JoarkResponse.class);
+            } catch (Exception e2) {
+                log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e2);
+                throw new RuntimeException("Kall til Joark feilet: " + e2);
+            }
         }
         log.info("Journalført avtale {}", journalpost.getEksternReferanseId());
         return response.getJournalpostId();
+    }
+
+    private HttpEntity<Journalpost> entityMedStsToken(final Journalpost journalpost) {
+        headers.setBearerAuth(stsService.hentToken());
+        HttpEntity<Journalpost> entity = new HttpEntity<>(journalpost, headers);
+        return entity;
     }
 
     private void debugLogJournalpost(Journalpost journalpost) {
