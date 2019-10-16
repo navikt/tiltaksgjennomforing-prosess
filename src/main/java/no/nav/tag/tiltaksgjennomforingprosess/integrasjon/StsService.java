@@ -2,6 +2,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
 import no.nav.tag.tiltaksgjennomforingprosess.properties.StsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class StsService {
         return response.getBody().getAccessToken();
     }
  
-    @Cacheable(STS_CACHE)
+    @CacheEvict(STS_CACHE)
     public void evict() {
     }
     
