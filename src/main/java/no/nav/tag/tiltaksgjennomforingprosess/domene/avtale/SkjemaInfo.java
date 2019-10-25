@@ -19,11 +19,16 @@ public class SkjemaInfo {
     private String fraDato;
     private String tilDato;
 
-    public SkjemaInfo(LocalDate fraDato) {
+    public SkjemaInfo(LocalDate fraDato, LocalDate tilDato) {
         this.fraDato = fraDato.format(dateTimeFormatter);
 
-        //TODO Påkrevd av Arena. Kommer når avtale-versjoner er klart
+        //TODO Påkrevd av Arena. Ta bort dette når sluttDato på avtalen er på plass
+        if(tilDato == null){
         this.tilDato = fraDato.plusMonths(3).format(dateTimeFormatter);
+            return;
+        }
+
+        this.tilDato = tilDato.format(dateTimeFormatter);
     }
 
 }

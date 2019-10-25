@@ -40,6 +40,7 @@ public class Avtale {
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
 
     private LocalDate startDato;
+    private LocalDate sluttDato;
 
     @XStreamImplicit(itemFieldName="maal")
     private List<Maal> maal = new ArrayList<>();
