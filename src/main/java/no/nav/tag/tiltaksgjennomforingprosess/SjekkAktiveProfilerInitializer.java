@@ -6,7 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.util.Arrays;
 import java.util.List;
 
-public class SjekkAktiveProfilerInitializer implements ApplicationContextInitializer {
+public class SjekkAktiveProfilerInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     private static final List<String> MILJOER = Arrays.asList("debug", "dev", "preprod", "prod");
 
     @Override

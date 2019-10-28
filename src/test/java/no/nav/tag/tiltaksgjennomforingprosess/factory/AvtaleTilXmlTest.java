@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.TestData.START_DATO;
@@ -19,8 +18,6 @@ public class AvtaleTilXmlTest {
     private final static String ID_AVTALE = "72c365e7-177a-43ad-9d91-48c6479a6cf0";
 
     private AvtaleTilXml avtaleTilXml = new AvtaleTilXml();
-
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATOFORMAT_ARENA);
 
     @Test
     public void lagerAvtaleXml() throws Exception {

@@ -1,22 +1,24 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
-import lombok.extern.slf4j.Slf4j;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Bruker;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.FILTYPE_PDF;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.FILTYPE_XML;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.VARIANFORMAT_PDF;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.VARIANFORMAT_XML;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost.EKSTREF_PREFIKS;
 
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.*;
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost.EKSTREF_PREFIKS;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Slf4j
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Bruker;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
+
 @Component
 public class JournalpostFactory {
 
