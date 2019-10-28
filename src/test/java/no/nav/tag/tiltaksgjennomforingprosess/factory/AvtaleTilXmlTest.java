@@ -33,11 +33,11 @@ public class AvtaleTilXmlTest {
         assertTrue(xml.contains(avtale.getBedriftNr()));
         assertTrue(xml.contains(avtale.getDeltakerFornavn()));
 
-        String xmlElemStr = StringUtils.substringBetween(xml,"<fraDato>", "</fraDato>");
+        String xmlElemStr = StringUtils.substringBetween(xml, "<fraDato>", "</fraDato>");
         LocalDate faktiskDato = LocalDate.parse(xmlElemStr);
         assertEquals(START_DATO, faktiskDato);
 
-        xmlElemStr = StringUtils.substringBetween(xml,"<tilDato>", "</tilDato>");
+        xmlElemStr = StringUtils.substringBetween(xml, "<tilDato>", "</tilDato>");
         faktiskDato = LocalDate.parse(xmlElemStr);
         assertEquals(avtale.getSluttDato(), faktiskDato);
     }

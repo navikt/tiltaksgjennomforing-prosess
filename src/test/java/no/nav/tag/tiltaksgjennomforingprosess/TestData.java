@@ -26,7 +26,7 @@ public class TestData {
     public final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE);
 
     public static String avtaleTilJSON(Avtale avtale) throws JsonProcessingException {
-       return objectMapper.writeValueAsString(avtale);
+        return objectMapper.writeValueAsString(avtale);
     }
 
     public static Avtale opprettAvtale() {

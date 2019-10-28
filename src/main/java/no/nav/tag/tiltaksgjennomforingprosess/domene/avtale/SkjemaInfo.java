@@ -23,8 +23,8 @@ public class SkjemaInfo {
         this.fraDato = fraDato.format(dateTimeFormatter);
 
         //TODO Påkrevd av Arena. Ta bort dette når sluttDato på avtalen er på plass
-        if(tilDato == null){
-        this.tilDato = fraDato.plusMonths(3).format(dateTimeFormatter);
+        if (tilDato == null) {
+            this.tilDato = fraDato.plusMonths(3).format(dateTimeFormatter);
             return;
         }
 

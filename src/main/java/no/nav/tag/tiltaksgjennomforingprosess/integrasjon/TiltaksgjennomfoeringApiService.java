@@ -42,19 +42,21 @@ public class TiltaksgjennomfoeringApiService {
         headers.setContentType((MediaType.APPLICATION_JSON));
     }
 
-    public List<Avtale> finnAvtalerTilJournalfoering(){
+    public List<Avtale> finnAvtalerTilJournalfoering() {
         headers.setBearerAuth(stsService.hentToken());
         try {
-            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {}).getBody();
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
+            }).getBody();
         } catch (Exception e) {
             log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
             stsService.evict();
             headers.setBearerAuth(stsService.hentToken());
-            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {}).getBody();
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
+            }).getBody();
         }
     }
 
-    public void settAvtalerTilJournalfoert(Map<UUID, String> avtalerTilJournalfoert){
+    public void settAvtalerTilJournalfoert(Map<UUID, String> avtalerTilJournalfoert) {
         headers.setBearerAuth(stsService.hentToken());
         try {
             restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);

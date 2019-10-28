@@ -42,10 +42,10 @@ public class Avtale {
     private LocalDate startDato;
     private LocalDate sluttDato;
 
-    @XStreamImplicit(itemFieldName="maal")
+    @XStreamImplicit(itemFieldName = "maal")
     private List<Maal> maal = new ArrayList<>();
 
-    @XStreamImplicit(itemFieldName="oppgave")
+    @XStreamImplicit(itemFieldName = "oppgave")
     private List<Oppgave> oppgaver = new ArrayList<>();
 
     private String godkjentAvDeltaker;
