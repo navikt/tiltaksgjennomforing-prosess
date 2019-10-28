@@ -26,7 +26,7 @@ public class TestData {
     public final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE);
 
     public static String avtaleTilJSON(Avtale avtale) throws JsonProcessingException {
-       return objectMapper.writeValueAsString(avtale);
+        return objectMapper.writeValueAsString(avtale);
     }
 
     public static Avtale opprettAvtale() {
@@ -57,6 +57,7 @@ public class TestData {
         avtale.setTilrettelegging("Deltaker will be able to work to a large extent independently as soon as the on-boarding and training took place.\n" +
                 "We will define with specific tasks and further agree on 1) need for support to deliver, 2) the checkpoints and 3) the deadlines of the deliveries");
         avtale.setStartDato(START_DATO);
+        avtale.setSluttDato(START_DATO.plusMonths(2));
         avtale.setArbeidstreningLengde(2);
         avtale.setArbeidstreningStillingprosent(50);
         avtale.setGodkjentAvArbeidsgiver(LocalDateTime.now().format(dateTimeFormatter));

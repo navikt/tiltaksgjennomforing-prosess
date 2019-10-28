@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AvtaleTilXml {
 
-    String genererXml(Avtale avtale){
+    String genererXml(Avtale avtale) {
 
         Generelt generelt = new Generelt(new Arbeidsgiver(avtale.getBedriftNr(), avtale.getBedriftNavn()), new Arbeidstaker(avtale.getDeltakerFnr()), avtale);
-        Innhold innhold = new Innhold(new SkjemaInfo(avtale.getStartDato()), generelt);
+        Innhold innhold = new Innhold(new SkjemaInfo(avtale.getStartDato(), avtale.getSluttDato()), generelt);
         Melding melding = new Melding(innhold);
 
         XStream xstream = new XStream();
