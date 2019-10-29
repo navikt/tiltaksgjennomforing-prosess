@@ -35,7 +35,6 @@ class AvtaleTilPdf {
     private final static String regexNyLinje = "\n";
     private final static String regexTab = "\t";
 
-    private final static int paragraphWidth = 90;
     private final static int fontSizeSmaa = 10;
     private final static int fontSize = 12;
     private final static int fontSizeMellomStor = 14;
@@ -76,14 +75,16 @@ class AvtaleTilPdf {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             dokument.save(baos);
-            dokument.close();
         } catch (IOException e) {
             log.error("Feil oppsto ved generering av avtale " + avtale.getId(), e);
-            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
+            throw new RuntimeException("Feil ved generering av PDF fil", e);
+        } finally {
+            try{dokument.close();} catch (IOException e) {}
         }
         return baos.toByteArray();
     }
 
+    @SuppressWarnings("resource") // En smule hæckete håndtering av stream i denne klassen, men ressurser blir som regel lukket 
     private PDDocument generererPdf(Avtale avtale) {
         PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
@@ -203,7 +204,7 @@ class AvtaleTilPdf {
             contentStream.close();
 
         } catch (Exception e) {
-            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
+            throw new RuntimeException("Feil ved generering av PDF fil", e);
         }
         return document;
     }
@@ -243,7 +244,7 @@ class AvtaleTilPdf {
 
     private PDPageContentStream skrivFritekstTilPdf(PDPageContentStream contentStream, String fritekst) throws Exception {
         String[] linjer = fritekst.replace(regexTab, "  ").split(regexNyLinje);
-        for(String linje : linjer) {
+        for (String linje : linjer) {
             contentStream = skrivTekst(linje.trim(), contentStream, document, font, fontSize);
         }
         return contentStream;

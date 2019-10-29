@@ -41,13 +41,8 @@ public class TiltaksgjennomforingApiIntTest {
 
     @Test
     public void henterAvtalerTilJournalfoering() {
-
-        List<Avtale> avtaleList = null;
-        try {
-            avtaleList = service.finnAvtalerTilJournalfoering();
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        List<Avtale> avtaleList;
+        avtaleList = service.finnAvtalerTilJournalfoering();
         Avtale avtale = avtaleList.get(0);
         assertEquals("ca3d7189-0852-4693-a3dd-d518b4ec42e4", avtale.getId().toString());
         assertEquals("01093434109", avtale.getDeltakerFnr());
