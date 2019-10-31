@@ -21,52 +21,51 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale.DATOFORMAT_NORGE;
-
 
 @Data
 @Slf4j
 class AvtaleTilPdf {
-    private final static String PA_VEGNE_GRUNN_TXT = "    NB: Avtalen er godkjent av veileder på vegne av deltaker fordi : ";
-    private final static String IKKE_BANKID_TXT = "     Deltaker ikke har bankID";
-    private final static String RESERVERT_TXT = "     Deltaker har reservert seg mot digitale tjenester";
-    private final static String DIGITA_KOMPETANSE_TXT = "     Deltaker mangler digital kompetanse";
-    private final static String LINJE = "_________________________________________________________________________________";
-    private final static String regexNyLinje = "\n";
-    private final static String regexTab = "\t";
 
-    private final static int fontSizeSmaa = 10;
-    private final static int fontSize = 12;
-    private final static int fontSizeMellomStor = 14;
-    private final static int fontSizeStor = 18;
-    private static final int maksLinjerPerSide = 45;
-    private static final int[] startSidenXY = new int[]{50, 700};
-    private static final float leadingNormal = 14f;
-    private static final float leadingSmaa = 1f;
-    private static final float[] logoposition = new float[]{50, 750};
-    private static final float[] logoStorrelse = new float[]{60, 38};
-    private static final String ikonfil = "pdf/navikon.png";
+    private static final String PA_VEGNE_GRUNN_TXT = "    NB: Avtalen er godkjent av veileder på vegne av deltaker fordi : ";
+    private static final String IKKE_BANKID_TXT = "     Deltaker ikke har BankID";
+    private static final String RESERVERT_TXT = "     Deltaker har reservert seg mot digitale tjenester";
+    private static final String DIGITAL_KOMPETANSE_TXT = "     Deltaker mangler digital kompetanse";
+    private static final String LINJE = "_________________________________________________________________________________";
+    private static final String REGEX_NY_LINJE = "\n";
+    private static final String REGEX_TAB = "\t";
+    private static final int FONT_SIZE_SMAA = 10;
+    private static final int FONT_SIZE = 12;
+    private static final int FONT_SIZE_MELLOM_STOR = 14;
+    private static final int FONT_SIZE_STOR = 18;
+    private static final int MAKS_LINJER_PER_SIDE = 45;
+    private static final int[] START_SIDEN_XY = new int[]{50, 700};
+    private static final float LEADING_NORMAL = 14f;
+    private static final float LEADING_LITEN = 1f;
+    private static final float[] LOGO_POSITION = new float[]{50, 750};
+    private static final float[] LOGO_STORRELSE = new float[]{60, 38};
+    private static final String IKONFIL = "pdf/navikon.png";
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATOFORMAT_NORGE);
+    static final String DATOFORMAT_NORGE = "dd.MM.YYYY";
+    private static final DateTimeFormatter NORSK_DATO_FORMATTER = DateTimeFormatter.ofPattern(DATOFORMAT_NORGE);
 
     private static PDFont font;
-    private static PDFont font_Bold;
+    private static PDFont fontBold;
 
-    private int aktulLinjerISiden = 10;
+    private int aktuelleLinjerPåSiden = 10;
     private int totalSider = 1;
     private PDDocument document;
 
-    private InputStream fontIS = AvtaleTilPdf.class.getResourceAsStream("/pdf/times_new_roman.ttf");
-    private InputStream fontBoldIS = AvtaleTilPdf.class.getResourceAsStream("/pdf/times_new_roman_bold.ttf");
+    private final InputStream fontIS = AvtaleTilPdf.class.getResourceAsStream("/pdf/times_new_roman.ttf");
+    private final InputStream fontBoldIS = AvtaleTilPdf.class.getResourceAsStream("/pdf/times_new_roman_bold.ttf");
 
 
-    AvtaleTilPdf(){
+    AvtaleTilPdf() {
         document = new PDDocument();
         try {
             font = PDType0Font.load(document, fontIS, true);
-            font_Bold = PDType0Font.load(document, fontBoldIS, true);
+            fontBold = PDType0Font.load(document, fontBoldIS, true);
         } catch (IOException e) {
-            throw new RuntimeException("Feil ved generering av PDF fil: " + e.getMessage());
+            throw new RuntimeException("Feil ved generering av PDF-fil: " + e.getMessage());
         }
     }
 
@@ -76,124 +75,128 @@ class AvtaleTilPdf {
         try {
             dokument.save(baos);
         } catch (IOException e) {
-            log.error("Feil oppsto ved generering av avtale " + avtale.getId(), e);
-            throw new RuntimeException("Feil ved generering av PDF fil", e);
+            log.error("Feil oppstod ved generering av avtale " + avtale.getId(), e);
+            throw new RuntimeException("Feil ved generering av PDF-fil", e);
         } finally {
-            try{dokument.close();} catch (IOException e) {}
+            try {
+                dokument.close();
+            } catch (IOException e) {
+            }
         }
         return baos.toByteArray();
     }
 
-    @SuppressWarnings("resource") // En smule hæckete håndtering av stream i denne klassen, men ressurser blir som regel lukket 
+    @SuppressWarnings("resource")
+    // En smule hæckete håndtering av stream i denne klassen, men ressurser blir som regel lukket
     private PDDocument generererPdf(Avtale avtale) {
         PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
 
         PDImageXObject pdImage = null;
         try {
-            byte[] iconBytes = getClass().getClassLoader().getResourceAsStream(ikonfil).readAllBytes();
-            pdImage = PDImageXObject.createFromByteArray(document, iconBytes, ikonfil);
+            byte[] iconBytes = getClass().getClassLoader().getResourceAsStream(IKONFIL).readAllBytes();
+            pdImage = PDImageXObject.createFromByteArray(document, iconBytes, IKONFIL);
         } catch (Exception e) {
-            log.error("Feil ved generering av PDF fil format, logo blir ikke laget: {}", e.getMessage());
+            log.error("Feil ved generering av PDF-fil format, logo blir ikke laget: {}", e.getMessage());
         }
 
         try {
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
             if (pdImage != null) {
-                contentStream.drawImage(pdImage, logoposition[0], logoposition[1], logoStorrelse[0], logoStorrelse[1]);
+                contentStream.drawImage(pdImage, LOGO_POSITION[0], LOGO_POSITION[1], LOGO_STORRELSE[0], LOGO_STORRELSE[1]);
             }
 
             contentStream.beginText();
-            contentStream.newLineAtOffset(startSidenXY[0], startSidenXY[1]);
-            contentStream.setLeading(leadingNormal);
-            contentStream = skrivTekst("Avtale om arbeidstrening", contentStream, document, font_Bold, fontSizeStor);
-            contentStream.setFont(font, fontSize);
+            contentStream.newLineAtOffset(START_SIDEN_XY[0], START_SIDEN_XY[1]);
+            contentStream.setLeading(LEADING_NORMAL);
+            contentStream = skrivTekst("Avtale om arbeidstrening", contentStream, document, fontBold, FONT_SIZE_STOR);
+            contentStream.setFont(font, FONT_SIZE);
             List<Object> text = new ArrayList<>();
             float moveToPositionX = -32000;
             text.add(moveToPositionX);
-            text.add("Startdato: " + avtale.getStartDato().format(DATE_TIME_FORMATTER));
+            text.add("Startdato: " + avtale.getStartDato().format(NORSK_DATO_FORMATTER));
             contentStream.showTextWithPositioning(text.toArray());
             contentStream.newLine();
             text = new ArrayList<>();
             text.add(moveToPositionX);
-            text.add("Varighet: " + avtale.getArbeidstreningLengde() + " uker ");
+            text.add("Sluttdato: " + avtale.getSluttDato().format(NORSK_DATO_FORMATTER));
             contentStream.showTextWithPositioning(text.toArray());
             contentStream.newLine();
             contentStream.newLineAtOffset(-0, -30);
             startNyttAvsnitt("Avtalens parter", contentStream);
-            contentStream = skrivTekst("Deltaker  ", contentStream, document, font, fontSize);
-            contentStream = skrivTekst(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn(), contentStream, document, font_Bold, fontSize);
-            contentStream = skrivTekst("Fødselsnummer: " + avtale.getDeltakerFnr(), contentStream, document, font, fontSize);
-            contentStream = skrivTekst("Telefon: " +  blankForNull(avtale.getDeltakerTlf()), contentStream, document, font, fontSize);
+            contentStream = skrivTekst("Deltaker  ", contentStream, document, font, FONT_SIZE);
+            contentStream = skrivTekst(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn(), contentStream, document, fontBold, FONT_SIZE);
+            contentStream = skrivTekst("Fødselsnummer: " + avtale.getDeltakerFnr(), contentStream, document, font, FONT_SIZE);
+            contentStream = skrivTekst("Telefon: " + blankForNull(avtale.getDeltakerTlf()), contentStream, document, font, FONT_SIZE);
             contentStream.newLine();
-            contentStream = skrivTekst("Arbeidsgiver ", contentStream, document, font, fontSize);
-            contentStream = skrivTekst(avtale.getBedriftNavn(), contentStream, document, font_Bold, fontSize);
-            contentStream = skrivTekst("BedriftsNr: " + avtale.getBedriftNr(), contentStream, document, font, fontSize);
-            contentStream = skrivTekst("Kontakperson: " + avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn(), contentStream, document, font, fontSize);
-            contentStream = skrivTekst("Telefon: " + blankForNull(avtale.getArbeidsgiverTlf()), contentStream, document, font, fontSize);
+            contentStream = skrivTekst("Arbeidsgiver ", contentStream, document, font, FONT_SIZE);
+            contentStream = skrivTekst(avtale.getBedriftNavn(), contentStream, document, fontBold, FONT_SIZE);
+            contentStream = skrivTekst("Bedriftnr.: " + avtale.getBedriftNr(), contentStream, document, font, FONT_SIZE);
+            contentStream = skrivTekst("Kontakperson: " + avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn(), contentStream, document, font, FONT_SIZE);
+            contentStream = skrivTekst("Telefon: " + blankForNull(avtale.getArbeidsgiverTlf()), contentStream, document, font, FONT_SIZE);
             contentStream.newLine();
-            contentStream = skrivTekst("NAV-veileder ", contentStream, document, font, fontSize);
-            contentStream = skrivTekst(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn(), contentStream, document, font_Bold, fontSize);
-            contentStream = skrivTekst("Telefon: " + blankForNull(avtale.getVeilederTlf()), contentStream, document, font, fontSize);
+            contentStream = skrivTekst("NAV-veileder ", contentStream, document, font, FONT_SIZE);
+            contentStream = skrivTekst(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn(), contentStream, document, fontBold, FONT_SIZE);
+            contentStream = skrivTekst("Telefon: " + blankForNull(avtale.getVeilederTlf()), contentStream, document, font, FONT_SIZE);
             contentStream.newLine();
             startNyttAvsnitt("Mål  ", contentStream);
 
             for (Maal maal : avtale.getMaal()
             ) {
-                aktulLinjerISiden++;
-                contentStream = skrivTekst("Kategori", contentStream, document, font_Bold, fontSize);
-                contentStream = skrivTekst(maal.getKategori(), contentStream, document, font, fontSize);
-                contentStream = skrivTekst("Beskrivelse", contentStream, document, font_Bold, fontSize);
+                aktuelleLinjerPåSiden++;
+                contentStream = skrivTekst("Kategori", contentStream, document, fontBold, FONT_SIZE);
+                contentStream = skrivTekst(maal.getKategori(), contentStream, document, font, FONT_SIZE);
+                contentStream = skrivTekst("Beskrivelse", contentStream, document, fontBold, FONT_SIZE);
                 contentStream = skrivFritekstTilPdf(contentStream, maal.getBeskrivelse());
             }
             startNyttAvsnitt("Arbeidsoppgaver ", contentStream);
             for (Oppgave oppgave : avtale.getOppgaver()
             ) {
-                contentStream = skrivTekst("Tittel", contentStream, document, font_Bold, fontSize);
+                contentStream = skrivTekst("Tittel", contentStream, document, fontBold, FONT_SIZE);
                 contentStream = skrivFritekstTilPdf(contentStream, oppgave.getTittel());
 
                 contentStream.newLine();
-                contentStream = skrivTekst("Beskrivelse: ", contentStream, document, font_Bold, fontSize);
+                contentStream = skrivTekst("Beskrivelse: ", contentStream, document, fontBold, FONT_SIZE);
                 contentStream = skrivFritekstTilPdf(contentStream, oppgave.getBeskrivelse());
 
                 contentStream.newLine();
-                contentStream = skrivTekst("Opplæring: ", contentStream, document, font_Bold, fontSize);
+                contentStream = skrivTekst("Opplæring: ", contentStream, document, fontBold, FONT_SIZE);
                 contentStream = skrivFritekstTilPdf(contentStream, oppgave.getOpplaering());
                 contentStream.newLine();
-                aktulLinjerISiden += 2;
+                aktuelleLinjerPåSiden += 2;
             }
             contentStream.newLine();
-            contentStream = skrivTekst("Varighet: " + avtale.getArbeidstreningLengde() + " uker ", contentStream, document, font, fontSize);
-            contentStream = skrivTekst("Stillingsprosent: " + avtale.getArbeidstreningStillingprosent() + "%", contentStream, document, font, fontSize);
+            contentStream = skrivTekst("Sluttdato: " + avtale.getSluttDato().format(NORSK_DATO_FORMATTER), contentStream, document, font, FONT_SIZE);
+            contentStream = skrivTekst("Stillingsprosent: " + avtale.getStillingprosent() + "%", contentStream, document, font, FONT_SIZE);
             contentStream.newLine();
             startNyttAvsnitt("Oppfølging ", contentStream);
             contentStream = skrivFritekstTilPdf(contentStream, avtale.getOppfolging());
-            aktulLinjerISiden += 2;
+            aktuelleLinjerPåSiden += 2;
             startNyttAvsnitt("Tilrettelegging ", contentStream);
             contentStream = skrivFritekstTilPdf(contentStream, avtale.getTilrettelegging());
             //Vi trenger å sjekke at det er nok plass til Godkjenning i siden, upraktisk at godkjenning blir delt inn 2 sider
-            if (aktulLinjerISiden > (maksLinjerPerSide - 10)) {
+            if (aktuelleLinjerPåSiden > (MAKS_LINJER_PER_SIDE - 10)) {
                 contentStream = openNewPage(contentStream, document);
             }
             contentStream.newLine();
             startNyttAvsnitt("Godkjenning ", contentStream);
-            contentStream = skrivTekst(" Godkjent av deltaker: " + avtale.getGodkjentAvDeltaker(), contentStream, document, font, fontSize);
-            contentStream = skrivTekst(" Godkjent av Arbeidsgiver: " + avtale.getGodkjentAvArbeidsgiver(), contentStream, document, font, fontSize);
-            contentStream.showText(" Godkjent av NAV-veileder: " + avtale.getGodkjentAvVeileder());
+            contentStream = skrivTekst(" Godkjent av deltaker: " + avtale.getGodkjentAvDeltaker().format(NORSK_DATO_FORMATTER), contentStream, document, font, FONT_SIZE);
+            contentStream = skrivTekst(" Godkjent av arbeidsgiver: " + avtale.getGodkjentAvArbeidsgiver().format(NORSK_DATO_FORMATTER), contentStream, document, font, FONT_SIZE);
+            contentStream.showText(" Godkjent av NAV-veileder: " + avtale.getGodkjentAvVeileder().format(NORSK_DATO_FORMATTER));
             try {
                 if (avtale.isGodkjentPaVegneAv()) {
                     contentStream.newLine();
-                    aktulLinjerISiden++;
-                    contentStream = skrivTekst(PA_VEGNE_GRUNN_TXT, contentStream, document, font, fontSize);
+                    aktuelleLinjerPåSiden++;
+                    contentStream = skrivTekst(PA_VEGNE_GRUNN_TXT, contentStream, document, font, FONT_SIZE);
                     if (avtale.getGodkjentPaVegneGrunn().isIkkeBankId()) {
-                        contentStream = skrivTekst(IKKE_BANKID_TXT, contentStream, document, font, fontSize);
+                        contentStream = skrivTekst(IKKE_BANKID_TXT, contentStream, document, font, FONT_SIZE);
                     }
                     if (avtale.getGodkjentPaVegneGrunn().isReservert()) {
-                        contentStream = skrivTekst(RESERVERT_TXT, contentStream, document, font, fontSize);
+                        contentStream = skrivTekst(RESERVERT_TXT, contentStream, document, font, FONT_SIZE);
                     }
                     if (avtale.getGodkjentPaVegneGrunn().isDigitalKompetanse()) {
-                        contentStream = skrivTekst(DIGITA_KOMPETANSE_TXT, contentStream, document, font, fontSize);
+                        contentStream = skrivTekst(DIGITAL_KOMPETANSE_TXT, contentStream, document, font, FONT_SIZE);
                     }
                 }
             } catch (Exception e) {
@@ -204,7 +207,7 @@ class AvtaleTilPdf {
             contentStream.close();
 
         } catch (Exception e) {
-            throw new RuntimeException("Feil ved generering av PDF fil", e);
+            throw new RuntimeException("Feil ved generering av PDF-fil", e);
         }
         return document;
     }
@@ -223,7 +226,7 @@ class AvtaleTilPdf {
                 spaceIndex = skrivText.length();
             }
             String subString = skrivText.substring(0, spaceIndex);
-            float size = fontSize * font.getStringWidth(subString) / 1000;
+            float size = FONT_SIZE * font.getStringWidth(subString) / 1000;
             if (size > width) {
                 if (lastSpace < 0) {
                     lastSpace = spaceIndex;
@@ -243,9 +246,9 @@ class AvtaleTilPdf {
     }
 
     private PDPageContentStream skrivFritekstTilPdf(PDPageContentStream contentStream, String fritekst) throws Exception {
-        String[] linjer = fritekst.replace(regexTab, "  ").split(regexNyLinje);
+        String[] linjer = fritekst.replace(REGEX_TAB, "  ").split(REGEX_NY_LINJE);
         for (String linje : linjer) {
-            contentStream = skrivTekst(linje.trim(), contentStream, document, font, fontSize);
+            contentStream = skrivTekst(linje.trim(), contentStream, document, font, FONT_SIZE);
         }
         return contentStream;
     }
@@ -256,19 +259,19 @@ class AvtaleTilPdf {
         PDPage new_Page = new PDPage(PDRectangle.A4);
         document.addPage(new_Page);
         contentStream = new PDPageContentStream(document, new_Page);
-        contentStream.setFont(font, fontSize);
+        contentStream.setFont(font, FONT_SIZE);
         contentStream.beginText();
-        contentStream.newLineAtOffset(startSidenXY[0], logoposition[1]);
-        contentStream.setLeading(leadingNormal);
+        contentStream.newLineAtOffset(START_SIDEN_XY[0], LOGO_POSITION[1]);
+        contentStream.setLeading(LEADING_NORMAL);
         totalSider++;
-        aktulLinjerISiden = 0;
+        aktuelleLinjerPåSiden = 0;
         return contentStream;
     }
 
     private PDPageContentStream skrivTekst(String skrivTekst, PDPageContentStream contentStream, PDDocument document, PDFont fontIBruk, int fontSizeIBruk) throws Exception {
         for (String lineText : possibleWrapText(skrivTekst, new PDPage(PDRectangle.A4))) {
-            aktulLinjerISiden = Integer.sum(aktulLinjerISiden, 1);
-            if (aktulLinjerISiden > maksLinjerPerSide) {
+            aktuelleLinjerPåSiden = Integer.sum(aktuelleLinjerPåSiden, 1);
+            if (aktuelleLinjerPåSiden > MAKS_LINJER_PER_SIDE) {
                 contentStream = openNewPage(contentStream, document);
             }
             contentStream.setFont(fontIBruk, fontSizeIBruk);
@@ -280,26 +283,26 @@ class AvtaleTilPdf {
 
     private void startNyttAvsnitt(String avsnitt, PDPageContentStream contentStream) throws IOException {
         contentStream.newLine();
-        contentStream.setFont(font_Bold, fontSizeMellomStor);
+        contentStream.setFont(fontBold, FONT_SIZE_MELLOM_STOR);
         contentStream.showText(avsnitt);
-        contentStream.setLeading(leadingSmaa);
+        contentStream.setLeading(LEADING_LITEN);
         contentStream.newLine();
         contentStream.showText(LINJE);
-        contentStream.setLeading(leadingNormal);
+        contentStream.setLeading(LEADING_NORMAL);
         contentStream.newLine();
         contentStream.newLine();
-        aktulLinjerISiden += 3;
+        aktuelleLinjerPåSiden += 3;
     }
 
     private void skrivFooter(String footer, PDPageContentStream contentStream) throws IOException {
-        while (aktulLinjerISiden < 45) {
+        while (aktuelleLinjerPåSiden < 45) {
             contentStream.newLine();
-            aktulLinjerISiden++;
+            aktuelleLinjerPåSiden++;
         }
         contentStream.showText(LINJE);
         contentStream.newLine();
         Color fontColor = Color.gray;
-        contentStream.setFont(font, fontSizeSmaa);
+        contentStream.setFont(font, FONT_SIZE_SMAA);
         contentStream.setNonStrokingColor(fontColor);
         contentStream.showText(footer);
     }

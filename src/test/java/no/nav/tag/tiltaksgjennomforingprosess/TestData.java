@@ -1,39 +1,25 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.GodkjentPaVegneGrunn;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Maal;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Oppgave;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
 public class TestData {
 
-    private static ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
     private static final LocalDate GODKJENT_DATO = LocalDate.of(2019, 8, 16);
 
     public static final LocalDate START_DATO = GODKJENT_DATO.plusMonths(1);
-
-    public final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE);
-
-    public static String avtaleTilJSON(Avtale avtale) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(avtale);
-    }
 
     public static Avtale opprettAvtale() {
         Avtale avtale = new Avtale();
         avtale.setId(UUID.randomUUID());
         avtale.setVersjon(1);
-        avtale.setOpprettet(LocalDate.now().minusDays(2).format(dateTimeFormatter));
+        avtale.setOpprettet(LocalDate.now().minusDays(2));
         avtale.setDeltakerFornavn("Lillehans");
         avtale.setDeltakerEtternavn("Hansen");
         avtale.setDeltakerFnr("02018099999");
@@ -58,11 +44,10 @@ public class TestData {
                 "We will define with specific tasks and further agree on 1) need for support to deliver, 2) the checkpoints and 3) the deadlines of the deliveries");
         avtale.setStartDato(START_DATO);
         avtale.setSluttDato(START_DATO.plusMonths(2));
-        avtale.setArbeidstreningLengde(2);
-        avtale.setArbeidstreningStillingprosent(50);
-        avtale.setGodkjentAvArbeidsgiver(LocalDateTime.now().format(dateTimeFormatter));
-        avtale.setGodkjentAvDeltaker(LocalDateTime.now().plusDays(1).format(dateTimeFormatter));
-        avtale.setGodkjentAvVeileder(LocalDateTime.now().plusDays(2).format(dateTimeFormatter));
+        avtale.setStillingprosent(50);
+        avtale.setGodkjentAvArbeidsgiver(LocalDate.now());
+        avtale.setGodkjentAvDeltaker(LocalDate.now().plusDays(1));
+        avtale.setGodkjentAvVeileder(LocalDate.now().plusDays(2));
         avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
         avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.endaEnOppgave()));
         avtale.setGodkjentPaVegneAv(true);

@@ -50,30 +50,31 @@ public class AvtaleTilPdfTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void lagerIkkeAvtalePdf() throws IOException {
+    public void lagerIkkeAvtalePdf() {
         Avtale avtale = TestData.opprettAvtale();
         avtale.setId(null);
         avtaleTilPdf.tilBytesAvPdf(avtale);
     }
 
     private void sjekkPdfInnhold(Avtale avtale, PDDocument dokument) throws IOException {
-            String textInPdf = new PDFTextStripper().getText(dokument);
-            boolean harAlt = textInPdf.contains(avtale.getId().toString()) && textInPdf.contains(avtale.getDeltakerFnr()) && textInPdf.contains(avtale.getBedriftNr())
-                    && textInPdf.contains(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn())
-                    && textInPdf.contains(avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn()) && textInPdf.contains(avtale.getArbeidsgiverTlf())
-                    && textInPdf.contains(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn())
-                    && textInPdf.contains(avtale.getArbeidstreningLengde().toString())
-                    && textInPdf.contains(avtale.getArbeidstreningStillingprosent().toString());
-            assertTrue(harAlt);
+        String textInPdf = new PDFTextStripper().getText(dokument);
+        boolean harAlt = textInPdf.contains(avtale.getId().toString()) && textInPdf.contains(avtale.getDeltakerFnr()) && textInPdf.contains(avtale.getBedriftNr())
+                && textInPdf.contains(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn())
+                && textInPdf.contains(avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn()) && textInPdf.contains(avtale.getArbeidsgiverTlf())
+                && textInPdf.contains(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn())
+                && textInPdf.contains(avtale.getStillingprosent().toString());
+        assertTrue(harAlt);
 
-            assertTrue("Oppfølging", sjekkPdfOppfolgingInnhold(textInPdf, avtale));
-            assertTrue("Tilrettelegging", sjekkPdfTilretteleggingInnhold(textInPdf, avtale));
-            assertTrue("Mål", sjekkPdfMaalListInnhold(textInPdf, avtale));
-            assertTrue("Oppgaver",sjekkPdfOppgaveListInnhold(textInPdf, avtale));
-            assertTrue("StartDato",textInPdf.contains(avtale.getStartDato().format(DateTimeFormatter.ofPattern(Avtale.DATOFORMAT_NORGE))));
-            assertTrue("GodkjentAvDeltaker", textInPdf.contains(avtale.getGodkjentAvDeltaker()));
-            assertTrue("GodkjentAvArbeidsgiver", textInPdf.contains(avtale.getGodkjentAvArbeidsgiver()));
-            assertTrue("GodkjentAvVeileder", textInPdf.contains(avtale.getGodkjentAvVeileder()));
+        assertTrue("Oppfølging", sjekkPdfOppfolgingInnhold(textInPdf, avtale));
+        assertTrue("Tilrettelegging", sjekkPdfTilretteleggingInnhold(textInPdf, avtale));
+        assertTrue("Mål", sjekkPdfMaalListInnhold(textInPdf, avtale));
+        assertTrue("Oppgaver", sjekkPdfOppgaveListInnhold(textInPdf, avtale));
+        DateTimeFormatter norkskDatoFormatter = DateTimeFormatter.ofPattern(AvtaleTilPdf.DATOFORMAT_NORGE);
+        assertTrue("StartDato", textInPdf.contains(avtale.getStartDato().format(norkskDatoFormatter)));
+        assertTrue("SluttDato", textInPdf.contains(avtale.getSluttDato().format(norkskDatoFormatter)));
+        assertTrue("GodkjentAvDeltaker", textInPdf.contains(avtale.getGodkjentAvDeltaker().format(norkskDatoFormatter)));
+        assertTrue("GodkjentAvArbeidsgiver", textInPdf.contains(avtale.getGodkjentAvArbeidsgiver().format(norkskDatoFormatter)));
+        assertTrue("GodkjentAvVeileder", textInPdf.contains(avtale.getGodkjentAvVeileder().format(norkskDatoFormatter)));
     }
 
     private boolean sjekkPdfMaalListInnhold(String textInPdf, Avtale avtale) throws IOException {
@@ -97,7 +98,7 @@ public class AvtaleTilPdfTest {
         ) {
             result = result && textInPdf.contains(oppgave.getTittel());
             String[] linjer = oppgave.getBeskrivelse().replace("\t", "  ").split("\n");
-            for(String linje : linjer) {
+            for (String linje : linjer) {
                 for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
                 ) {
                     result = result && textInPdf.contains(str.trim());
@@ -105,7 +106,7 @@ public class AvtaleTilPdfTest {
             }
 
             String[] linjer2 = oppgave.getOpplaering().split("\n");
-            for(String linje : linjer2) {
+            for (String linje : linjer2) {
                 for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
                 ) {
                     result = result && textInPdf.contains(str.trim());
@@ -134,7 +135,7 @@ public class AvtaleTilPdfTest {
         AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
 
         String[] linjer = avtale.getTilrettelegging().split("\n");
-        for (String linje : linjer){
+        for (String linje : linjer) {
             for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
             ) {
                 result = result && textInPdf.contains(str.trim());

@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.TestData.START_DATO;
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.SkjemaInfo.DATOFORMAT_ARENA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -20,7 +19,7 @@ public class AvtaleTilXmlTest {
     private AvtaleTilXml avtaleTilXml = new AvtaleTilXml();
 
     @Test
-    public void lagerAvtaleXml() throws Exception {
+    public void lagerAvtaleXml() {
         Avtale avtale = TestData.opprettAvtale();
         avtale.setId(UUID.fromString(ID_AVTALE));
         String xml = avtaleTilXml.genererXml(avtale);
