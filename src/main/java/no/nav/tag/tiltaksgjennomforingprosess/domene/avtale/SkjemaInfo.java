@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class SkjemaInfo {
 
-    public static final String DATOFORMAT_ARENA = "YYYY-MM-dd";
-    private final static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATOFORMAT_ARENA);
+    private static final String DATOFORMAT_ARENA = "YYYY-MM-dd";
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATOFORMAT_ARENA);
 
     private static final String TILTAKSTYPE = "Arbeidstrening";
     private static final String TYPE_BEHANDLING = "ab0422";
@@ -21,13 +21,6 @@ public class SkjemaInfo {
 
     public SkjemaInfo(LocalDate fraDato, LocalDate tilDato) {
         this.fraDato = fraDato.format(dateTimeFormatter);
-
-        //TODO Påkrevd av Arena. Ta bort dette når sluttDato på avtalen er på plass
-        if (tilDato == null) {
-            this.tilDato = fraDato.plusMonths(3).format(dateTimeFormatter);
-            return;
-        }
-
         this.tilDato = tilDato.format(dateTimeFormatter);
     }
 

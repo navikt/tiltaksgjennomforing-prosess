@@ -9,6 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class TiltaksgjennomforingApiIntTest {
         assertEquals("01093434109", avtale.getDeltakerFnr());
         assertEquals("975959171", avtale.getBedriftNr());
         assertEquals("X123456", avtale.getVeilederNavIdent());
-        assertEquals("09.09.2019", avtale.getOpprettet());
+        assertEquals(LocalDate.of(2019, 9, 9), avtale.getOpprettet());
         assertEquals("Ronny", avtale.getDeltakerFornavn());
         assertEquals("Deltaker", avtale.getDeltakerEtternavn());
         assertEquals("00000000", avtale.getDeltakerTlf());
@@ -60,11 +61,10 @@ public class TiltaksgjennomforingApiIntTest {
         assertEquals("33445566", avtale.getVeilederTlf());
         assertEquals("Telefon hver uke", avtale.getOppfolging());
         assertEquals("Ingen", avtale.getTilrettelegging());
-        assertEquals(2, avtale.getArbeidstreningLengde().intValue());
-        assertEquals(100, avtale.getArbeidstreningStillingprosent().intValue());
-        assertEquals("09.09.2019", avtale.getGodkjentAvDeltaker());
-        assertEquals("09.09.2019", avtale.getGodkjentAvDeltaker());
-        assertEquals("09.10.2019", avtale.getGodkjentAvArbeidsgiver());
+        assertEquals(100, avtale.getStillingprosent().intValue());
+        assertEquals(LocalDate.of(2019, 9, 9), avtale.getGodkjentAvDeltaker());
+        assertEquals(LocalDate.of(2019, 10, 9), avtale.getGodkjentAvArbeidsgiver());
+        assertEquals(LocalDate.of(2019, 11, 9), avtale.getGodkjentAvVeileder());
         assertFalse(avtale.isGodkjentPaVegneAv());
     }
 

@@ -13,14 +13,11 @@ import java.util.UUID;
 @Data
 @ToString
 public class Avtale {
-
-    public final static String DATOFORMAT_NORGE = "dd.MM.YYYY";
-
     private UUID id;
     private String deltakerFnr;
     private String bedriftNr;
     private String veilederNavIdent;
-    private String opprettet;
+    private LocalDate opprettet;
     private Integer versjon;
     private String deltakerFornavn;
     private String deltakerEtternavn;
@@ -34,8 +31,7 @@ public class Avtale {
     private String veilederTlf;
     private String oppfolging;
     private String tilrettelegging;
-    private Integer arbeidstreningLengde;
-    private Integer arbeidstreningStillingprosent;
+    private Integer stillingprosent;
     private String journalpostId;
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
 
@@ -48,10 +44,10 @@ public class Avtale {
     @XStreamImplicit(itemFieldName = "oppgave")
     private List<Oppgave> oppgaver = new ArrayList<>();
 
-    private String godkjentAvDeltaker;
-    private String godkjentAvArbeidsgiver;
+    private LocalDate godkjentAvDeltaker;
+    private LocalDate godkjentAvArbeidsgiver;
+    private LocalDate godkjentAvVeileder;
 
-    private String godkjentAvVeileder;
     private boolean godkjentPaVegneAv;
 }
 
