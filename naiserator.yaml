@@ -18,6 +18,8 @@ spec:
   readiness:
     path: /tiltaksgjennomforing-prosess/internal/healthcheck
     initialDelay: 30
+  ingresses:
+    - {{ingress}}
   vault:
     enabled: true
   env:
@@ -25,7 +27,7 @@ spec:
       value: {{spring-profil}}
   webproxy: true
   prometheus:
-    enabled: false
+    enabled: true
     path: /tiltaksgjennomforing-prosess/internal/actuator/prometheus
 
 
