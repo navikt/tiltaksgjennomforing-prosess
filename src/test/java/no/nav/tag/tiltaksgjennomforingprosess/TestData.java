@@ -18,7 +18,6 @@ public class TestData {
     public static Avtale opprettAvtale() {
         Avtale avtale = new Avtale();
         avtale.setId(UUID.randomUUID());
-        avtale.setVersjon(1);
         avtale.setOpprettet(LocalDate.now().minusDays(2));
         avtale.setDeltakerFornavn("Lillehans");
         avtale.setDeltakerEtternavn("Hansen");
