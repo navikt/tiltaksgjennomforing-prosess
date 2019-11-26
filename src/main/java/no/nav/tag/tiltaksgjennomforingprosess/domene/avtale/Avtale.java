@@ -18,7 +18,6 @@ public class Avtale {
     private String bedriftNr;
     private String veilederNavIdent;
     private LocalDate opprettet;
-    private Integer versjon;
     private String deltakerFornavn;
     private String deltakerEtternavn;
     private String deltakerTlf;
@@ -32,7 +31,6 @@ public class Avtale {
     private String oppfolging;
     private String tilrettelegging;
     private Integer stillingprosent;
-    private String journalpostId;
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
 
     private LocalDate startDato;
