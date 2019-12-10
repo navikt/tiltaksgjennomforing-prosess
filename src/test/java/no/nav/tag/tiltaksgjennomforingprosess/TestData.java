@@ -44,6 +44,7 @@ public class TestData {
         avtale.setStartDato(START_DATO);
         avtale.setSluttDato(START_DATO.plusMonths(2));
         avtale.setStillingprosent(50);
+        avtale.setVersjon(1);
         avtale.setGodkjentAvArbeidsgiver(LocalDate.now());
         avtale.setGodkjentAvDeltaker(LocalDate.now().plusDays(1));
         avtale.setGodkjentAvVeileder(LocalDate.now().plusDays(2));

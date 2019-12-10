@@ -31,6 +31,7 @@ public class Avtale {
     private String oppfolging;
     private String tilrettelegging;
     private Integer stillingprosent;
+    private Integer versjon;
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
 
     private LocalDate startDato;
@@ -47,6 +48,10 @@ public class Avtale {
     private LocalDate godkjentAvVeileder;
 
     private boolean godkjentPaVegneAv;
+
+    public boolean registreresIArena(){
+        return versjon == 1;
+    }
 }
 
 

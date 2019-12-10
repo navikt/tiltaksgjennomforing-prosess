@@ -30,6 +30,7 @@ public class JoarkServiceIntTest {
     @Test
     public void oppretterJournalpost() {
         Journalpost journalpost = new Journalpost();
+        journalpost.setBehandlingsTema("ab0422");
 
         Bruker bruker  = new Bruker();
         bruker.setId("88888899999");
