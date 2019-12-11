@@ -23,7 +23,7 @@ public class JournalpostFactoryTest {
     private JournalpostFactory journalpostFactory;
 
     @Test
-    public void konvertererTilJournalpost() throws Exception {
+    public void journalpostSkalTilArena() throws Exception {
         Avtale avtale = TestData.opprettAvtale();
 
         when(avtaleTilXml.genererXml(avtale)).thenCallRealMethod();
@@ -37,6 +37,7 @@ public class JournalpostFactoryTest {
         assertEquals("AVT" + avtale.getId(), journalpost.getEksternReferanseId());
         assertEquals(avtale.getDeltakerFnr(), journalpost.getBruker().getId());
         assertEquals("FNR", journalpost.getBruker().getIdType());
+        assertTrue(journalpost.getBehandlesIArena());
         assertEquals(1, journalpost.getDokumenter().size());
 
         journalpost.getDokumenter().get(0).getDokumentVarianter().forEach(dokumentVariant -> {

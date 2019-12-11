@@ -53,6 +53,7 @@ public class JournalpostFactory {
             final String dokumentXml = avtaleTilXml.genererXml(avtale);
             dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, encodeToBase64(dokumentXml.getBytes())));
             log.info("Avtale {} skal sendes til Arena", avtale.getId());
+            return;
         }
         journalpost.setBehandlesIArena(false);
         log.info("Avtale {} skal ikke sendes til Arena", avtale.getId());
