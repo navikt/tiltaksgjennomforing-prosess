@@ -18,5 +18,15 @@ public class Journalpost {
     private Bruker bruker;
     private String eksternReferanseId;
     private String behandlingsTema;
+    private Boolean tilArena;
     private List<Dokument> dokumenter;
+
+
+    public void setTilArena(boolean tilArena) {
+        this.tilArena = tilArena;
+    }
+
+    public boolean skalTilArena() {
+        return tilArena;
+    }
 }

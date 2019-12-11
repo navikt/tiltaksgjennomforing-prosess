@@ -47,6 +47,7 @@ public class JournalpostFactory {
         if(avtale.registreresIArena()){
             journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getId().toString());
             journalpost.setBehandlingsTema(BEHANDLINGSTEMA);
+            journalpost.setTilArena(true);
             final String dokumentXml = avtaleTilXml.genererXml(avtale);
             dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML ,encodeToBase64(dokumentXml.getBytes())));
         }

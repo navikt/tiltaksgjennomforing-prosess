@@ -1,0 +1,59 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/rest/journalpostapi/v1/journalpost",
+        "queryParameters": {
+          "forsoekFerdigstill": {
+            "equalTo": "true"
+          }
+        },
+        "headers" : {
+          "Authorization" : {
+            "equalTo" : "Bearer eyxXxx"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "[?(@.journalposttype == 'INNGAAENDE')]"
+          } ,
+          {
+            "matchesJsonPath": "[?(@.kanal == 'NAV_NO')]"
+          },
+          {
+            "matchesJsonPath": "[?(@.tema == 'TIL')]"
+          },
+          {
+            "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
+          },
+          {
+            "matchesJsonPath" : "$.bruker[?(@.id == '88888899999')]"
+          } ,
+          {
+            "matchesJsonPath" : "$.bruker[?(@.idType == 'FNR')]"
+          },
+          {
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'PDF')])]"
+          },
+          {
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.variantformat == 'ORIGINAL')])]"
+          },
+          {
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.fysiskDokument == 'ZG9rdW1lbnQ=')])]"
+          },
+          {
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.fysiskDokument == 'PGRva3VtZW50Lz4=')])]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"journalpostId\" : \"001\", \"journalstatus\" : \"MIDLERTIDIG\", \"melding\" : \"Gikk bra\"}"
+      }
+    }
+  ]
+}

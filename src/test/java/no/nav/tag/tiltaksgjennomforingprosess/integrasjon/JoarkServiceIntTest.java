@@ -28,9 +28,10 @@ public class JoarkServiceIntTest {
     private JoarkService joarkService;
 
     @Test
-    public void oppretterJournalpost() {
+    public void oppretterJournalpost_til_arena() {
         Journalpost journalpost = new Journalpost();
         journalpost.setBehandlingsTema("ab0422");
+        journalpost.setTilArena(true);
 
         Bruker bruker  = new Bruker();
         bruker.setId("88888899999");
@@ -38,6 +39,23 @@ public class JoarkServiceIntTest {
 
         Dokument dokument = new Dokument();
         dokument.setDokumentVarianter(Arrays.asList(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, "xmlxmlxml"), new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, "pdfpdfpdf")));
+        journalpost.setDokumenter(Arrays.asList(dokument));
+
+        String jounalpostId = joarkService.sendJournalpost(journalpost);
+        assertEquals("001", jounalpostId);
+    }
+
+    @Test
+    public void oppretterJournalpost_ikke_til_arena() {
+        Journalpost journalpost = new Journalpost();
+        journalpost.setTilArena(false);
+
+        Bruker bruker  = new Bruker();
+        bruker.setId("88888899999");
+        journalpost.setBruker(bruker);
+
+        Dokument dokument = new Dokument();
+        dokument.setDokumentVarianter(Arrays.asList(new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, "pdfpdfpdf")));
         journalpost.setDokumenter(Arrays.asList(dokument));
 
         String jounalpostId = joarkService.sendJournalpost(journalpost);
