@@ -51,6 +51,7 @@ public class JournalpostFactory {
             final String dokumentXml = avtaleTilXml.genererXml(avtale);
             dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML ,encodeToBase64(dokumentXml.getBytes())));
         }
+        journalpost.setTilArena(false);
     }
 
     private String encodeToBase64(final byte[] dokumentBytes) {
