@@ -31,7 +31,7 @@ public class JoarkServiceIntTest {
     public void oppretterJournalpost_til_arena() {
         Journalpost journalpost = new Journalpost();
         journalpost.setBehandlingsTema("ab0422");
-        journalpost.setTilArena(true);
+        journalpost.setBehandlesIArena(true);
 
         Bruker bruker  = new Bruker();
         bruker.setId("88888899999");
@@ -48,7 +48,7 @@ public class JoarkServiceIntTest {
     @Test
     public void oppretterJournalpost_ikke_til_arena() {
         Journalpost journalpost = new Journalpost();
-        journalpost.setTilArena(false);
+        journalpost.setBehandlesIArena(false);
 
         Bruker bruker  = new Bruker();
         bruker.setId("88888899999");

@@ -23,8 +23,8 @@ public class JoarkService {
     static final String PATH = "/rest/journalpostapi/v1/journalpost";
     static final String FORSOEK_FERDIGSTILL_FALSE = "forsoekFerdigstill=false";
     static final String FORSOEK_FERDIGSTILL_TRUE = "forsoekFerdigstill=true";
-    private URI uri;
-    private URI uriArena;
+    private final URI uri;
+    private final URI uriArena;
     private final HttpHeaders headers = new HttpHeaders();
 
     @Autowired
@@ -61,7 +61,7 @@ public class JoarkService {
     }
 
     private URI uri(Journalpost journalpost){
-        if(journalpost.skalTilArena()){
+        if(journalpost.getBehandlesIArena()){
             return uriArena;
         }
         return uri;
@@ -76,7 +76,7 @@ public class JoarkService {
     private void debugLogJournalpost(Journalpost journalpost) {
         if (log.isDebugEnabled()) {
             try {
-                log.info("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
+                log.debug("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
             } catch (JsonProcessingException e) {
             }
         }

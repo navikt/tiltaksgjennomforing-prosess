@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Bruker;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.*;
 
+@Slf4j
 @Component
 public class JournalpostFactory {
 
@@ -43,15 +45,17 @@ public class JournalpostFactory {
         return journalpost;
     }
 
-    private void registrerJournalfoeringIArena(Journalpost journalpost, Avtale avtale, List<DokumentVariant> dokumentVarianter){
-        if(avtale.registreresIArena()){
+    private void registrerJournalfoeringIArena(Journalpost journalpost, Avtale avtale, List<DokumentVariant> dokumentVarianter) {
+        if (avtale.registreresIArena()) {
             journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getId().toString());
             journalpost.setBehandlingsTema(BEHANDLINGSTEMA);
-            journalpost.setTilArena(true);
+            journalpost.setBehandlesIArena(true);
             final String dokumentXml = avtaleTilXml.genererXml(avtale);
-            dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML ,encodeToBase64(dokumentXml.getBytes())));
+            dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, encodeToBase64(dokumentXml.getBytes())));
+            log.info("Avtale {} skal sendes til Arena");
         }
-        journalpost.setTilArena(false);
+        journalpost.setBehandlesIArena(false);
+        log.info("Avtale {} skal ikke sendes til Arena");
     }
 
     private String encodeToBase64(final byte[] dokumentBytes) {

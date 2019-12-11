@@ -1,5 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import java.util.List;
 
@@ -16,17 +18,15 @@ public class Journalpost {
     private final String tittel = TITTEL;
 
     private Bruker bruker;
-    private String eksternReferanseId;
-    private String behandlingsTema;
-    private Boolean tilArena;
+
     private List<Dokument> dokumenter;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String eksternReferanseId;
 
-    public void setTilArena(boolean tilArena) {
-        this.tilArena = tilArena;
-    }
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String behandlingsTema;
 
-    public boolean skalTilArena() {
-        return tilArena;
-    }
+    @JsonIgnore
+    private Boolean behandlesIArena;
 }

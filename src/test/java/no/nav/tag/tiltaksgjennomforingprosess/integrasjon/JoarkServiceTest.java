@@ -40,7 +40,7 @@ public class JoarkServiceTest {
 
     @Test
     public void kall_mot_joark_ok_skal_returnere_journalpostid_på_1ste_avtaleversjon() {
-        journalpost.setTilArena(true);
+        journalpost.setBehandlesIArena(true);
         JoarkResponse joarkResponse = new JoarkResponse();
         joarkResponse.setJournalpostId("123");
         when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenReturn(joarkResponse);
@@ -49,23 +49,23 @@ public class JoarkServiceTest {
 
     @Test
     public void kall_mot_joark_ok_skal_returnere_journalpostid_på_nye_avtaleversjoner() {
-        journalpost.setTilArena(false);
+        journalpost.setBehandlesIArena(false);
         JoarkResponse joarkResponse = new JoarkResponse();
         joarkResponse.setJournalpostId("123");
         when(restTemplate.postForObject(eq(expUriIkkeTilArena), any(HttpEntity.class), any())).thenReturn(joarkResponse);
         assertThat(joarkService.sendJournalpost(journalpost), equalTo("123"));
     }
-    
+
     @Test(expected = RuntimeException.class)
     public void oppretterJournalpost_status_500() {
-        journalpost.setTilArena(true);
+        journalpost.setBehandlesIArena(true);
         when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenThrow(RuntimeException.class);
         joarkService.sendJournalpost(journalpost);
     }
 
     @Test
     public void feil_mot_tjeneste_skal_hente_nytt_sts_token_og_forsøke_på_nytt() {
-        journalpost.setTilArena(true);
+        journalpost.setBehandlesIArena(true);
         when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenThrow(RuntimeException.class).thenReturn(new JoarkResponse());
         joarkService.sendJournalpost(journalpost);
         verify(stsService).evict();

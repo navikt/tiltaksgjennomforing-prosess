@@ -49,7 +49,7 @@ public class Avtale {
 
     private boolean godkjentPaVegneAv;
 
-    public boolean registreresIArena(){
+    public boolean registreresIArena() {
         return versjon == 1;
     }
 }
