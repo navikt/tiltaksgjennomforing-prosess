@@ -75,7 +75,7 @@ class AvtaleTilPdf {
         try {
             dokument.save(baos);
         } catch (IOException e) {
-            log.error("Feil oppstod ved generering av avtale " + avtale.getId(), e);
+            log.error("Feil oppstod ved generering av avtale " + avtale.getAvtaleId(), e);
             throw new RuntimeException("Feil ved generering av PDF-fil", e);
         } finally {
             try {
@@ -202,7 +202,7 @@ class AvtaleTilPdf {
             } catch (Exception e) {
                 log.error("Kan være avtale fra gamle versjon som mangler mulighet for godkjenning på vegne av " + e.getMessage());
             }
-            skrivFooter("Referanse:  " + avtale.getId().toString(), contentStream);
+            skrivFooter("Referanse:  " + avtale.getAvtaleId().toString(), contentStream);
             contentStream.endText();
             contentStream.close();
 

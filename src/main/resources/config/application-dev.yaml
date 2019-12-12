@@ -3,7 +3,7 @@ server:
 
 logging:
   level:
-    no.nav.tag.tiltaksgjennomforingprosess: DEBUG
+    no.nav.tag.tiltaksgjennomforingprosess: INFO
 
 spring:
   main:

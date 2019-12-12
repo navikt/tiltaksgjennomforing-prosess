@@ -47,16 +47,16 @@ public class JournalpostFactory {
 
     private void registrerJournalfoeringIArena(Journalpost journalpost, Avtale avtale, List<DokumentVariant> dokumentVarianter) {
         if (avtale.registreresIArena()) {
-            journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getId().toString());
+            journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getAvtaleId().toString());
             journalpost.setBehandlingsTema(BEHANDLINGSTEMA);
             journalpost.setBehandlesIArena(true);
             final String dokumentXml = avtaleTilXml.genererXml(avtale);
             dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, encodeToBase64(dokumentXml.getBytes())));
-            log.info("Avtale {} skal sendes til Arena", avtale.getId());
+            log.info("Avtale {} skal sendes til Arena", avtale.getAvtaleId());
             return;
         }
         journalpost.setBehandlesIArena(false);
-        log.info("Avtale {} skal ikke sendes til Arena", avtale.getId());
+        log.info("Avtale {} skal ikke sendes til Arena", avtale.getAvtaleId());
     }
 
     private String encodeToBase64(final byte[] dokumentBytes) {

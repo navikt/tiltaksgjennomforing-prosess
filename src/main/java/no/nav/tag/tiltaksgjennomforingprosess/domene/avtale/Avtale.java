@@ -13,7 +13,8 @@ import java.util.UUID;
 @Data
 @ToString
 public class Avtale {
-    private UUID id;
+    private UUID avtaleId;
+    private UUID avtaleVersjonId;
     private String deltakerFnr;
     private String bedriftNr;
     private String veilederNavIdent;

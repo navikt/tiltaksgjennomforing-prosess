@@ -45,7 +45,8 @@ public class TiltaksgjennomforingApiIntTest {
         List<Avtale> avtaleList;
         avtaleList = service.finnAvtalerTilJournalfoering();
         Avtale avtale = avtaleList.get(0);
-        assertEquals("ca3d7189-0852-4693-a3dd-d518b4ec42e4", avtale.getId().toString());
+        assertEquals("ca3d7189-0852-4693-a3dd-d518b4ec42e4", avtale.getAvtaleId().toString());
+        assertEquals("878c49f4-7225-4bb7-becf-a63b90a1baf7", avtale.getAvtaleVersjonId().toString());
         assertEquals("01093434109", avtale.getDeltakerFnr());
         assertEquals("975959171", avtale.getBedriftNr());
         assertEquals("X123456", avtale.getVeilederNavIdent());

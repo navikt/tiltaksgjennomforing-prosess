@@ -21,7 +21,7 @@ public class AvtaleTilXmlTest {
     @Test
     public void lagerAvtaleXml() {
         Avtale avtale = TestData.opprettAvtale();
-        avtale.setId(UUID.fromString(ID_AVTALE));
+        avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
         String xml = avtaleTilXml.genererXml(avtale);
 
         assertTrue(xml.contains(ID_AVTALE));
