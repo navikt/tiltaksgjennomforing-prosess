@@ -12,6 +12,8 @@ public class Journalpost {
     private final static String TEMA = "TIL";
     final static String TITTEL = "Avtale om arbeidstrening";
 
+    public final static String JORURNALFØRENDE_ENHET = "9999";
+
     private final String journalposttype = JOURNALPOST_TYPE;
     private final String kanal = KANAL;
     private final String tema = TEMA;
@@ -22,10 +24,19 @@ public class Journalpost {
     private List<Dokument> dokumenter;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Sak sak;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Avsender avsender;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String eksternReferanseId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String behandlingsTema;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String journalfoerendeEnhet;
 
     @JsonIgnore
     private Boolean behandlesIArena;

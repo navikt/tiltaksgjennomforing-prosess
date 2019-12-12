@@ -2,6 +2,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import org.junit.Test;
@@ -69,7 +70,17 @@ public class JournalpostFactoryTest {
         assertNull(journalpost.getEksternReferanseId());
         assertEquals(avtale.getDeltakerFnr(), journalpost.getBruker().getId());
         assertEquals("FNR", journalpost.getBruker().getIdType());
+        assertEquals("9999", journalpost.getJournalfoerendeEnhet());
+        assertEquals("GENERELL_SAK", journalpost.getSak().getSakstype());
+
+        assertEquals(avtale.getBedriftNr(), journalpost.getAvsender().getId());
+        assertEquals("ORGNR", journalpost.getAvsender().getIdType());
+        assertEquals(avtale.getBedriftNavn(), journalpost.getAvsender().getNavn());
+
+
+        assertNotNull(journalpost.getTittel());
         assertEquals(1, journalpost.getDokumenter().size());
+        assertEquals("Avtale om arbeidstrening", journalpost.getDokumenter().get(0).getTittel());
         assertEquals(1, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
 
         DokumentVariant dokumentVariant = journalpost.getDokumenter().get(0).getDokumentVarianter().get(0);
