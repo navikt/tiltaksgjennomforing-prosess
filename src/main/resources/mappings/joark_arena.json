@@ -31,7 +31,7 @@
             "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
           },
           {
-            "matchesJsonPath" : "$.bruker[?(@.id == '88888899999')]"
+            "matchesJsonPath" : "$.bruker[?(@.id == '02018099999')]"
           } ,
           {
             "matchesJsonPath" : "$.bruker[?(@.idType == 'FNR')]"
@@ -43,10 +43,10 @@
             "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.variantformat == 'ORIGINAL')])]"
           },
           {
-            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.fysiskDokument == 'ZG9rdW1lbnQ=')])]"
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'XML')])]"
           },
           {
-            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.fysiskDokument == 'PGRva3VtZW50Lz4=')])]"
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.variantformat == 'ARKIV')])]"
           }
         ]
       },

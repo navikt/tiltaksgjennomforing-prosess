@@ -25,25 +25,34 @@
             "matchesJsonPath": "[?(@.tema == 'TIL')]"
           },
           {
+            "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
+          },
+          {
             "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
           },
           {
-            "matchesJsonPath" : "$.bruker[?(@.id == '88888899999')]"
+            "matchesJsonPath" : "$.bruker[?(@.id == '02018099999')]"
           } ,
           {
             "matchesJsonPath" : "$.bruker[?(@.idType == 'FNR')]"
+          },
+          {
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '999988881')]"
+          } ,
+          {
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.idType == 'ORGNR')]"
+          },
+          {
+            "matchesJsonPath" : "$.sak[?(@.sakstype == 'GENERELL_SAK')]"
+          },
+          {
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.navn == 'Hansen AS')]"
           },
           {
             "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'PDF')])]"
           },
           {
             "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.variantformat == 'ORIGINAL')])]"
-          },
-          {
-            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.fysiskDokument == 'ZG9rdW1lbnQ=')])]"
-          },
-          {
-            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.fysiskDokument == 'PGRva3VtZW50Lz4=')])]"
           }
         ]
       },
