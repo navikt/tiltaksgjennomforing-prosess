@@ -76,6 +76,33 @@ public class JournalpostJobbTest {
     }
 
     @Test
+    public void toAvtalerDerEttjoarkKallFeiler(){
+        Avtale avtale1 = TestData.opprettAvtale();
+        Avtale avtale2 = TestData.opprettAvtale();
+
+        Journalpost journalpost1 = new Journalpost();
+        journalpost1.setEksternReferanseId(avtale1.getAvtaleId().toString());
+        Journalpost journalpost2 = new Journalpost();
+        journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
+
+        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
+        jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
+
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
+
+        when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
+        when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
+
+        when(joarkService.sendJournalpost(eq(journalpost1))).thenReturn(JOURNALPOST_ID);
+        when(joarkService.sendJournalpost(eq(journalpost2))).thenThrow(RuntimeException.class);
+
+        journalpostJobb.avtalerTilJournalfoering();
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost1));
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2));
+        verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
+    }
+
+    @Test
     public void kallerMedAlleAvtaler() {
 
         Avtale avtale1 = TestData.opprettAvtale();

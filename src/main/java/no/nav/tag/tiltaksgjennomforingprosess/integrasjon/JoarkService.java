@@ -44,7 +44,7 @@ public class JoarkService {
         debugLogJournalpost(journalpost);
         JoarkResponse response = null;
         try {
-            log.info("Forsøker å journalføre avtale {}", journalpost.getEksternReferanseId());
+            log.info("Forsøker å journalføre versjon av avtale {}", journalpost.getEksternReferanseId());
             response = restTemplate.postForObject(uri(journalpost), entityMedStsToken(journalpost), JoarkResponse.class);
         } catch (Exception e1) {
             stsService.evict();
@@ -56,7 +56,7 @@ public class JoarkService {
                 throw new RuntimeException("Kall til Joark feilet: " + e2);
             }
         }
-        log.info("Journalført avtale {}", journalpost.getEksternReferanseId());
+        log.info("Journalført varsjon avtale {}", journalpost.getEksternReferanseId());
         return response.getJournalpostId();
     }
 

@@ -65,8 +65,12 @@ public class JournalpostJobb {
                         optJournalpost = Optional.empty();
                     }
                     optJournalpost.ifPresent(journalpost -> {
+                        try {
                         String journalpostId = joarkService.sendJournalpost(journalpost);
                         journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
+                        } catch (Exception e){
+                            log.error("Feil oppsto ved journalføring av en avtale versjon {}", journalpost.getEksternReferanseId(), e);
+                        }
                     });
                 });
         return journalfoerteAvtaler;
