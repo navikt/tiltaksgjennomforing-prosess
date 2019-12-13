@@ -73,9 +73,9 @@ public class JournalpostFactoryTest {
         assertEquals("9999", journalpost.getJournalfoerendeEnhet());
         assertEquals("GENERELL_SAK", journalpost.getSak().getSakstype());
 
-        assertEquals(avtale.getBedriftNr(), journalpost.getAvsender().getId());
-        assertEquals("ORGNR", journalpost.getAvsender().getIdType());
-        assertEquals(avtale.getBedriftNavn(), journalpost.getAvsender().getNavn());
+        assertEquals(avtale.getBedriftNr(), journalpost.getAvsenderMottaker().getId());
+        assertEquals("ORGNR", journalpost.getAvsenderMottaker().getIdType());
+        assertEquals(avtale.getBedriftNavn(), journalpost.getAvsenderMottaker().getNavn());
 
 
         assertNotNull(journalpost.getTittel());

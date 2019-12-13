@@ -3,6 +3,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+
 import java.util.List;
 
 @Data
@@ -27,7 +28,7 @@ public class Journalpost {
     private Sak sak;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Avsender avsender;
+    private Avsender avsenderMottaker;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String eksternReferanseId;

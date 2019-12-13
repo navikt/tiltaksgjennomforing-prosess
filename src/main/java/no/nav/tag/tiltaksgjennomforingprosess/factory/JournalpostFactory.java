@@ -62,7 +62,7 @@ public class JournalpostFactory {
         journalpost.setBehandlesIArena(false);
         journalpost.setJournalfoerendeEnhet(JORURNALFØRENDE_ENHET);
         journalpost.setSak(new Sak());
-        journalpost.setAvsender(new Avsender(avtale.getBedriftNr(), avtale.getBedriftNavn()));
+        journalpost.setAvsenderMottaker(new Avsender(avtale.getBedriftNr(), avtale.getBedriftNavn()));
 
         log.info("Avtale {} med versjonId {} skal ikke sendes til Arena", avtale.getAvtaleId(), avtale.getAvtaleVersjonId());
     }
