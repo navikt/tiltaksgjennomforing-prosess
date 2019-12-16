@@ -21,6 +21,9 @@ public class AvtaleTilXmlTest {
     @Test
     public void lagerAvtaleXml() {
         Avtale avtale = TestData.opprettAvtale();
+//        avtale.setStartDato(LocalDate.now().withYear(2019).withMonth(12).withDayOfMonth(30));
+//        avtale.setSluttDato(avtale.getStartDato().plusMonths(3));
+
         avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
         String xml = avtaleTilXml.genererXml(avtale);
 
