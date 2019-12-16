@@ -77,7 +77,7 @@ public class JournalpostJobb {
             String journalpostId = joarkService.sendJournalpost(journalpost);
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
         } catch (Exception e) {
-            log.error("Feil oppsto ved journalføring av en avtale versjon {}", journalpost.getEksternReferanseId(), e);
+            log.error("Feil oppsto ved journalføring av en avtale versjon {}", journalpost.getAvtaleId(), e);
         }
     }
 
