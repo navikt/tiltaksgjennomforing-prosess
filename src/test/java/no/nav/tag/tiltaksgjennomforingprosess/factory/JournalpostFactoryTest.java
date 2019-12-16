@@ -2,7 +2,6 @@ package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class JournalpostFactoryTest {
         assertEquals("AVT" + avtale.getAvtaleId(), journalpost.getEksternReferanseId());
         assertEquals(avtale.getDeltakerFnr(), journalpost.getBruker().getId());
         assertEquals("FNR", journalpost.getBruker().getIdType());
-        assertTrue(journalpost.getBehandlesIArena());
+        assertTrue(journalpost.skalBehandlesIArena());
         assertEquals(1, journalpost.getDokumenter().size());
 
         journalpost.getDokumenter().get(0).getDokumentVarianter().forEach(dokumentVariant -> {
@@ -66,8 +65,7 @@ public class JournalpostFactoryTest {
         assertEquals("NAV_NO", journalpost.getKanal());
         assertEquals("TIL", journalpost.getTema());
         assertEquals("Avtale om arbeidstrening", journalpost.getTittel());
-        assertFalse(journalpost.getBehandlesIArena());
-        assertNull(journalpost.getEksternReferanseId());
+        assertFalse(journalpost.skalBehandlesIArena());
         assertEquals(avtale.getDeltakerFnr(), journalpost.getBruker().getId());
         assertEquals("FNR", journalpost.getBruker().getIdType());
         assertEquals("9999", journalpost.getJournalfoerendeEnhet());

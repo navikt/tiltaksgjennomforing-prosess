@@ -49,10 +49,6 @@ public class Avtale {
     private LocalDate godkjentAvVeileder;
 
     private boolean godkjentPaVegneAv;
-
-    public boolean registreresIArena() {
-        return versjon == 1;
-    }
 }
 
 

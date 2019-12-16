@@ -25,10 +25,10 @@
             "matchesJsonPath": "[?(@.tema == 'TIL')]"
           },
           {
-            "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
+            "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
           },
           {
-            "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
+            "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
           },
           {
             "matchesJsonPath" : "$.bruker[?(@.id == '02018099999')]"

@@ -40,5 +40,12 @@ public class Journalpost {
     private String journalfoerendeEnhet;
 
     @JsonIgnore
-    private Boolean behandlesIArena;
+    private String avtaleId;
+
+    @JsonIgnore
+    private Integer avtaleVersjon;
+
+    public boolean skalBehandlesIArena(){
+        return avtaleVersjon == 1;
+    }
 }

@@ -56,28 +56,36 @@ public class JournalpostJobb {
         Map<UUID, String> journalfoerteAvtaler = new HashMap<>(avtalerTilJournalforing.size());
         avtalerTilJournalforing
                 .forEach(avtale -> {
-                    Optional<Journalpost> optJournalpost;
-                    try {
-                        optJournalpost = Optional.of(journalpostFactory.konverterTilJournalpost(avtale));
-                    } catch (Throwable t) {
-                        log.error("Feil ved mapping av avtale {} til journalpost: ", avtale.getAvtaleId(), t);
-                        journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), MAPPING_FEIL);
-                        optJournalpost = Optional.empty();
-                    }
-                    optJournalpost.ifPresent(journalpost -> {
-                        try {
-                        String journalpostId = joarkService.sendJournalpost(journalpost);
-                        journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
-                        } catch (Exception e){
-                            log.error("Feil oppsto ved journalføring av en avtale versjon {}", journalpost.getEksternReferanseId(), e);
-                        }
-                    });
+                    Optional<Journalpost> optJournalpost = opprettJournalpost(avtale, journalfoerteAvtaler);
+                    optJournalpost.ifPresent(journalpost -> journalfoer(avtale, journalpost, journalfoerteAvtaler));
                 });
         return journalfoerteAvtaler;
     }
 
-    private void registrerAvtalerSomJournalfoert(Map<UUID, String> journalfoeringer) {
+    private Optional<Journalpost> opprettJournalpost(Avtale avtale, Map<UUID, String> journalfoerteAvtaler){
+        try {
+            return Optional.of(journalpostFactory.konverterTilJournalpost(avtale));
+        } catch (Throwable t) {
+            log.error("Feil ved mapping av avtale {} til journalpost: ", avtale.getAvtaleId(), t);
+            journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), MAPPING_FEIL);
+            return Optional.empty();
+        }
+    }
 
+    private void journalfoer(Avtale avtale, Journalpost journalpost, Map<UUID, String> journalfoerteAvtaler){
+        try {
+            String journalpostId = joarkService.sendJournalpost(journalpost);
+            journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
+        } catch (Exception e) {
+            log.error("Feil oppsto ved journalføring av en avtale versjon {}", journalpost.getEksternReferanseId(), e);
+        }
+    }
+
+    private void registrerAvtalerSomJournalfoert(Map<UUID, String> journalfoeringer) {
+        if(journalfoeringer.isEmpty()){
+            log.warn("Ingen avtaler registert som journalført. Sjekk feil v/journalføring");
+            return;
+        }
         try {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(journalfoeringer);
         } catch (Exception e) {
