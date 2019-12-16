@@ -63,10 +63,11 @@ public class JournalpostJobb {
     }
 
     private Optional<Journalpost> opprettJournalpost(Avtale avtale, Map<UUID, String> journalfoerteAvtaler){
+        log.debug("avtaleId={}, fraDato={}, tilDato={}", avtale.getAvtaleId(), avtale.getStartDato(), avtale.getSluttDato());
         try {
             return Optional.of(journalpostFactory.konverterTilJournalpost(avtale));
         } catch (Throwable t) {
-            log.error("Feil ved mapping av avtale {} til journalpost: ", avtale.getAvtaleId(), t);
+            log.error("Feil ved mapping av avtale {} versjon {} til journalpost: ", avtale.getAvtaleId(), avtale.getVersjon(), t);
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), MAPPING_FEIL);
             return Optional.empty();
         }
