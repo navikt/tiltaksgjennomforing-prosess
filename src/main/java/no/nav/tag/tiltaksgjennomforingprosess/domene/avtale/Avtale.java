@@ -49,6 +49,10 @@ public class Avtale {
     private LocalDate godkjentAvVeileder;
 
     private boolean godkjentPaVegneAv;
+
+    public boolean erNyVersjon(){
+        return this.versjon > 1;
+    }
 }
 
 

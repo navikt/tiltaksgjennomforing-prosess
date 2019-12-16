@@ -43,6 +43,9 @@ public class Journalpost {
     private String avtaleId;
 
     @JsonIgnore
+    private String avtaleVersjonId;
+
+    @JsonIgnore
     private Integer avtaleVersjon;
 
     public boolean skalBehandlesIArena(){

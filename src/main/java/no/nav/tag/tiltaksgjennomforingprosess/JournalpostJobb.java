@@ -78,7 +78,7 @@ public class JournalpostJobb {
             String journalpostId = joarkService.sendJournalpost(journalpost);
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
         } catch (Exception e) {
-            log.error("Feil oppsto ved journalføring av en avtale versjon {}", journalpost.getAvtaleId(), e);
+            log.error("Feil oppsto ved journalføring av avtale {} versjon {}", journalpost.getAvtaleId(), journalpost.getAvtaleVersjon(), e);
         }
     }
 
@@ -93,7 +93,7 @@ public class JournalpostJobb {
             log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
             JournalpostJobb.deaktiverJobb();
         }
-        log.info("Ferdig journalført {} avtaler: {}", journalfoeringer.keySet().stream().filter(key -> !journalfoeringer.get(key).equals(MAPPING_FEIL)).count(), avtalerJournalfortInfo(journalfoeringer));
+        log.info("Ferdig journalført {} avtaler/versjoner: {}", journalfoeringer.keySet().stream().filter(key -> !journalfoeringer.get(key).equals(MAPPING_FEIL)).count(), avtalerJournalfortInfo(journalfoeringer));
     }
 
     private static void deaktiverJobb() {

@@ -31,6 +31,7 @@ public class JournalpostFactory {
         Journalpost journalpost = new Journalpost();
         journalpost.setAvtaleId(avtale.getAvtaleId().toString());
         journalpost.setAvtaleVersjon(avtale.getVersjon());
+        journalpost.setAvtaleVersjonId(avtale.getAvtaleVersjonId().toString());
         journalpost.setBruker(bruker);
         List<DokumentVariant> dokumentVarianter = new ArrayList<>(2);
 
@@ -57,14 +58,12 @@ public class JournalpostFactory {
         final String dokumentXml = avtaleTilXml.genererXml(avtale);
         log.debug(dokumentXml);
         dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, encodeToBase64(dokumentXml.getBytes())));
-        log.info("Versjon {} av avtale {} med versjonId {} skal sendes til Arena", avtale.getVersjon(), avtale.getAvtaleId(), avtale.getAvtaleVersjonId());
     }
 
     private void journalfoerSomferdig(Journalpost journalpost, Avtale avtale) {
         journalpost.setJournalfoerendeEnhet(JORURNALFØRENDE_ENHET);
         journalpost.setSak(new Sak());
         journalpost.setAvsenderMottaker(new Avsender(avtale.getBedriftNr(), avtale.getBedriftNavn()));
-        log.info("Versjon {} av avtale {} med versjonId {} skal ikke sendes til Arena", avtale.getVersjon(), avtale.getAvtaleId(), avtale.getAvtaleVersjonId());
     }
 
     private String encodeToBase64(final byte[] dokumentBytes) {

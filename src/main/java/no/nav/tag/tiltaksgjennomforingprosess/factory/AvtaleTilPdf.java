@@ -110,7 +110,7 @@ class AvtaleTilPdf {
             contentStream.beginText();
             contentStream.newLineAtOffset(START_SIDEN_XY[0], START_SIDEN_XY[1]);
             contentStream.setLeading(LEADING_NORMAL);
-            contentStream = skrivTekst("Avtale om arbeidstrening", contentStream, document, fontBold, FONT_SIZE_STOR);
+            contentStream = skrivTekst(avtale.erNyVersjon() ? "Avtale om arbeidstrening (versjon " + avtale.getVersjon() + ")" : "Avtale om arbeidstrening", contentStream, document, fontBold, FONT_SIZE_STOR);
             contentStream.setFont(font, FONT_SIZE);
             List<Object> text = new ArrayList<>();
             float moveToPositionX = -32000;
