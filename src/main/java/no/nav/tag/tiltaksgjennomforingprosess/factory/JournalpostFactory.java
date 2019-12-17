@@ -32,6 +32,7 @@ public class JournalpostFactory {
         journalpost.setAvtaleId(avtale.getAvtaleId().toString());
         journalpost.setAvtaleVersjon(avtale.getVersjon());
         journalpost.setAvtaleVersjonId(avtale.getAvtaleVersjonId().toString());
+        journalpost.setBehandlingsTema(BEHANDLINGSTEMA);
         journalpost.setBruker(bruker);
         List<DokumentVariant> dokumentVarianter = new ArrayList<>(2);
 
@@ -54,7 +55,6 @@ public class JournalpostFactory {
 
     private void journalfoerSomMidlertidig(Journalpost journalpost, Avtale avtale, List<DokumentVariant> dokumentVarianter) {
         journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getAvtaleId().toString());
-        journalpost.setBehandlingsTema(BEHANDLINGSTEMA);
         final String dokumentXml = avtaleTilXml.genererXml(avtale);
         log.debug(dokumentXml);
         dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, encodeToBase64(dokumentXml.getBytes())));
