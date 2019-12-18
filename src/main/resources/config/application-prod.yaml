@@ -1,3 +1,7 @@
+logging:
+  level:
+    no.nav.tag.tiltaksgjennomforingprosess: ${process.log.level}
+
 prosess:
   cron: "5/30 * 07-19 * * MON-FRI"
   integrasjon:
