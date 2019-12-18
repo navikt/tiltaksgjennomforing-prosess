@@ -1,4 +1,5 @@
 {
   "ingress": "https://arbeidsgiver.nais.adeo.no/tiltaksgjennomforing-prosess/",
-  "spring-profil": "prod"
+  "spring-profil": "prod",
+  "vault-default-path": "kv/prod/fss/tiltaksgjennomforing-prosess/default"
 }

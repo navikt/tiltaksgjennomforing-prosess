@@ -1,4 +1,5 @@
 {
   "ingress": "https://arbeidsgiver.nais.preprod.local/tiltaksgjennomforing-prosess/",
-  "spring-profil": "preprod"
+  "spring-profil": "preprod",
+  "vault-default-path": "kv/preprod/fss/tiltaksgjennomforing-prosess/default"
 }

@@ -23,7 +23,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: "kv/preprod/fss/tiltaksgjennomforing-prosess/default"
+      - kvPath: {{vault-default-path}}
         mountPath: "/var/run/secrets/nais.io/vault/"
   env:
     - name: SPRING_PROFILES_ACTIVE
