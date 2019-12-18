@@ -1,5 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
@@ -22,6 +24,9 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class TiltaksgjennomfoeringApiService {
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -57,6 +62,7 @@ public class TiltaksgjennomfoeringApiService {
     }
 
     public void settAvtalerTilJournalfoert(Map<UUID, String> avtalerTilJournalfoert) {
+        debugApiKall(avtalerTilJournalfoert);
         headers.setBearerAuth(stsService.hentToken());
         try {
             restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);
@@ -65,6 +71,15 @@ public class TiltaksgjennomfoeringApiService {
             stsService.evict();
             headers.setBearerAuth(stsService.hentToken());
             restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);
+        }
+    }
+
+    private void debugApiKall(Map<UUID, String> avtalerTilJournalfoert) {
+        if (log.isDebugEnabled()) {
+            try {
+                log.debug("JOURNALFØRT JSON REQ: {}", objectMapper.writeValueAsString(avtalerTilJournalfoert));
+            } catch (JsonProcessingException e) {
+            }
         }
     }
 }

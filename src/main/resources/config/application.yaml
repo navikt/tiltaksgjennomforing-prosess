@@ -4,6 +4,10 @@ management.endpoints.web:
   exposure.include: info, health, metrics, prometheus
   base-path: /internal/actuator
 
+logging:
+  level:
+    no.nav.tag.tiltaksgjennomforingprosess: INFO
+
 spring:
   application:
     name: tiltaksgjennomforing-prosess

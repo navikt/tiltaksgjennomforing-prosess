@@ -17,7 +17,8 @@ public class TestData {
 
     public static Avtale opprettAvtale() {
         Avtale avtale = new Avtale();
-        avtale.setId(UUID.randomUUID());
+        avtale.setAvtaleId(UUID.randomUUID());
+        avtale.setAvtaleVersjonId(UUID.randomUUID());
         avtale.setOpprettet(LocalDate.now().minusDays(2));
         avtale.setDeltakerFornavn("Lillehans");
         avtale.setDeltakerEtternavn("Hansen");
@@ -44,6 +45,7 @@ public class TestData {
         avtale.setStartDato(START_DATO);
         avtale.setSluttDato(START_DATO.plusMonths(2));
         avtale.setStillingprosent(50);
+        avtale.setVersjon(1);
         avtale.setGodkjentAvArbeidsgiver(LocalDate.now());
         avtale.setGodkjentAvDeltaker(LocalDate.now().plusDays(1));
         avtale.setGodkjentAvVeileder(LocalDate.now().plusDays(2));

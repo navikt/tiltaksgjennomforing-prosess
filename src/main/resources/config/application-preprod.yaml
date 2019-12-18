@@ -1,3 +1,7 @@
+logging:
+  level:
+    no.nav.tag.tiltaksgjennomforingprosess: ${process.log.level}
+
 prosess:
   cron: "5/30 * 07-20 * * MON-FRI"
   integrasjon:
@@ -9,12 +13,4 @@ prosess:
       passord: ${tiltaksgjennomforing.consumer.password}
     api:
       uri: https://arbeidsgiver.nais.preprod.local/tiltaksgjennomforing-api
-
-
-
-
-
-
-
-
 

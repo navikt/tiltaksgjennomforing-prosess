@@ -42,7 +42,7 @@ public class AvtaleTilPdfTest {
     @Test
     public void lagerAvtalePdf() throws IOException {
         Avtale avtale = TestData.opprettAvtale();
-        avtale.setId(UUID.fromString(ID_AVTALE));
+        avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
 
         byte[] bytes = avtaleTilPdf.tilBytesAvPdf(avtale);
         PDDocument dokument = PDDocument.load(bytes);
@@ -52,13 +52,13 @@ public class AvtaleTilPdfTest {
     @Test(expected = RuntimeException.class)
     public void lagerIkkeAvtalePdf() {
         Avtale avtale = TestData.opprettAvtale();
-        avtale.setId(null);
+        avtale.setAvtaleId(null);
         avtaleTilPdf.tilBytesAvPdf(avtale);
     }
 
     private void sjekkPdfInnhold(Avtale avtale, PDDocument dokument) throws IOException {
         String textInPdf = new PDFTextStripper().getText(dokument);
-        boolean harAlt = textInPdf.contains(avtale.getId().toString()) && textInPdf.contains(avtale.getDeltakerFnr()) && textInPdf.contains(avtale.getBedriftNr())
+        boolean harAlt = textInPdf.contains(avtale.getAvtaleId().toString()) && textInPdf.contains(avtale.getDeltakerFnr()) && textInPdf.contains(avtale.getBedriftNr())
                 && textInPdf.contains(avtale.getDeltakerFornavn() + " " + avtale.getDeltakerEtternavn())
                 && textInPdf.contains(avtale.getArbeidsgiverFornavn() + " " + avtale.getArbeidsgiverEtternavn()) && textInPdf.contains(avtale.getArbeidsgiverTlf())
                 && textInPdf.contains(avtale.getVeilederFornavn() + " " + avtale.getVeilederEtternavn())

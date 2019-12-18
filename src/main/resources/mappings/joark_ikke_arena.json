@@ -1,0 +1,68 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/rest/journalpostapi/v1/journalpost",
+        "queryParameters": {
+          "forsoekFerdigstill": {
+            "equalTo": "true"
+          }
+        },
+        "headers" : {
+          "Authorization" : {
+            "equalTo" : "Bearer eyxXxx"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "[?(@.journalposttype == 'INNGAAENDE')]"
+          } ,
+          {
+            "matchesJsonPath": "[?(@.kanal == 'NAV_NO')]"
+          },
+          {
+            "matchesJsonPath": "[?(@.tema == 'TIL')]"
+          },
+          {
+            "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
+          },
+          {
+            "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
+          },
+          {
+            "matchesJsonPath" : "$.bruker[?(@.id == '02018099999')]"
+          } ,
+          {
+            "matchesJsonPath" : "$.bruker[?(@.idType == 'FNR')]"
+          },
+          {
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '999988881')]"
+          } ,
+          {
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.idType == 'ORGNR')]"
+          },
+          {
+            "matchesJsonPath" : "$.sak[?(@.sakstype == 'GENERELL_SAK')]"
+          },
+          {
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.navn == 'Hansen AS')]"
+          },
+          {
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'PDF')])]"
+          },
+          {
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.variantformat == 'ORIGINAL')])]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"journalpostId\" : \"001\", \"journalstatus\" : \"MIDLERTIDIG\", \"melding\" : \"Gikk bra\"}"
+      }
+    }
+  ]
+}

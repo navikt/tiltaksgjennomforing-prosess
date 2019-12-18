@@ -22,6 +22,9 @@ spec:
     - {{ingress}}
   vault:
     enabled: true
+    paths:
+      - kvPath: "kv/preprod/fss/tiltaksgjennomforing-prosess/default"
+        mountPath: "/var/run/secrets/nais.io/vault/"
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: {{spring-profil}}

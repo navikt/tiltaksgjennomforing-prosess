@@ -13,7 +13,8 @@ import java.util.UUID;
 @Data
 @ToString
 public class Avtale {
-    private UUID id;
+    private UUID avtaleId;
+    private UUID avtaleVersjonId;
     private String deltakerFnr;
     private String bedriftNr;
     private String veilederNavIdent;
@@ -31,6 +32,7 @@ public class Avtale {
     private String oppfolging;
     private String tilrettelegging;
     private Integer stillingprosent;
+    private Integer versjon;
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
 
     private LocalDate startDato;
@@ -47,6 +49,10 @@ public class Avtale {
     private LocalDate godkjentAvVeileder;
 
     private boolean godkjentPaVegneAv;
+
+    public boolean erNyVersjon(){
+        return this.versjon > 1;
+    }
 }
 
 

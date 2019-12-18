@@ -21,8 +21,10 @@ import java.util.Arrays;
 public class JoarkService {
 
     static final String PATH = "/rest/journalpostapi/v1/journalpost";
-    static final String QUERY_PARAM = "forsoekFerdigstill=false";
-    private URI uri;
+    static final String FORSOEK_FERDIGSTILL_FALSE = "forsoekFerdigstill=false";
+    static final String FORSOEK_FERDIGSTILL_TRUE = "forsoekFerdigstill=true";
+    private final URI uri;
+    private final URI uriArena;
     private final HttpHeaders headers = new HttpHeaders();
 
     @Autowired
@@ -32,11 +34,8 @@ public class JoarkService {
     private StsService stsService;
 
     public JoarkService(JournalpostProperties journalpostProperties) {
-        uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri())
-                .path(PATH)
-                .query(QUERY_PARAM)
-                .build()
-                .toUri();
+        uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri()).path(PATH).query(FORSOEK_FERDIGSTILL_TRUE).build().toUri();
+        uriArena = UriComponentsBuilder.fromUri(journalpostProperties.getUri()).path(PATH).query(FORSOEK_FERDIGSTILL_FALSE).build().toUri();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         headers.setContentType((MediaType.APPLICATION_JSON));
     }
@@ -45,20 +44,27 @@ public class JoarkService {
         debugLogJournalpost(journalpost);
         JoarkResponse response = null;
         try {
-            log.info("Forsøker å journalføre avtale {}", journalpost.getEksternReferanseId());
-            response = restTemplate.postForObject(uri, entityMedStsToken(journalpost), JoarkResponse.class);
+            log.info("Forsøker å journalføre versjon {} av avtale {} med versjonId {}", journalpost.getAvtaleVersjon(), journalpost.getAvtaleId(), journalpost.getAvtaleVersjonId());
+            response = restTemplate.postForObject(uri(journalpost), entityMedStsToken(journalpost), JoarkResponse.class);
         } catch (Exception e1) {
             stsService.evict();
             log.warn("Feil ved kommunikasjon mot journalpost-API. Henter nytt sts-token og forsøker igjen");
             try {
-                response = restTemplate.postForObject(uri, entityMedStsToken(journalpost), JoarkResponse.class);
+                response = restTemplate.postForObject(uri(journalpost), entityMedStsToken(journalpost), JoarkResponse.class);
             } catch (Exception e2) {
                 log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e2);
                 throw new RuntimeException("Kall til Joark feilet: " + e2);
             }
         }
-        log.info("Journalført avtale {}", journalpost.getEksternReferanseId());
+        log.info("Journalført versjon {} av avtale {}",journalpost.getAvtaleVersjon(), journalpost.getAvtaleId());
         return response.getJournalpostId();
+    }
+
+    private URI uri(Journalpost journalpost){
+        if(journalpost.skalBehandlesIArena()){
+            return uriArena;
+        }
+        return uri;
     }
 
     private HttpEntity<Journalpost> entityMedStsToken(final Journalpost journalpost) {
@@ -70,7 +76,7 @@ public class JoarkService {
     private void debugLogJournalpost(Journalpost journalpost) {
         if (log.isDebugEnabled()) {
             try {
-                log.info("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
+                log.debug("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
             } catch (JsonProcessingException e) {
             }
         }
