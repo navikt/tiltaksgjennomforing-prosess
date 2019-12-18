@@ -34,6 +34,7 @@ public class JournalpostFactory {
         journalpost.setAvtaleVersjonId(avtale.getAvtaleVersjonId().toString());
         journalpost.setBehandlingsTema(BEHANDLINGSTEMA);
         journalpost.setBruker(bruker);
+        journalpost.setAvsenderMottaker(new Avsender(avtale.getBedriftNr(), avtale.getBedriftNavn()));
         List<DokumentVariant> dokumentVarianter = new ArrayList<>(2);
 
         final byte[] dokumentPdfAsBytes = new AvtaleTilPdf().tilBytesAvPdf(avtale);
@@ -63,7 +64,6 @@ public class JournalpostFactory {
     private void journalfoerSomferdig(Journalpost journalpost, Avtale avtale) {
         journalpost.setJournalfoerendeEnhet(JORURNALFØRENDE_ENHET);
         journalpost.setSak(new Sak());
-        journalpost.setAvsenderMottaker(new Avsender(avtale.getBedriftNr(), avtale.getBedriftNavn()));
     }
 
     private String encodeToBase64(final byte[] dokumentBytes) {
