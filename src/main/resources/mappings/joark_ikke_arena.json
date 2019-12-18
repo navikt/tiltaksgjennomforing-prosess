@@ -31,10 +31,10 @@
             "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
           },
           {
-            "matchesJsonPath" : "$.bruker[?(@.id == '02018099999')]"
+            "matchesJsonPath" : "$.bruker[?(@.id == '999988881')]"
           } ,
           {
-            "matchesJsonPath" : "$.bruker[?(@.idType == 'FNR')]"
+            "matchesJsonPath" : "$.bruker[?(@.idType == 'ORGNR')]"
           },
           {
             "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '999988881')]"

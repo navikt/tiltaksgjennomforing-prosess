@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class Bruker {
-    private final String idType = "FNR";
+    private final String idType = "ORGNR";
     private String id;
 }

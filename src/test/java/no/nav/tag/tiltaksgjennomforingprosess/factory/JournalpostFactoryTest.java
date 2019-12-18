@@ -35,8 +35,8 @@ public class JournalpostFactoryTest {
         assertEquals("TIL", journalpost.getTema());
         assertEquals("Avtale om arbeidstrening", journalpost.getTittel());
         assertEquals("AVT" + avtale.getAvtaleId(), journalpost.getEksternReferanseId());
-        assertEquals(avtale.getDeltakerFnr(), journalpost.getBruker().getId());
-        assertEquals("FNR", journalpost.getBruker().getIdType());
+        assertEquals(avtale.getBedriftNr(), journalpost.getBruker().getId());
+        assertEquals("ORGNR", journalpost.getBruker().getIdType());
         assertTrue(journalpost.skalBehandlesIArena());
         assertEquals(1, journalpost.getDokumenter().size());
 
@@ -66,8 +66,8 @@ public class JournalpostFactoryTest {
         assertEquals("TIL", journalpost.getTema());
         assertEquals("Avtale om arbeidstrening", journalpost.getTittel());
         assertFalse(journalpost.skalBehandlesIArena());
-        assertEquals(avtale.getDeltakerFnr(), journalpost.getBruker().getId());
-        assertEquals("FNR", journalpost.getBruker().getIdType());
+        assertEquals(avtale.getBedriftNr(), journalpost.getAvsenderMottaker().getId());
+        assertEquals("ORGNR", journalpost.getBruker().getIdType());
         assertEquals("9999", journalpost.getJournalfoerendeEnhet());
         assertEquals("GENERELL_SAK", journalpost.getSak().getSakstype());
 

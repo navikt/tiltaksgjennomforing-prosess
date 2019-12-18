@@ -27,7 +27,7 @@ public class JournalpostFactory {
     public Journalpost konverterTilJournalpost(Avtale avtale) {
 
         Bruker bruker = new Bruker();
-        bruker.setId(avtale.getDeltakerFnr());
+        bruker.setId(avtale.getBedriftNr());
         Journalpost journalpost = new Journalpost();
         journalpost.setAvtaleId(avtale.getAvtaleId().toString());
         journalpost.setAvtaleVersjon(avtale.getVersjon());
