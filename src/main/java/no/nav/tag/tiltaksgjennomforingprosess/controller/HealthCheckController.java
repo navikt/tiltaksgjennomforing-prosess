@@ -14,30 +14,30 @@ import java.net.URI;
 @RestController
 public class HealthCheckController {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+    private final URI uri;
 
     private static final String PATH = "/internal/healthcheck";
-    private static final String API_FEIL = "Ikke kontakt med tiltaksgjennomfoering-api";
-    private URI uri;
+    private static final String API_FEIL = "Ikke kontakt med tiltaksgjennomforing-api";
 
-    public HealthCheckController(TiltakApiProperties properties){
+    public HealthCheckController(TiltakApiProperties properties, RestTemplate restTemplate) {
         uri = UriComponentsBuilder.fromUri(properties.getUri())
                 .path(PATH)
                 .build()
                 .toUri();
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping(value = PATH)
     public String healthcheck() {
-        String ping = null;
-        try{
+        String ping;
+        try {
             ping = restTemplate.getForObject(uri, String.class);
-        } catch (Throwable t){
+        } catch (Throwable t) {
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, API_FEIL);
         }
 
-        if(ping == null || !ping.equals("ok")){
+        if (!"ok".equals(ping)) {
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, API_FEIL);
         }
         return ping;

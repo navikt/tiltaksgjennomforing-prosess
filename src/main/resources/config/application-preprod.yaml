@@ -13,4 +13,6 @@ prosess:
       passord: ${tiltaksgjennomforing.consumer.password}
     api:
       uri: https://arbeidsgiver.nais.preprod.local/tiltaksgjennomforing-api
+    unleash:
+      uri: https://unleash.nais.adeo.no/api/
 

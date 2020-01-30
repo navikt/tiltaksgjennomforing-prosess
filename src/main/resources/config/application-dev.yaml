@@ -17,5 +17,6 @@ prosess:
     sts:
       uri: http://localhost:8091/
     api:
-      uri: http://localhost:8091/tiltaksgjennomforing-api
-
+      uri: http://localhost:8080/tiltaksgjennomforing-api
+    dokgen:
+      uri: http://localhost:5913/template/tiltak-avtale/create-pdf

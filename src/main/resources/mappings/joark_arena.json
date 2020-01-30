@@ -31,7 +31,7 @@
             "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
           },
           {
-            "matchesJsonPath" : "$.bruker[?(@.id == '999988881')]"
+            "matchesJsonPath" : "$.bruker[?(@.id == '999999999')]"
           } ,
           {
             "matchesJsonPath" : "$.bruker[?(@.idType == 'ORGNR')]"

@@ -47,7 +47,7 @@ public class TiltaksgjennomforingApiIntTest {
         assertEquals("ca3d7189-0852-4693-a3dd-d518b4ec42e4", avtale.getAvtaleId().toString());
         assertEquals("878c49f4-7225-4bb7-becf-a63b90a1baf7", avtale.getAvtaleVersjonId().toString());
         assertEquals("02018099999", avtale.getDeltakerFnr());
-        assertEquals("999988881", avtale.getBedriftNr());
+        assertEquals("999999999", avtale.getBedriftNr());
         assertEquals("X123456", avtale.getVeilederNavIdent());
         assertEquals(LocalDate.of(2019, 9, 9), avtale.getOpprettet());
         assertEquals("Ronny", avtale.getDeltakerFornavn());

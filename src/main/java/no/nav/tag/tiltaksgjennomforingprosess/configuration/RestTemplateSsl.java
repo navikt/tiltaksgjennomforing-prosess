@@ -28,7 +28,7 @@ public class RestTemplateSsl {
     @Value("${server.ssl.trust-store-password}")
     private String truststorePwd;
 
-    @Bean(name = "restTemplate")
+    @Bean
     public RestTemplate restTemplate() {
         SSLContext sslContext;
 

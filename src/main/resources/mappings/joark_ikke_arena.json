@@ -31,13 +31,13 @@
             "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
           },
           {
-            "matchesJsonPath" : "$.bruker[?(@.id == '999988881')]"
+            "matchesJsonPath" : "$.bruker[?(@.id == '999999999')]"
           } ,
           {
             "matchesJsonPath" : "$.bruker[?(@.idType == 'ORGNR')]"
           },
           {
-            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '999988881')]"
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '999999999')]"
           } ,
           {
             "matchesJsonPath" : "$.avsenderMottaker[?(@.idType == 'ORGNR')]"
