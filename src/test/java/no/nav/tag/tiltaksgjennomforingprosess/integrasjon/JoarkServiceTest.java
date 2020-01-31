@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
@@ -35,8 +36,11 @@ public class JoarkServiceTest {
     @Mock
     private StsService stsService;
 
+    @Spy
+    private JournalpostProperties journalpostProperties = new JournalpostProperties(uri);
+
     @InjectMocks
-    private JoarkService joarkService = new JoarkService(new JournalpostProperties(uri));
+    private JoarkService joarkService;
 
     @Test
     public void kall_mot_joark_ok_skal_returnere_journalpostid_på_1ste_avtaleversjon() {
