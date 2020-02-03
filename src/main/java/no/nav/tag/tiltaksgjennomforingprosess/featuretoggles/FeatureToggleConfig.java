@@ -20,7 +20,7 @@ public class FeatureToggleConfig {
     @Bean
     @Profile({"preprod", "prod"})
     public Unleash initializeUnleash(@Value(
-            "${tiltaksgjennomforing.unleash.uri}") URI unleashUrl,
+            "${prosess.integrasjon.unleash.uri}") URI unleashUrl,
                                      ByEnvironmentStrategy byEnvironmentStrategy) {
         UnleashConfig config = UnleashConfig.builder()
                 .appName(APP_NAME)

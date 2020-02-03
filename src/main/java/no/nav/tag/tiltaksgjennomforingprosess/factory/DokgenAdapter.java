@@ -3,13 +3,8 @@ package no.nav.tag.tiltaksgjennomforingprosess.factory;
 import lombok.RequiredArgsConstructor;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.DokgenProperties;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
