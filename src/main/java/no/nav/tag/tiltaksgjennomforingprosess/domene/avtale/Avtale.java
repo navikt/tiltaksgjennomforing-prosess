@@ -40,7 +40,7 @@ public class Avtale {
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
     private String arbeidsgiverKontonummer;
     private String stillingstype;
-    private String stillingsbeskrivelse;
+    private String arbeidsoppgaver;
     private Integer lonnstilskuddProsent;
     private Integer manedslonn;
     private BigDecimal feriepengesats;
