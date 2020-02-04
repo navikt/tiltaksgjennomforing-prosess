@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
+import no.nav.tag.tiltaksgjennomforingprosess.factory.RequestResponseLoggingInterceptor;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 
 @Slf4j
 @Service
@@ -27,17 +29,16 @@ public class JoarkService {
     private final URI uriArena;
     private final HttpHeaders headers = new HttpHeaders();
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+    private final StsService stsService;
 
-    @Autowired
-    private StsService stsService;
-
-    public JoarkService(JournalpostProperties journalpostProperties) {
+    public JoarkService(JournalpostProperties journalpostProperties, RestTemplate restTemplate, StsService stsService) {
         uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri()).path(PATH).query(FORSOEK_FERDIGSTILL_TRUE).build().toUri();
         uriArena = UriComponentsBuilder.fromUri(journalpostProperties.getUri()).path(PATH).query(FORSOEK_FERDIGSTILL_FALSE).build().toUri();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.setContentType((MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        this.restTemplate = restTemplate;
+        this.stsService = stsService;
     }
 
     public String sendJournalpost(final Journalpost journalpost) {
@@ -56,12 +57,12 @@ public class JoarkService {
                 throw new RuntimeException("Kall til Joark feilet: " + e2);
             }
         }
-        log.info("Journalført versjon {} av avtale {}",journalpost.getAvtaleVersjon(), journalpost.getAvtaleId());
+        log.info("Journalført versjon {} av avtale {}", journalpost.getAvtaleVersjon(), journalpost.getAvtaleId());
         return response.getJournalpostId();
     }
 
-    private URI uri(Journalpost journalpost){
-        if(journalpost.skalBehandlesIArena()){
+    private URI uri(Journalpost journalpost) {
+        if (journalpost.skalBehandlesIArena()) {
             return uriArena;
         }
         return uri;

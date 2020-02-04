@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.5.RELEASE</version>
+        <version>2.2.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.nav</groupId>
@@ -88,6 +88,14 @@
             <version>2.2</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>no.finn.unleash</groupId>
+            <artifactId>unleash-client-java</artifactId>
+            <version>3.2.8</version>
+        </dependency>
+
+
 
     </dependencies>
 

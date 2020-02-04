@@ -24,7 +24,7 @@ public class TestData {
         avtale.setDeltakerEtternavn("Hansen");
         avtale.setDeltakerFnr("02018099999");
         avtale.setBedriftNavn("Hansen AS");
-        avtale.setBedriftNr("999988881");
+        avtale.setBedriftNr("999999999");
         avtale.setArbeidsgiverFornavn("Hans");
         avtale.setArbeidsgiverEtternavn("Frøland Hansen");
         avtale.setArbeidsgiverTlf("99990000");

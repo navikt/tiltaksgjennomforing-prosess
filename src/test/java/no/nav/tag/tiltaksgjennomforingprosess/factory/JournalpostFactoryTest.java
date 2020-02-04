@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
+import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
@@ -19,11 +20,17 @@ public class JournalpostFactoryTest {
     @Mock
     private AvtaleTilXml avtaleTilXml;
 
+    @Mock
+    private DokgenAdapter dokgenAdapter;
+
+    @Mock
+    private Unleash unleash;
+
     @InjectMocks
     private JournalpostFactory journalpostFactory;
 
     @Test
-    public void journalpostSkalTilArena() throws Exception {
+    public void journalpostSkalTilArena() {
         Avtale avtale = TestData.opprettAvtale();
 
         when(avtaleTilXml.genererXml(avtale)).thenCallRealMethod();
@@ -41,11 +48,11 @@ public class JournalpostFactoryTest {
         assertEquals(1, journalpost.getDokumenter().size());
 
         journalpost.getDokumenter().get(0).getDokumentVarianter().forEach(dokumentVariant -> {
-            if(dokumentVariant.getFiltype().equals("XML")){
+            if (dokumentVariant.getFiltype().equals("XML")) {
                 assertEquals("ORIGINAL", dokumentVariant.getVariantformat());
-            } else if(dokumentVariant.getFiltype().equals("PDFA")){
+            } else if (dokumentVariant.getFiltype().equals("PDFA")) {
                 assertEquals("ARKIV", dokumentVariant.getVariantformat());
-            } else{
+            } else {
                 fail("DokumentType: " + dokumentVariant.getFiltype());
             }
             assertFalse(dokumentVariant.getFysiskDokument().isEmpty());
@@ -53,7 +60,7 @@ public class JournalpostFactoryTest {
     }
 
     @Test
-    public void journalpostSkalIkkeTilArena(){
+    public void journalpostSkalIkkeTilArena() {
         Avtale avtale = TestData.opprettAvtale();
         avtale.setVersjon(2);
 

@@ -6,7 +6,7 @@
         "urlPathPattern": "/tiltaksgjennomforing-api/internal/avtaler",
         "headers": {
           "Authorization": {
-            "equalTo": "Bearer eyxXxx"
+            "equalTo": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aWx0YWtzZ2plbm5vbWZvcmluZy1wcm9zZXNzIiwiYXVkIjoiYXVkLXN5c3RlbSIsInZlciI6IjEuMCIsIm5iZiI6MTU3ODU3NjQ0OCwiYXV0aF90aW1lIjoxNTc4NTc2NDQ4LCJpc3MiOiJzeXN0ZW0iLCJleHAiOjIzNTYxNzY0NDgsIm5vbmNlIjoibXlOb25jZSIsImlhdCI6MTU3ODU3NjQ0OCwianRpIjoiYjE3NTZlZGUtNjQxNy00ZTk2LTg5ODYtM2M5NzllOTkxMzEzIiwiYWNyIjoiTGV2ZWw0In0.UDf2r5K93OrEotGGbdxIh5kFI8UdlQicRdrgw4GnpvaHYtgwWrvaCP6f81HylFg5PoLdJp1HHuWygOp1SpPU_SFPA5zdUST8lUHvEeLxxXgu9qiorLzMJL2NGzB06jxL-6yNC_WqHz0BdG_qKcRcV27D2ZVIWmILcPumLW8JwB3gdmFkvO0pnXQ1LG4X_cMt8sps5u3FbH-1SVIqRr8DAA7dxioRGrCqJopJIZ76JNXFvATmAmmE6LWGSVaf40sALSd4uZ7NiXZWgF4kDfCGt7q48xyfc_CLTUBHszh6seEGAg6WW228xXLAWmHlcjyQkmol8F0xs3LN2cA7A6xLLg"
           }
         }
       },
@@ -15,7 +15,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "[ { \"avtaleId\": \"ca3d7189-0852-4693-a3dd-d518b4ec42e4\", \"avtaleVersjonId\": \"878c49f4-7225-4bb7-becf-a63b90a1baf7\", \"deltakerFnr\": \"02018099999\", \"bedriftNr\": \"999988881\", \"veilederNavIdent\": \"X123456\", \"opprettet\": \"2019-09-09\",\"versjon\": 7,\"deltakerFornavn\": \"Ronny\",\"deltakerEtternavn\": \"Deltaker\",\"deltakerTlf\": \"00000000\",\"bedriftNavn\": \"Hansen AS\",\"arbeidsgiverFornavn\": \"Ronnys\",\"arbeidsgiverEtternavn\": \"Kremmer\",\"arbeidsgiverTlf\": \"22334455\",\"veilederFornavn\": \"Jan-Ronny\", \"veilederEtternavn\": \"Veileder\",\"veilederTlf\": \"33445566\",\"oppfolging\": \"Telefon hver uke\",\"tilrettelegging\": \"Ingen\",\"startDato\": \"2019-01-01\",\"sluttDato\":\"2019-02-02\",\"stillingprosent\": 100,\"maal\": [],\"oppgaver\": [],\"godkjentPaVegneGrunn\": null,\"godkjentAvDeltaker\": \"2019-09-09\",\"godkjentAvArbeidsgiver\": \"2019-10-09\",\"godkjentAvVeileder\": \"2019-11-09\",\"godkjentPaVegneAv\": \"false\", \"versjon\": \"2\"}]"
+        "body": "[ { \"avtaleId\": \"ca3d7189-0852-4693-a3dd-d518b4ec42e4\", \"avtaleVersjonId\": \"878c49f4-7225-4bb7-becf-a63b90a1baf7\", \"deltakerFnr\": \"02018099999\", \"bedriftNr\": \"999999999\", \"veilederNavIdent\": \"X123456\", \"opprettet\": \"2019-09-09\",\"versjon\": 7,\"deltakerFornavn\": \"Ronny\",\"deltakerEtternavn\": \"Deltaker\",\"deltakerTlf\": \"00000000\",\"bedriftNavn\": \"Hansen AS\",\"arbeidsgiverFornavn\": \"Ronnys\",\"arbeidsgiverEtternavn\": \"Kremmer\",\"arbeidsgiverTlf\": \"22334455\",\"veilederFornavn\": \"Jan-Ronny\", \"veilederEtternavn\": \"Veileder\",\"veilederTlf\": \"33445566\",\"oppfolging\": \"Telefon hver uke\",\"tilrettelegging\": \"Ingen\",\"startDato\": \"2019-01-01\",\"sluttDato\":\"2019-02-02\",\"stillingprosent\": 100,\"maal\": [],\"oppgaver\": [],\"godkjentPaVegneGrunn\": null,\"godkjentAvDeltaker\": \"2019-09-09\",\"godkjentAvArbeidsgiver\": \"2019-10-09\",\"godkjentAvVeileder\": \"2019-11-09\",\"godkjentPaVegneAv\": \"false\", \"versjon\": \"2\"}]"
       }
     }
   ]

@@ -8,9 +8,12 @@ prosess:
     joark:
       uri: https://dokarkiv-q1.nais.preprod.local
     sts:
-      uri: https://security-token-service.nais.preprod.local
+      uri: http://security-token-service
       bruker: ${tiltaksgjennomforing.consumer.user}
       passord: ${tiltaksgjennomforing.consumer.password}
     api:
-      uri: https://arbeidsgiver.nais.preprod.local/tiltaksgjennomforing-api
-
+      uri: http://tiltaksgjennomforing-api/tiltaksgjennomforing-api
+    unleash:
+      uri: https://unleash.nais.adeo.no/api/
+    dokgen:
+      uri: http://tag-dokgen/template/tiltak-avtale/create-pdf
