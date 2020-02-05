@@ -19,13 +19,34 @@ public class AvtaleTilXmlTest {
     private AvtaleTilXml avtaleTilXml = new AvtaleTilXml();
 
     @Test
-    public void lagerAvtaleXml() {
-        Avtale avtale = TestData.opprettAvtale();
-//        avtale.setStartDato(LocalDate.now().withYear(2019).withMonth(12).withDayOfMonth(30));
-//        avtale.setSluttDato(avtale.getStartDato().plusMonths(3));
+    public void lagerXmlAvArbeidstrening(){
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
 
         avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
         String xml = avtaleTilXml.genererXml(avtale);
+        assertGenerellInnhold(xml, avtale);
+        System.out.println(xml);
+        assertTrue(xml.contains("<tiltaksType>Arbeidstrening</tiltaksType>"));
+        assertTrue(xml.contains("<typeBehandling>ab0422</typeBehandling>"));
+        assertTrue(xml.contains("<tiltakstype>ARBEIDSTRENING</tiltakstype>"));
+    }
+
+    @Test
+    public void lagerXmlAvMentor(){
+        Avtale avtale = TestData.opprettMentorAvtale();
+
+        avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
+        String xml = avtaleTilXml.genererXml(avtale);
+        System.out.println(xml);
+        assertGenerellInnhold(xml, avtale);
+        assertTrue(xml.contains("<tiltaksType>Mentor</tiltaksType>"));
+        assertTrue(xml.contains("<typeBehandling>ab0416</typeBehandling>"));
+        assertTrue(xml.contains("<tiltakstype>MENTOR</tiltakstype>"));
+
+        //assertFalse();
+    }
+
+    private void assertGenerellInnhold(String xml, Avtale avtale) {
 
         assertTrue(xml.contains(ID_AVTALE));
         assertTrue(xml.contains(avtale.getDeltakerFnr()));
@@ -39,6 +60,7 @@ public class AvtaleTilXmlTest {
         xmlElemStr = StringUtils.substringBetween(xml, "<tilDato>", "</tilDato>");
         faktiskDato = LocalDate.parse(xmlElemStr);
         assertEquals(avtale.getSluttDato(), faktiskDato);
+        assertTrue(xml.contains("<versjon>1</versjon>"));
     }
 
 }

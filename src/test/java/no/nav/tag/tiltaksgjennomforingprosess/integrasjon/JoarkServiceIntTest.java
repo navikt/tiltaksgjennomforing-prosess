@@ -45,7 +45,7 @@ public class JoarkServiceIntTest {
     @Test
     public void oppretterJournalpost_til_arena() {
         unleash.disableAll();
-        Avtale avtale = TestData.opprettAvtale();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setVersjon(1);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
@@ -56,7 +56,7 @@ public class JoarkServiceIntTest {
     @Test
     public void oppretterJournalpost_ikke_til_arena() {
         unleash.disableAll();
-        Avtale avtale = TestData.opprettAvtale();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setVersjon(2);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
@@ -67,7 +67,7 @@ public class JoarkServiceIntTest {
     @Test
     public void oppretterJournalpost_til_arena_med_dokgen() {
         unleash.enableAll();
-        Avtale avtale = TestData.opprettAvtale();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setVersjon(1);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
@@ -78,7 +78,7 @@ public class JoarkServiceIntTest {
     @Test
     public void oppretterJournalpost_ikke_til_arena_med_dokgen() {
         unleash.enableAll();
-        Avtale avtale = TestData.opprettAvtale();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setVersjon(2);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);

@@ -21,7 +21,6 @@ import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalp
 public class JournalpostFactory {
 
     private final static String EKSTREF_PREFIKS = "AVT";
-    private final static String BEHANDLINGSTEMA = "ab0422";
 
     private final AvtaleTilXml avtaleTilXml;
     private final DokgenAdapter dokgenAdapter;
@@ -35,7 +34,7 @@ public class JournalpostFactory {
         journalpost.setAvtaleId(avtale.getAvtaleId().toString());
         journalpost.setAvtaleVersjon(avtale.getVersjon());
         journalpost.setAvtaleVersjonId(avtale.getAvtaleVersjonId().toString());
-        journalpost.setBehandlingsTema(BEHANDLINGSTEMA);
+        journalpost.setTittel(avtale.getTiltakstype().getTittel());
         journalpost.setBruker(bruker);
         journalpost.setAvsenderMottaker(new Avsender(avtale.getBedriftNr(), avtale.getBedriftNavn()));
         List<DokumentVariant> dokumentVarianter = new ArrayList<>(2);
@@ -46,6 +45,7 @@ public class JournalpostFactory {
 
         dokumentVarianter.add(new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, encodeToBase64(dokumentPdfAsBytes)));
         Dokument dokument = new Dokument();
+        dokument.setTittel(avtale.getTiltakstype().getTittel());
         dokument.setDokumentVarianter(dokumentVarianter);
         journalfoerMedStatus(journalpost, avtale, dokument);
         journalpost.setDokumenter(Collections.singletonList(dokument));
@@ -61,6 +61,7 @@ public class JournalpostFactory {
     }
 
     private void journalfoerSomMidlertidig(Journalpost journalpost, Avtale avtale, List<DokumentVariant> dokumentVarianter) {
+        journalpost.setBehandlingsTema(avtale.getTiltakstype().getBehandlingstema());
         journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getAvtaleId().toString());
         final String dokumentXml = avtaleTilXml.genererXml(avtale);
         log.debug(dokumentXml);

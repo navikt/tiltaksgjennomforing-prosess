@@ -10,7 +10,7 @@ public class AvtaleTilXml {
     String genererXml(Avtale avtale) {
 
         Generelt generelt = new Generelt(new Arbeidsgiver(avtale.getBedriftNr(), avtale.getBedriftNavn()), new Arbeidstaker(avtale.getDeltakerFnr()), avtale);
-        Innhold innhold = new Innhold(new SkjemaInfo(avtale.getStartDato(), avtale.getSluttDato()), generelt);
+        Innhold innhold = new Innhold(new SkjemaInfo(avtale.getTiltakstype(), avtale.getStartDato(), avtale.getSluttDato()), generelt);
         Melding melding = new Melding(innhold);
 
         XStream xstream = new XStream();

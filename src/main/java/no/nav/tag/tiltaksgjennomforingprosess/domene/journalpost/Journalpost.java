@@ -11,14 +11,15 @@ public class Journalpost {
     private final static String JOURNALPOST_TYPE = "INNGAAENDE";
     private final static String KANAL = "NAV_NO";
     private final static String TEMA = "TIL";
-    final static String TITTEL = "Avtale om arbeidstrening";
+
 
     public final static String JORURNALFØRENDE_ENHET = "9999";
 
     private final String journalposttype = JOURNALPOST_TYPE;
     private final String kanal = KANAL;
     private final String tema = TEMA;
-    private final String tittel = TITTEL;
+
+    private String tittel;
 
     private Bruker bruker;
 

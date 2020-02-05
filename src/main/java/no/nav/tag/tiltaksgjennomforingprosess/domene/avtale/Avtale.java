@@ -15,7 +15,7 @@ import java.util.UUID;
 @Data
 @ToString
 public class Avtale {
-    private Tiltakstype tiltakstype = Tiltakstype.ARBEIDSTRENING;
+    private Tiltakstype tiltakstype;
     private UUID avtaleId;
     private UUID avtaleVersjonId;
     private String deltakerFnr;
@@ -37,6 +37,12 @@ public class Avtale {
     private String tilrettelegging;
     private Integer stillingprosent;
     private Integer versjon;
+    private String mentorFornavn;
+    private String mentorEtternavn;
+    private String mentorOppgaver;
+    private String mentorAntallTimer;
+    private String mentorTimelonn;
+
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
     private String arbeidsgiverKontonummer;
     private String stillingstype;

@@ -27,7 +27,7 @@ public class AvtaleTilPdfTest {
     @Ignore("Til manuell sjekk av pdf layout")
     @Test
     public void lagerForventetPDF() throws Exception {
-        Avtale avtale = TestData.opprettAvtale();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
 
         byte[] bytes = avtaleTilPdf.tilBytesAvPdf(avtale);
 
@@ -41,7 +41,7 @@ public class AvtaleTilPdfTest {
 
     @Test
     public void lagerAvtalePdf() throws IOException {
-        Avtale avtale = TestData.opprettAvtale();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
 
         byte[] bytes = avtaleTilPdf.tilBytesAvPdf(avtale);
@@ -51,7 +51,7 @@ public class AvtaleTilPdfTest {
 
     @Test(expected = RuntimeException.class)
     public void lagerIkkeAvtalePdf() {
-        Avtale avtale = TestData.opprettAvtale();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setAvtaleId(null);
         avtaleTilPdf.tilBytesAvPdf(avtale);
     }

@@ -1,12 +1,11 @@
 package no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost;
 
 import lombok.Data;
-import java.util.List;
 
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost.TITTEL;
+import java.util.List;
 
 @Data
 public class Dokument {
-    private final String tittel = TITTEL;
+    private String tittel;
     private List<DokumentVariant> dokumentVarianter;
 }
