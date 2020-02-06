@@ -1,4 +1,4 @@
-package no.nav.tag.tiltaksgjennomforingprosess.factory;
+package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
 import lombok.RequiredArgsConstructor;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;

@@ -7,17 +7,15 @@ import java.time.LocalDate;
 @Data
 public class SkjemaInfo {
 
-    private static final String TILTAKSTYPE = "Arbeidstrening";
-    private static final String TYPE_BEHANDLING = "ab0422";
-
-    private String tiltaksType = TILTAKSTYPE;
-    private String typeBehandling = TYPE_BEHANDLING;
+    private String tiltaksType;
+    private String typeBehandling;
     private LocalDate fraDato;
     private LocalDate tilDato;
 
-    public SkjemaInfo(LocalDate fraDato, LocalDate tilDato) {
+    public SkjemaInfo(Tiltakstype tiltakstypeEnum, LocalDate fraDato, LocalDate tilDato) {
+        this.tiltaksType = tiltakstypeEnum.getTiltaksType();
+        this.typeBehandling = tiltakstypeEnum.getBehandlingstema();
         this.fraDato = fraDato;
         this.tilDato = tilDato;
     }
-
 }

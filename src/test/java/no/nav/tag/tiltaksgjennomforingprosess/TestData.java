@@ -1,9 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.GodkjentPaVegneGrunn;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Maal;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Oppgave;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +12,7 @@ public class TestData {
 
     public static final LocalDate START_DATO = GODKJENT_DATO.plusMonths(1);
 
-    public static Avtale opprettAvtale() {
+    public static Avtale opprettEnAvtale(){
         Avtale avtale = new Avtale();
         avtale.setAvtaleId(UUID.randomUUID());
         avtale.setAvtaleVersjonId(UUID.randomUUID());
@@ -35,24 +32,34 @@ public class TestData {
         avtale.setOppfolging("- Deltaker har Kollega som kontaktperson.\n" +
                 "- Deltaker utfører i hovedsak arbeidsoppgaver sammen med Kollega i starten. \n" +
                 "- Grad av oppfølging vurderes underveis. ");
-//        avtale.setTilrettelegging("- Kortere dager.\n" +
-//                "- Utprøvings periode på 12 uker av gangen, med mål på sikt om å øke arbeidsmengden.\n" +
-//                "- Følges opp samtaler \n" +
-//                "- «Aktiv på dagtid»\n" +
-//                "- Fleksibel arbeidsbelastning. ");
         avtale.setTilrettelegging("Deltaker will be able to work to a large extent independently as soon as the on-boarding and training took place.\n" +
                 "We will define with specific tasks and further agree on 1) need for support to deliver, 2) the checkpoints and 3) the deadlines of the deliveries");
         avtale.setStartDato(START_DATO);
         avtale.setSluttDato(START_DATO.plusMonths(2));
-        avtale.setStillingprosent(50);
         avtale.setVersjon(1);
         avtale.setGodkjentAvArbeidsgiver(LocalDate.now());
         avtale.setGodkjentAvDeltaker(LocalDate.now().plusDays(1));
         avtale.setGodkjentAvVeileder(LocalDate.now().plusDays(2));
-        avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
-        avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.endaEnOppgave()));
         avtale.setGodkjentPaVegneAv(true);
         avtale.setGodkjentPaVegneGrunn(enGrunn());
+        return avtale;
+    }
+
+    public static Avtale opprettArbeidstreningAvtale() {
+        Avtale avtale = opprettEnAvtale();
+        avtale.setTiltakstype(Tiltakstype.ARBEIDSTRENING);
+        avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
+        avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.endaEnOppgave()));
+        avtale.setStillingprosent(80);
+        return avtale;
+    }
+
+    public static Avtale opprettLonnstilskuddsAvtale() {
+        Avtale avtale = opprettEnAvtale();
+        avtale.setTiltakstype(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD);
+        avtale.setStillingstype("Utvikler");
+        avtale.setArbeidsoppgaver("Spille bordtennis");
+        avtale.setStillingprosent(60);
         return avtale;
     }
 

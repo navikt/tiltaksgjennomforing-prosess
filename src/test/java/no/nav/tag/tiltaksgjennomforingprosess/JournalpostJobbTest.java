@@ -1,11 +1,11 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
+import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +27,9 @@ import static org.mockito.Mockito.*;
 public class JournalpostJobbTest {
 
     private final String JOURNALPOST_ID = "1234";
+
+    @Mock
+    private Unleash unleash;
 
     @Mock
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService;
@@ -53,11 +56,11 @@ public class JournalpostJobbTest {
     @Test
     public void kallerIkkeJoarkMedEnAvtaleSomFeilet() {
 
-        Avtale okAvtale = TestData.opprettAvtale();
+        Avtale okAvtale = TestData.opprettArbeidstreningAvtale();
         Journalpost okJournalpost = new Journalpost();
         okJournalpost.setEksternReferanseId(okAvtale.getAvtaleId().toString());
 
-        Avtale feiletAvt = TestData.opprettAvtale();
+        Avtale feiletAvt = TestData.opprettArbeidstreningAvtale();
 
         Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(2);
         jorurnalførteAvtaler.put(okAvtale.getAvtaleVersjonId(), JOURNALPOST_ID);
@@ -77,8 +80,8 @@ public class JournalpostJobbTest {
 
     @Test
     public void toAvtalerDerEttjoarkKallFeiler(){
-        Avtale avtale1 = TestData.opprettAvtale();
-        Avtale avtale2 = TestData.opprettAvtale();
+        Avtale avtale1 = TestData.opprettArbeidstreningAvtale();
+        Avtale avtale2 = TestData.opprettArbeidstreningAvtale();
 
         Journalpost journalpost1 = new Journalpost();
         journalpost1.setEksternReferanseId(avtale1.getAvtaleId().toString());
@@ -105,8 +108,8 @@ public class JournalpostJobbTest {
     @Test
     public void kallerMedAlleAvtaler() {
 
-        Avtale avtale1 = TestData.opprettAvtale();
-        Avtale avtale2 = TestData.opprettAvtale();
+        Avtale avtale1 = TestData.opprettArbeidstreningAvtale();
+        Avtale avtale2 = TestData.opprettArbeidstreningAvtale();
 
         Journalpost journalpost1 = new Journalpost();
         journalpost1.setEksternReferanseId(avtale1.getAvtaleId().toString());
