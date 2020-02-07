@@ -32,3 +32,4 @@ HELP.md
 .DS_Store
 mvnw*
 /PDFAvtaler/
+/src/test/resources/PDF/

@@ -19,7 +19,7 @@
             "matchesJsonPath": "[?(@.journalposttype == 'INNGAAENDE')]"
           } ,
           {
-            "matchesJsonPath": "[?(@.behandlingsTema == 'ab0422')]"
+            "matchesJsonPath": "[?(@.behandlingsTema == 'ab0336')]"
           },
           {
             "matchesJsonPath": "[?(@.kanal == 'NAV_NO')]"
@@ -28,7 +28,7 @@
             "matchesJsonPath": "[?(@.tema == 'TIL')]"
           },
           {
-            "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
+            "matchesJsonPath": "[?(@.tittel == 'Avtale om midlertidig lønnstilskudd')]"
           },
           {
             "matchesJsonPath" : "$.bruker[?(@.id == '999999999')]"
@@ -55,7 +55,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "{\"journalpostId\" : \"001\", \"journalstatus\" : \"MIDLERTIDIG\", \"melding\" : \"Gikk bra\"}"
+        "body": "{\"journalpostId\" : \"002\", \"journalstatus\" : \"MIDLERTIDIG\", \"melding\" : \"Gikk bra\"}"
       }
     }
   ]

@@ -12,7 +12,7 @@
         "bodyPatterns": [
           {
             "equalToJson": {
-              "878c49f4-7225-4bb7-becf-a63b90a1baf7" : "001"
+              "878c49f4-7225-4bb7-becf-a63b90a1baf7" : "001", "4c8058e9-1d07-4a76-9d9f-201e9a2ca401" : "002"
             }
           }
         ]
