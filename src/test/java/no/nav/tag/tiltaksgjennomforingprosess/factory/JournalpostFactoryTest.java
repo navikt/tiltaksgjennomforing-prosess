@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -111,8 +112,19 @@ public class JournalpostFactoryTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void avtaleTilXmlFeiler() throws Exception {
+    public void pdfDocGenFeiler() throws Exception {
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
+
+        when(unleash.isEnabled("tag.tiltak.prosess.dokgen")).thenReturn(true);
+        when(dokgenAdapter.genererPdf(avtale)).thenThrow(HttpClientErrorException.class);
+        journalpostFactory.konverterTilJournalpost(avtale);
+        verify(dokgenAdapter, atLeastOnce()).genererPdf(avtale);
+        verify(avtaleTilXml, never()).genererXml(avtale);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void avtaleTilXmlFeiler() throws Exception {
+       Avtale avtale = TestData.opprettArbeidstreningAvtale();
         when(avtaleTilXml.genererXml(avtale)).thenThrow(RuntimeException.class);
         journalpostFactory.konverterTilJournalpost(avtale);
     }

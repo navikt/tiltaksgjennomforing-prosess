@@ -8,13 +8,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertTrue;
@@ -23,21 +20,6 @@ public class AvtaleTilPdfTest {
     private final static String ID_AVTALE = "72c365e7-177a-43ad-9d91-48c6479a6cf0";
 
     private AvtaleTilPdf avtaleTilPdf = new AvtaleTilPdf();
-
-    @Ignore("Til manuell sjekk av pdf layout")
-    @Test
-    public void lagerForventetPDF() throws Exception {
-        Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
-
-        byte[] bytes = avtaleTilPdf.tilBytesAvPdf(avtale);
-
-        String encAvtale = Base64.getEncoder().encodeToString(bytes);
-        byte[] decAvtale = Base64.getDecoder().decode(encAvtale);
-
-        PDDocument pdf = PDDocument.load(new ByteArrayInputStream(decAvtale));
-        pdf.save("src/test/resources/Resultat.pdf");
-        pdf.close();
-    }
 
     @Test
     public void lagerAvtalePdf() throws IOException {
@@ -105,7 +87,7 @@ public class AvtaleTilPdfTest {
                 }
             }
 
-            String[] linjer2 = oppgave.getOpplaering().split("\n");
+            String[] linjer2 = oppgave.getOpplaering() != null ? oppgave.getOpplaering().split("\n") : new String[0];
             for (String linje : linjer2) {
                 for (String str : avtaleTilPdf.possibleWrapText(linje, new PDPage(PDRectangle.A4))
                 ) {

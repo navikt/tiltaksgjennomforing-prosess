@@ -20,6 +20,7 @@ public class TestData {
         avtale.setDeltakerFornavn("Lillehans");
         avtale.setDeltakerEtternavn("Hansen");
         avtale.setDeltakerFnr("02018099999");
+        avtale.setDeltakerTlf("99998888");
         avtale.setBedriftNavn("Hansen AS");
         avtale.setBedriftNr("999999999");
         avtale.setArbeidsgiverFornavn("Hans");
@@ -66,29 +67,15 @@ public class TestData {
     public static Oppgave enOppgave() {
         Oppgave oppgave = new Oppgave();
         oppgave.setTittel("Her er oppgave 1");
-        oppgave.setBeskrivelse("  nr 1 Vi skal lære hun bestille varer fra leverandører og besøker de slik hun få erfaring på det.\n" +
-                "\n" +
-                "Nr 2 vi øve hun  på typiske arbeidsoppgaver er å betjene kunder og kasseapparatet, å rydde i butikken og i hyller, å rydde på lageret, å sette priser på varer, å ta imot bestillinger og ta imot varer.");
-        oppgave.setOpplaering("Tanken bak rullering av varer og plassering av varer. \n" +
-                "Rutiner rundt fersk og kjølevarer\n" +
-                "Opplæring i kasse og kundebehandling\n" +
-                "Generell butikk rutiner og daglige oppgaver");
+        oppgave.setBeskrivelse("  nr 1 Vi skal lære hun bestille varer fra leverandører og besøker de slik hun få erfaring på det.");
         return oppgave;
     }
 
     public static Oppgave endaEnOppgave() {
         Oppgave oppgave = new Oppgave();
         oppgave.setTittel("Her er oppgave 2");
-        oppgave.setBeskrivelse("The business needs to be able to gather all the data about the performance in one place.\n" +
-                "Deltaker needs to coordinate/perform the integration of various sources of information into Google Data Studio (GDS). The current implementation is with our database.\n" +
-                "1)\t We need to evaluate how to bring in information from: mailerlite, suverymonkey, Zendesk etc.\n" +
-                "2)\t Based on the evaluation, do the actual implementation of the data source\n" +
-                "\n" +
-                "This requires as a first step to understand how data is organized and sourced in Arb. giver, which will be the base for her to perform other tasks.");
-        oppgave.setOpplaering("Tanken bak rullering av varer og plassering av varer. \n" +
-                "Rutiner rundt fersk og kjølevarer\n" +
-                "Opplæring i kasse og kundebehandling\n" +
-                "Generell butikk rutiner og daglige oppgaver");
+        oppgave.setBeskrivelse("The business needs to be able to gather all the data about the performance in one place. ");
+        oppgave.setOpplaering("Tanken bak rullering av varer og plassering av varer. Rutiner rundt fersk og kjølevarer. Opplæring i kasse og kundebehandling. Generell butikk rutiner og daglige oppgaver");
         return oppgave;
     }
 

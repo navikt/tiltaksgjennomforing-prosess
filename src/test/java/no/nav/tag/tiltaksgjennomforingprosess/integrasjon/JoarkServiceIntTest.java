@@ -49,7 +49,7 @@ public class JoarkServiceIntTest {
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
         String jounalpostId = joarkService.sendJournalpost(journalpost);
-        assertEquals("001", jounalpostId);
+        assertEquals("002", jounalpostId);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class JoarkServiceIntTest {
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
         String jounalpostId = joarkService.sendJournalpost(journalpost);
-        assertEquals("001", jounalpostId);
+        assertEquals("002", jounalpostId);
     }
 
     @Test

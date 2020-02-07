@@ -162,7 +162,7 @@ class AvtaleTilPdf {
 
                 contentStream.newLine();
                 contentStream = skrivTekst("Opplæring: ", contentStream, document, fontBold, FONT_SIZE);
-                contentStream = skrivFritekstTilPdf(contentStream, oppgave.getOpplaering());
+                contentStream = skrivFritekstTilPdf(contentStream, blankForNull(oppgave.getOpplaering()));
                 contentStream.newLine();
                 aktuelleLinjerPåSiden += 2;
             }
