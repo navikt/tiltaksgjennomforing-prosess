@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.*;
+import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

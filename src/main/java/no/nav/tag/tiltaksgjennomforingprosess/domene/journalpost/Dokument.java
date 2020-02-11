@@ -1,7 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost;
 
 import lombok.Data;
-
 import java.util.List;
 
 @Data

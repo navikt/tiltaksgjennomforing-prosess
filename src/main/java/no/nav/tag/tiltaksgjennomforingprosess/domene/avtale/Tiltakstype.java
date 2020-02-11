@@ -4,10 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum Tiltakstype {
+
     ARBEIDSTRENING("Arbeidstrening", "ab0422", "Avtale om arbeidstrening"),
-    MIDLERTIDIG_LONNSTILSKUDD("Midlertidig lønnstilskudd", "ab0336", "Avtale om lønnstilskudd"),
-    VARIG_LONNSTILSKUDD("Varig lønnstilskudd", "ab0337", "Avtale om lønnstilskudd"),
-    MENTOR("Mentor", "ab0416", "Avtale om mentortilskudd");
+    MIDLERTIDIG_LONNSTILSKUDD("Midlertidig lønnstilskudd", "ab0336", "Avtale om midlertidig lønnstilskudd"),
+    VARIG_LONNSTILSKUDD("Varig lønnstilskudd", "ab0337", "Avtale om varig lønnstilskudd"),
+    MENTOR("Mentor", "ab0416", "Avtale om tilskudd til mentor");
 
     private final String tiltaksType;
     private final String behandlingstema;

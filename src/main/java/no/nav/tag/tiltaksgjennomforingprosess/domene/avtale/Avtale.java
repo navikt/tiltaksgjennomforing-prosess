@@ -40,8 +40,8 @@ public class Avtale {
     private String mentorFornavn;
     private String mentorEtternavn;
     private String mentorOppgaver;
-    private String mentorAntallTimer;
-    private String mentorTimelonn;
+    private Integer mentorAntallTimer;
+    private Integer mentorTimelonn;
 
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
     private String arbeidsgiverKontonummer;

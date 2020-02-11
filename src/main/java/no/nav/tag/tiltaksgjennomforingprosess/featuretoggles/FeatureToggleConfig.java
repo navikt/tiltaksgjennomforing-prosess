@@ -38,7 +38,9 @@ public class FeatureToggleConfig {
     @Profile("!(preprod | prod)")
     public Unleash unleashMock() {
         FakeUnleash fakeUnleash = new FakeUnleash();
-        fakeUnleash.enableAll();
+        fakeUnleash.enable("tag.tiltak.prosess.lonnstilskudd");
+        fakeUnleash.enable("tag.tiltak.prosess.mentor");
+        fakeUnleash.enable("tag.tiltak.prosess.dokgen");
         return fakeUnleash;
     }
 }

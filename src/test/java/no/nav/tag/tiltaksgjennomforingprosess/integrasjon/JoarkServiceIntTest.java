@@ -5,7 +5,6 @@ import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.AvtaleTilXml;
-import no.nav.tag.tiltaksgjennomforingprosess.factory.DokgenAdapter;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,12 +44,12 @@ public class JoarkServiceIntTest {
     @Test
     public void oppretterJournalpost_til_arena() {
         unleash.disableAll();
-        Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
         avtale.setVersjon(1);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
         String jounalpostId = joarkService.sendJournalpost(journalpost);
-        assertEquals("001", jounalpostId);
+        assertEquals("002", jounalpostId);
     }
 
     @Test
@@ -67,12 +66,12 @@ public class JoarkServiceIntTest {
     @Test
     public void oppretterJournalpost_til_arena_med_dokgen() {
         unleash.enableAll();
-        Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
         avtale.setVersjon(1);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
         String jounalpostId = joarkService.sendJournalpost(journalpost);
-        assertEquals("001", jounalpostId);
+        assertEquals("002", jounalpostId);
     }
 
     @Test

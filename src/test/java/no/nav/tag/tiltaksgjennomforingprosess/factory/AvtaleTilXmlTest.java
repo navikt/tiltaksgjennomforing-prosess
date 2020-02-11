@@ -1,7 +1,9 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
@@ -12,6 +14,7 @@ import static no.nav.tag.tiltaksgjennomforingprosess.TestData.START_DATO;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@Slf4j
 public class AvtaleTilXmlTest {
 
     private final static String ID_AVTALE = "72c365e7-177a-43ad-9d91-48c6479a6cf0";
@@ -25,25 +28,50 @@ public class AvtaleTilXmlTest {
         avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
         String xml = avtaleTilXml.genererXml(avtale);
         assertGenerellInnhold(xml, avtale);
-        System.out.println(xml);
+        log.debug(xml);
         assertTrue(xml.contains("<tiltaksType>Arbeidstrening</tiltaksType>"));
         assertTrue(xml.contains("<typeBehandling>ab0422</typeBehandling>"));
         assertTrue(xml.contains("<tiltakstype>ARBEIDSTRENING</tiltakstype>"));
     }
 
     @Test
-    public void lagerXmlAvMentor(){
+    public void lagerXmlAvMidlertidigLonnstilskudd(){
+        Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
+
+        avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
+        String xml = avtaleTilXml.genererXml(avtale);
+        log.debug(xml);
+        assertGenerellInnhold(xml, avtale);
+        assertTrue(xml.contains("<tiltaksType>Midlertidig lønnstilskudd</tiltaksType>"));
+        assertTrue(xml.contains("<typeBehandling>ab0336</typeBehandling>"));
+        assertTrue(xml.contains("<tiltakstype>MIDLERTIDIG_LONNSTILSKUDD</tiltakstype>"));
+    }
+
+    @Test
+    public void lagerXmlAvVarigLonnstilskudd(){
+        Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
+        avtale.setTiltakstype(Tiltakstype.VARIG_LONNSTILSKUDD);
+
+        avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
+        String xml = avtaleTilXml.genererXml(avtale);
+        log.debug(xml);
+        assertGenerellInnhold(xml, avtale);
+        assertTrue(xml.contains("<tiltaksType>Varig lønnstilskudd</tiltaksType>"));
+        assertTrue(xml.contains("<typeBehandling>ab0337</typeBehandling>"));
+        assertTrue(xml.contains("<tiltakstype>VARIG_LONNSTILSKUDD</tiltakstype>"));
+    }
+
+    @Test
+    public void lagerXmlAvMentor() {
         Avtale avtale = TestData.opprettMentorAvtale();
 
         avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
         String xml = avtaleTilXml.genererXml(avtale);
-        System.out.println(xml);
+        log.debug(xml);
         assertGenerellInnhold(xml, avtale);
         assertTrue(xml.contains("<tiltaksType>Mentor</tiltaksType>"));
         assertTrue(xml.contains("<typeBehandling>ab0416</typeBehandling>"));
         assertTrue(xml.contains("<tiltakstype>MENTOR</tiltakstype>"));
-
-        //assertFalse();
     }
 
     private void assertGenerellInnhold(String xml, Avtale avtale) {
