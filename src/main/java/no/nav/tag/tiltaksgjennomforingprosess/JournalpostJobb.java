@@ -77,6 +77,7 @@ public class JournalpostJobb {
     }
 
     private void journalfoer(Avtale avtale, Journalpost journalpost, Map<UUID, String> journalfoerteAvtaler) {
+        log.info("Forsøker å journalføre versjon {} av avtale {} med versjonId {} på tiltak {}", avtale.getVersjon(), avtale.getAvtaleId(), avtale.getAvtaleVersjonId(), avtale.getTiltakstype());
         try {
             String journalpostId = joarkService.sendJournalpost(journalpost);
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
@@ -111,19 +112,27 @@ public class JournalpostJobb {
     private List<Avtale> filtrerTiltakPaaFeatureToggles(List<Avtale> avtalerTilJournalforing) {
 
         if (!unleash.isEnabled("tag.tiltak.prosess.dokgen")) {
-            log.warn("Feature 'tag.tiltak.prosess.dokgen' er ikke skrudd på. Kan ikke behandle andre avtaler enn arbeidstrening.");
-            return avtalerTilJournalforing.stream().filter(avtale -> avtale.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING)).collect(Collectors.toList());
+            if (avtalerTilJournalforing.stream().anyMatch(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING))) {
+                log.warn("Filtrerte vekk avtaler som ikke er 'Arbeidstrening': Feature 'tag.tiltak.prosess.dokgen' er ikke skrudd på.");
+                return avtalerTilJournalforing.stream().filter(avtale -> avtale.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING)).collect(Collectors.toList());
+            }
         }
+
         if (!unleash.isEnabled("tag.tiltak.prosess.lonnstilskudd")) {
-            log.warn("Feature 'tag.tiltak.lonnstilskudd' er ikke skrudd på. Kan ikke behandle lonnstilskudd-avtaler.");
-            avtalerTilJournalforing = avtalerTilJournalforing.stream()
-                    .filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.VARIG_LONNSTILSKUDD))
-                    .filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD))
-                    .collect(Collectors.toList());
+            if (avtalerTilJournalforing.stream().anyMatch(avtale -> avtale.getTiltakstype().equals(Tiltakstype.VARIG_LONNSTILSKUDD) || avtale.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD))) {
+                log.warn("Feature 'tag.tiltak.lonnstilskudd' er ikke skrudd på. Kan ikke behandle lonnstilskudd-avtaler.");
+                avtalerTilJournalforing = avtalerTilJournalforing.stream()
+                        .filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.VARIG_LONNSTILSKUDD))
+                        .filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD))
+                        .collect(Collectors.toList());
+            }
         }
+
         if (!unleash.isEnabled("tag.tiltak.prosess.mentor")) {
-            log.warn("Feature 'tag.tiltak.mentor' er ikke skrudd på. Kan ikke behandle mentor-avtaler.");
-            avtalerTilJournalforing = avtalerTilJournalforing.stream().filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MENTOR)).collect(Collectors.toList());
+            if (avtalerTilJournalforing.stream().anyMatch(avtale -> avtale.getTiltakstype().equals(Tiltakstype.MENTOR))) {
+                log.warn("Feature 'tag.tiltak.mentor' er ikke skrudd på. Kan ikke behandle mentor-avtaler.");
+                avtalerTilJournalforing = avtalerTilJournalforing.stream().filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MENTOR)).collect(Collectors.toList());
+            }
         }
         return avtalerTilJournalforing;
     }
