@@ -31,13 +31,13 @@
             "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
           },
           {
-            "matchesJsonPath" : "$.bruker[?(@.id == '999999999')]"
+            "matchesJsonPath" : "$.bruker[?(@.id == '990983666')]"
           } ,
           {
             "matchesJsonPath" : "$.bruker[?(@.idType == 'ORGNR')]"
           },
           {
-            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '999999999')]"
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '990983666')]"
           } ,
           {
             "matchesJsonPath" : "$.avsenderMottaker[?(@.idType == 'ORGNR')]"
@@ -46,7 +46,7 @@
             "matchesJsonPath" : "$.sak[?(@.sakstype == 'GENERELL_SAK')]"
           },
           {
-            "matchesJsonPath" : "$.avsenderMottaker[?(@.navn == 'Hansen AS')]"
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.navn == 'NAV IKT')]"
           },
           {
             "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'PDF')])]"
