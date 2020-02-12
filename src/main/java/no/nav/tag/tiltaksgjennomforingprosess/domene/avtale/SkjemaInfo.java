@@ -13,7 +13,7 @@ public class SkjemaInfo {
     private LocalDate tilDato;
 
     public SkjemaInfo(Tiltakstype tiltakstypeEnum, LocalDate fraDato, LocalDate tilDato) {
-        this.tiltaksType = tiltakstypeEnum.getTiltaksType();
+        this.tiltaksType = tiltakstypeEnum.getDokforTiltakskodeSkjema();
         this.typeBehandling = tiltakstypeEnum.getBehandlingstema();
         this.fraDato = fraDato;
         this.tilDato = tilDato;

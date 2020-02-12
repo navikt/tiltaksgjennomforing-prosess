@@ -65,7 +65,7 @@ public class ManuellAvtaleTilPdfTest {
 
         byte[] bytes = dokgenAdapter.genererPdf(avtale);
         PDDocument pdf = PDDocument.load(new ByteArrayInputStream(bytes));
-        pdf.save("src/test/resources/PDF/" + avtale.getTiltakstype().getTiltaksType() +".pdf");
+        pdf.save("src/test/resources/PDF/" + avtale.getTiltakstype().getDokforTiltakskodeSkjema() +".pdf");
         pdf.close();
     }
 

@@ -42,7 +42,7 @@ public class AvtaleTilXmlTest {
         String xml = avtaleTilXml.genererXml(avtale);
         log.debug(xml);
         assertGenerellInnhold(xml, avtale);
-        assertTrue(xml.contains("<tiltaksType>Midlertidig lønnstilskudd</tiltaksType>"));
+        assertTrue(xml.contains("<tiltaksType>LonnstilskuddMidlertidig</tiltaksType>"));
         assertTrue(xml.contains("<typeBehandling>ab0336</typeBehandling>"));
         assertTrue(xml.contains("<tiltakstype>MIDLERTIDIG_LONNSTILSKUDD</tiltakstype>"));
     }
@@ -56,7 +56,7 @@ public class AvtaleTilXmlTest {
         String xml = avtaleTilXml.genererXml(avtale);
         log.debug(xml);
         assertGenerellInnhold(xml, avtale);
-        assertTrue(xml.contains("<tiltaksType>Varig lønnstilskudd</tiltaksType>"));
+        assertTrue(xml.contains("<tiltaksType>LonnstilskuddVarig</tiltaksType>"));
         assertTrue(xml.contains("<typeBehandling>ab0337</typeBehandling>"));
         assertTrue(xml.contains("<tiltakstype>VARIG_LONNSTILSKUDD</tiltakstype>"));
     }
@@ -69,7 +69,7 @@ public class AvtaleTilXmlTest {
         String xml = avtaleTilXml.genererXml(avtale);
         log.debug(xml);
         assertGenerellInnhold(xml, avtale);
-        assertTrue(xml.contains("<tiltaksType>Mentor</tiltaksType>"));
+        assertTrue(xml.contains("<tiltaksType>mentor</tiltaksType>"));
         assertTrue(xml.contains("<typeBehandling>ab0416</typeBehandling>"));
         assertTrue(xml.contains("<tiltakstype>MENTOR</tiltakstype>"));
     }

@@ -66,7 +66,7 @@ public class JournalpostJobb {
     }
 
     private Optional<Journalpost> opprettJournalpost(Avtale avtale, Map<UUID, String> journalfoerteAvtaler) {
-        log.debug("avtaleId={}, tiltak={}, fraDato={}, tilDato={}", avtale.getAvtaleId(), avtale.getTiltakstype().getTiltaksType(), avtale.getStartDato(), avtale.getSluttDato());
+        log.debug("avtaleId={}, tiltak={}, fraDato={}, tilDato={}", avtale.getAvtaleId(), avtale.getTiltakstype(), avtale.getStartDato(), avtale.getSluttDato());
         try {
             return Optional.of(journalpostFactory.konverterTilJournalpost(avtale));
         } catch (Throwable t) {
