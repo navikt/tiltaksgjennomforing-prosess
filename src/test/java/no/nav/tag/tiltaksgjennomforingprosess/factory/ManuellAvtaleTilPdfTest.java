@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.ByteArrayInputStream;
 
-@Ignore("Til manuell sjekk av pdf layout")
+@Ignore("Til manuell sjekk av pdf layout - kjøres mot tag-dokgen lokalt")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("dev")

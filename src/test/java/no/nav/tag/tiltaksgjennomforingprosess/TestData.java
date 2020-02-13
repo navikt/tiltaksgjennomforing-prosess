@@ -80,6 +80,7 @@ public class TestData {
         Oppgave oppgave = new Oppgave();
         oppgave.setTittel("Her er oppgave 1");
         oppgave.setBeskrivelse("  nr 1 Vi skal lære hun bestille varer fra leverandører og besøker de slik hun få erfaring på det.");
+        oppgave.setOpplaering("I å bestille varer fra leverandører");
         return oppgave;
     }
 
