@@ -31,13 +31,13 @@
             "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
           },
           {
-            "matchesJsonPath" : "$.bruker[?(@.id == '990983666')]"
+            "matchesJsonPath" : "$.bruker[?(@.id == '910825518')]"
           } ,
           {
             "matchesJsonPath" : "$.bruker[?(@.idType == 'ORGNR')]"
           },
           {
-            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '990983666')]"
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '910825518')]"
           } ,
           {
             "matchesJsonPath" : "$.avsenderMottaker[?(@.idType == 'ORGNR')]"
@@ -46,10 +46,10 @@
             "matchesJsonPath" : "$.sak[?(@.sakstype == 'GENERELL_SAK')]"
           },
           {
-            "matchesJsonPath" : "$.avsenderMottaker[?(@.navn == 'NAV IKT')]"
+            "matchesJsonPath" : "$.avsenderMottaker[?(@.navn == 'Maura og Kolbu regnskap')]"
           },
           {
-            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'PDF')])]"
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'PDFA')])]"
           },
           {
             "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.variantformat == 'ORIGINAL')])]"
