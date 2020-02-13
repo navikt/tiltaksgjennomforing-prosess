@@ -1,12 +1,13 @@
 {
   "mappings": [
     {
+      "priority": 2,
       "request": {
         "method": "POST",
         "urlPathPattern": "/rest/journalpostapi/v1/journalpost",
         "queryParameters": {
           "forsoekFerdigstill": {
-            "equalTo": "true"
+            "equalTo": "false"
           }
         },
         "headers" : {
@@ -19,16 +20,16 @@
             "matchesJsonPath": "[?(@.journalposttype == 'INNGAAENDE')]"
           } ,
           {
+            "matchesJsonPath": "[?(@.behandlingsTema == 'ab0416')]"
+          },
+          {
             "matchesJsonPath": "[?(@.kanal == 'NAV_NO')]"
           },
           {
             "matchesJsonPath": "[?(@.tema == 'TIL')]"
           },
           {
-            "matchesJsonPath": "[?(@.tittel == 'Avtale om arbeidstrening')]"
-          },
-          {
-            "matchesJsonPath": "[?(@.journalfoerendeEnhet == '9999')]"
+            "matchesJsonPath": "[?(@.tittel == 'Avtale om tilskudd til mentor')]"
           },
           {
             "matchesJsonPath" : "$.bruker[?(@.id == '999999999')]"
@@ -37,22 +38,16 @@
             "matchesJsonPath" : "$.bruker[?(@.idType == 'ORGNR')]"
           },
           {
-            "matchesJsonPath" : "$.avsenderMottaker[?(@.id == '999999999')]"
-          } ,
-          {
-            "matchesJsonPath" : "$.avsenderMottaker[?(@.idType == 'ORGNR')]"
-          },
-          {
-            "matchesJsonPath" : "$.sak[?(@.sakstype == 'GENERELL_SAK')]"
-          },
-          {
-            "matchesJsonPath" : "$.avsenderMottaker[?(@.navn == 'Hansen AS')]"
-          },
-          {
             "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'PDF')])]"
           },
           {
             "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.variantformat == 'ORIGINAL')])]"
+          },
+          {
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.filtype == 'XML')])]"
+          },
+          {
+            "matchesJsonPath" : "$.dokumenter[?($.dokumentVarianter[?(@.variantformat == 'ARKIV')])]"
           }
         ]
       },
@@ -61,7 +56,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "{\"journalpostId\" : \"001\", \"journalstatus\" : \"FERDIG\", \"melding\" : \"Gikk bra\"}"
+        "body": "{\"journalpostId\" : \"003\", \"journalstatus\" : \"MIDLERTIDIG\", \"melding\" : \"Gikk bra\"}"
       }
     }
   ]

@@ -32,6 +32,7 @@ public class TiltaksgjennomforingApiIntTest {
         Map<UUID, String> avtalerTilJournalfoert = new HashMap<>();
         avtalerTilJournalfoert.put(UUID.fromString("878c49f4-7225-4bb7-becf-a63b90a1baf7"), "001");
         avtalerTilJournalfoert.put(UUID.fromString("4c8058e9-1d07-4a76-9d9f-201e9a2ca401"), "002");
+        avtalerTilJournalfoert.put(UUID.fromString("4558cfad-9cf0-4543-94e5-7970cdaeeb8b"), "003");
 
         try {
             service.settAvtalerTilJournalfoert(avtalerTilJournalfoert);

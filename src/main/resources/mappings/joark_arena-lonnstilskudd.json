@@ -1,6 +1,7 @@
 {
   "mappings": [
     {
+      "priority": 1,
       "request": {
         "method": "POST",
         "urlPathPattern": "/rest/journalpostapi/v1/journalpost",

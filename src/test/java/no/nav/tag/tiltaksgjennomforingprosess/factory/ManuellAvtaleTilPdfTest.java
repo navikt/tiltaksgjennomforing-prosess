@@ -2,6 +2,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Ignore;
@@ -32,9 +33,22 @@ public class ManuellAvtaleTilPdfTest {
     }
 
     @Test
-    public void lagerForventetLonnstilskuddPDF() throws Exception {
+    public void lagerForventetMidlertidigLonnstilskuddPDF() throws Exception {
         Avtale lonnstilskudd = TestData.opprettLonnstilskuddsAvtale();
         opprettPdfFil(lonnstilskudd);
+    }
+
+    @Test
+    public void lagerForventetVarigLonnstilskuddPDF() throws Exception {
+        Avtale lonnstilskudd = TestData.opprettLonnstilskuddsAvtale();
+        lonnstilskudd.setTiltakstype(Tiltakstype.VARIG_LONNSTILSKUDD);
+        opprettPdfFil(lonnstilskudd);
+    }
+
+    @Test
+    public void lagerForventetMentortilskuddPDF() throws Exception {
+        Avtale mentorAvtale = TestData.opprettMentorAvtale();
+        opprettPdfFil(mentorAvtale);
     }
 
     @Test
@@ -51,7 +65,7 @@ public class ManuellAvtaleTilPdfTest {
 
         byte[] bytes = dokgenAdapter.genererPdf(avtale);
         PDDocument pdf = PDDocument.load(new ByteArrayInputStream(bytes));
-        pdf.save("src/test/resources/PDF/" + avtale.getTiltakstype().getTiltaksType() +".pdf");
+        pdf.save("src/test/resources/PDF/" + avtale.getTiltakstype().getDokforTiltakskodeSkjema() +".pdf");
         pdf.close();
     }
 

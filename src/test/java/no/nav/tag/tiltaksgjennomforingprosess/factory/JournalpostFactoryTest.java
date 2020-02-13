@@ -111,6 +111,36 @@ public class JournalpostFactoryTest {
         assertEquals(2, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 
+    @Test
+    public void journalpostMentorSkalIkkeTilArena(){
+        Avtale avtale = TestData.opprettMentorAvtale();
+        avtale.setVersjon(2);
+
+        Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
+
+        assertGenereltInnhold(journalpost, avtale);
+        assertEquals("Avtale om tilskudd til mentor", journalpost.getTittel());
+        assertNull(journalpost.getBehandlingsTema());
+        assertFalse(journalpost.skalBehandlesIArena());
+        assertEquals(1, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
+    }
+
+    @Test
+    public void journalpostMentorTilArena(){
+        Avtale avtale = TestData.opprettMentorAvtale();
+
+        when(avtaleTilXml.genererXml(avtale)).thenCallRealMethod();
+
+        Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
+        verify(avtaleTilXml, times(1)).genererXml(avtale);
+
+        assertGenereltInnhold(journalpost, avtale);
+        assertEquals("Avtale om tilskudd til mentor", journalpost.getTittel());
+        assertEquals("ab0416", journalpost.getBehandlingsTema());
+        assertTrue(journalpost.skalBehandlesIArena());
+        assertEquals(2, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
+    }
+
     @Test(expected = RuntimeException.class)
     public void pdfDocGenFeiler() throws Exception {
         Avtale avtale = TestData.opprettArbeidstreningAvtale();

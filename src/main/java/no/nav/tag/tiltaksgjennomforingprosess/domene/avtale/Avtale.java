@@ -37,6 +37,12 @@ public class Avtale {
     private String tilrettelegging;
     private Integer stillingprosent;
     private Integer versjon;
+    private String mentorFornavn;
+    private String mentorEtternavn;
+    private String mentorOppgaver;
+    private Integer mentorAntallTimer;
+    private Integer mentorTimelonn;
+
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
     private String arbeidsgiverKontonummer;
     private String stillingstype;

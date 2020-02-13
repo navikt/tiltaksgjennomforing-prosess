@@ -38,11 +38,23 @@ public class TestData {
         avtale.setStartDato(START_DATO);
         avtale.setSluttDato(START_DATO.plusMonths(2));
         avtale.setVersjon(1);
+        avtale.setStillingprosent(60);
         avtale.setGodkjentAvArbeidsgiver(LocalDate.now());
         avtale.setGodkjentAvDeltaker(LocalDate.now().plusDays(1));
         avtale.setGodkjentAvVeileder(LocalDate.now().plusDays(2));
         avtale.setGodkjentPaVegneAv(true);
         avtale.setGodkjentPaVegneGrunn(enGrunn());
+        return avtale;
+    }
+
+    public static Avtale opprettMentorAvtale() {
+        Avtale avtale = opprettEnAvtale();
+        avtale.setTiltakstype(Tiltakstype.MENTOR);
+        avtale.setMentorFornavn("Magne");
+        avtale.setMentorEtternavn("Mentori");
+        avtale.setMentorOppgaver("Litt av hvert");
+        avtale.setMentorAntallTimer(20);
+        avtale.setMentorTimelonn(400);
         return avtale;
     }
 
