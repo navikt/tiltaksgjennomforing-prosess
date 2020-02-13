@@ -56,6 +56,8 @@ public class JoarkServiceIntTest {
     public void oppretterJournalpost_ikke_til_arena() {
         unleash.disableAll();
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        avtale.setBedriftNavn("Maura og Kolbu regnskap");
+        avtale.setBedriftNr("910825518");
         avtale.setVersjon(2);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
@@ -78,6 +80,8 @@ public class JoarkServiceIntTest {
     public void oppretterJournalpost_ikke_til_arena_med_dokgen() {
         unleash.enableAll();
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        avtale.setBedriftNavn("Maura og Kolbu regnskap");
+        avtale.setBedriftNr("910825518");
         avtale.setVersjon(2);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);

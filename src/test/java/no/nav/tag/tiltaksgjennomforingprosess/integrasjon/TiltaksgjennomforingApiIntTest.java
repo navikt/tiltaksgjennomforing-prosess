@@ -1,6 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,10 @@ public class TiltaksgjennomforingApiIntTest {
 
     @Test
     public void setterAvtalerTilJournalfoert() {
-
         Map<UUID, String> avtalerTilJournalfoert = new HashMap<>();
-        avtalerTilJournalfoert.put(UUID.fromString("878c49f4-7225-4bb7-becf-a63b90a1baf7"), "001");
-        avtalerTilJournalfoert.put(UUID.fromString("4c8058e9-1d07-4a76-9d9f-201e9a2ca401"), "002");
-        avtalerTilJournalfoert.put(UUID.fromString("4558cfad-9cf0-4543-94e5-7970cdaeeb8b"), "003");
+        avtalerTilJournalfoert.put(UUID.fromString("9f17ac5f-6a3e-47b6-828e-590de574250e"), "001");
+        avtalerTilJournalfoert.put(UUID.fromString("463accd8-27cd-4ac7-9735-7cbda7d0a6d2"), "002");
+        avtalerTilJournalfoert.put(UUID.fromString("fb8461e5-fb0c-49cf-b349-530c0a086c93"), "003");
 
         try {
             service.settAvtalerTilJournalfoert(avtalerTilJournalfoert);
@@ -45,29 +45,31 @@ public class TiltaksgjennomforingApiIntTest {
     public void henterAvtalerTilJournalfoering() {
         List<Avtale> avtaleList;
         avtaleList = service.finnAvtalerTilJournalfoering();
-        Avtale avtale = avtaleList.get(0);
-        assertEquals("ca3d7189-0852-4693-a3dd-d518b4ec42e4", avtale.getAvtaleId().toString());
-        assertEquals("878c49f4-7225-4bb7-becf-a63b90a1baf7", avtale.getAvtaleVersjonId().toString());
-        assertEquals("02018099999", avtale.getDeltakerFnr());
-        assertEquals("999999999", avtale.getBedriftNr());
-        assertEquals("X123456", avtale.getVeilederNavIdent());
-        assertEquals(LocalDate.of(2019, 9, 9), avtale.getOpprettet());
-        assertEquals("Ronny", avtale.getDeltakerFornavn());
-        assertEquals("Deltaker", avtale.getDeltakerEtternavn());
-        assertEquals("00000000", avtale.getDeltakerTlf());
-        assertEquals("Hansen AS", avtale.getBedriftNavn());
-        assertEquals("Ronnys", avtale.getArbeidsgiverFornavn());
-        assertEquals("Kremmer", avtale.getArbeidsgiverEtternavn());
-        assertEquals("22334455", avtale.getArbeidsgiverTlf());
-        assertEquals("Jan-Ronny", avtale.getVeilederFornavn());
-        assertEquals("33445566", avtale.getVeilederTlf());
-        assertEquals("Telefon hver uke", avtale.getOppfolging());
-        assertEquals("Ingen", avtale.getTilrettelegging());
-        assertEquals(100, avtale.getStillingprosent().intValue());
-        assertEquals(LocalDate.of(2019, 9, 9), avtale.getGodkjentAvDeltaker());
-        assertEquals(LocalDate.of(2019, 10, 9), avtale.getGodkjentAvArbeidsgiver());
-        assertEquals(LocalDate.of(2019, 11, 9), avtale.getGodkjentAvVeileder());
-        assertFalse(avtale.isGodkjentPaVegneAv());
-    }
+        Avtale avtale = avtaleList.stream().filter(avt -> avt.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING)).findFirst().orElseThrow(() -> new AssertionError("Arbeidstrening-avtale mangler"));
+        assertEquals("79001b47-6b3a-43bd-b548-d114ed8965f6", avtale.getAvtaleId().toString());
+        assertEquals("9f17ac5f-6a3e-47b6-828e-590de574250e", avtale.getAvtaleVersjonId().toString());
+        assertEquals("24096122116", avtale.getDeltakerFnr());
+        assertEquals("910825518", avtale.getBedriftNr());
+        assertEquals("Z992785", avtale.getVeilederNavIdent());
+        assertEquals(LocalDate.of(2020, 2, 3), avtale.getOpprettet());
+        assertEquals("Jan", avtale.getDeltakerFornavn());
+        assertEquals("Banan", avtale.getDeltakerEtternavn());
+        assertEquals("67676767", avtale.getDeltakerTlf());
+        assertEquals("Maura og Kolbu regnskap", avtale.getBedriftNavn());
+        assertEquals("Knut", avtale.getArbeidsgiverFornavn());
+        assertEquals("Knutsen", avtale.getArbeidsgiverEtternavn());
+        assertEquals("56565656", avtale.getArbeidsgiverTlf());
+        assertEquals("Berit", avtale.getVeilederFornavn());
+        assertEquals("78787877", avtale.getVeilederTlf());
+        assertEquals("Følge opp med Arb.trening", avtale.getOppfolging());
+        assertEquals("Legget til rette", avtale.getTilrettelegging());
+        assertEquals(70, avtale.getStillingprosent().intValue());
+        assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvDeltaker());
+        assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvArbeidsgiver());
+        assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvVeileder());
+        assertTrue(avtale.isGodkjentPaVegneAv());
 
+        assertTrue(avtaleList.stream().anyMatch(avt -> avt.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)));
+        assertTrue(avtaleList.stream().anyMatch(avt -> avt.getTiltakstype().equals(Tiltakstype.MENTOR)));
+    }
 }
