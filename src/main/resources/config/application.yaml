@@ -7,6 +7,8 @@ management.endpoints.web:
 logging:
   level:
     no.nav.tag.tiltaksgjennomforingprosess: INFO
+    org.springframework.*: WARN
+    org.flywaydb.*: WARN
 
 spring:
   application:
