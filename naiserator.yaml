@@ -4,10 +4,10 @@ metadata:
   name: tiltaksgjennomforing-prosess
   namespace: default
   labels:
-    team: teamtag
+    team: arbeidsgiver
 spec:
-  image: navikt/tiltaksgjennomforing-prosess:{{version}}
-  team: teamtag
+  image: {{image}}
+  team: arbeidsgiver
   port: 8080
   replicas:
     min: 1
