@@ -10,11 +10,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Data
 @ToString
 public class Avtale {
+    private final static BigDecimal HUNDRE = BigDecimal.valueOf(100);
+
     private Tiltakstype tiltakstype;
     private UUID avtaleId;
     private UUID avtaleVersjonId;
@@ -50,7 +53,24 @@ public class Avtale {
     private Integer lonnstilskuddProsent;
     private Integer manedslonn;
     private BigDecimal feriepengesats;
+    private Integer feriepengerBelop;
     private BigDecimal arbeidsgiveravgift;
+    private Integer arbeidsgiveravgiftBelop;
+    private Integer otpBelop;
+    private Integer sumLonnsutgifter;
+    private Integer sumLonnstilskudd;
+
+    public BigDecimal getFeriepengesats() {
+        return Optional.ofNullable(this.feriepengesats)
+                .orElse(BigDecimal.ZERO)
+                .multiply(HUNDRE);
+    }
+
+    public BigDecimal getArbeidsgiveravgift() {
+        return Optional.ofNullable(this.arbeidsgiveravgift)
+                .orElse(BigDecimal.ZERO)
+                .multiply(HUNDRE);
+    }
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate sluttDato;
@@ -72,7 +92,7 @@ public class Avtale {
 
     private boolean godkjentPaVegneAv;
 
-    public boolean erNyVersjon(){
+    public boolean erNyVersjon() {
         return this.versjon > 1;
     }
 }

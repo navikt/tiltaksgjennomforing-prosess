@@ -2,6 +2,7 @@ package no.nav.tag.tiltaksgjennomforingprosess;
 
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -73,6 +74,16 @@ public class TestData {
         avtale.setStillingstype("Utvikler");
         avtale.setArbeidsoppgaver("Spille bordtennis");
         avtale.setStillingprosent(60);
+        avtale.setArbeidsgiverKontonummer("99998888777");
+        avtale.setLonnstilskuddProsent(40);
+        avtale.setManedslonn(20000);
+        avtale.setFeriepengesats(BigDecimal.valueOf(0.102));
+        avtale.setFeriepengerBelop(2400);
+        avtale.setArbeidsgiveravgift(BigDecimal.valueOf(0.141));
+        avtale.setArbeidsgiveravgiftBelop(3222);
+        avtale.setOtpBelop(448);
+        avtale.setSumLonnsutgifter(26070);
+        avtale.setSumLonnstilskudd(15642);
         return avtale;
     }
 
