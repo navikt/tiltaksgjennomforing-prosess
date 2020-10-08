@@ -1,5 +1,11 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.Unleash;
@@ -12,9 +18,6 @@ import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringA
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -110,23 +113,6 @@ public class JournalpostJobb {
     }
 
     private List<Avtale> filtrerTiltakPaaFeatureToggles(List<Avtale> avtalerTilJournalforing) {
-
-        if (!unleash.isEnabled("tag.tiltak.prosess.dokgen")) {
-            if (avtalerTilJournalforing.stream().anyMatch(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING))) {
-                log.warn("Filtrerte vekk avtaler som ikke er 'Arbeidstrening': Feature 'tag.tiltak.prosess.dokgen' er ikke skrudd på.");
-                return avtalerTilJournalforing.stream().filter(avtale -> avtale.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING)).collect(Collectors.toList());
-            }
-        }
-
-        if (!unleash.isEnabled("tag.tiltak.prosess.lonnstilskudd")) {
-            if (avtalerTilJournalforing.stream().anyMatch(avtale -> avtale.getTiltakstype().equals(Tiltakstype.VARIG_LONNSTILSKUDD) || avtale.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD))) {
-                log.warn("Feature 'tag.tiltak.lonnstilskudd' er ikke skrudd på. Kan ikke behandle lonnstilskudd-avtaler.");
-                avtalerTilJournalforing = avtalerTilJournalforing.stream()
-                        .filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.VARIG_LONNSTILSKUDD))
-                        .filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD))
-                        .collect(Collectors.toList());
-            }
-        }
 
         if (!unleash.isEnabled("tag.tiltak.prosess.mentor")) {
             if (avtalerTilJournalforing.stream().anyMatch(avtale -> avtale.getTiltakstype().equals(Tiltakstype.MENTOR))) {

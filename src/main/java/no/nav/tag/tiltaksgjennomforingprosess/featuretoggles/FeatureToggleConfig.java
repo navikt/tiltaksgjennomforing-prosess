@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.featuretoggles;
 
+import java.net.URI;
 import no.finn.unleash.DefaultUnleash;
 import no.finn.unleash.FakeUnleash;
 import no.finn.unleash.Unleash;
@@ -8,8 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import java.net.URI;
 
 
 @Configuration
@@ -38,9 +37,7 @@ public class FeatureToggleConfig {
     @Profile("!(preprod | prod)")
     public Unleash unleashMock() {
         FakeUnleash fakeUnleash = new FakeUnleash();
-        fakeUnleash.enable("tag.tiltak.prosess.lonnstilskudd");
         fakeUnleash.enable("tag.tiltak.prosess.mentor");
-        fakeUnleash.enable("tag.tiltak.prosess.dokgen");
         return fakeUnleash;
     }
 }

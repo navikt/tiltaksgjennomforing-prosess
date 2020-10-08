@@ -1,20 +1,31 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.client.HttpClientErrorException;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JournalpostFactoryTest {
@@ -30,6 +41,11 @@ public class JournalpostFactoryTest {
 
     @InjectMocks
     private JournalpostFactory journalpostFactory;
+
+    @Before
+    public void before() {
+        when(dokgenAdapter.genererPdf(any(Avtale.class))).thenReturn(new byte[1]);
+    }
 
     @Test
     public void journalpostArbeidstreningSkalTilArena() {
@@ -145,7 +161,6 @@ public class JournalpostFactoryTest {
     public void pdfDocGenFeiler() throws Exception {
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
 
-        when(unleash.isEnabled("tag.tiltak.prosess.dokgen")).thenReturn(true);
         when(dokgenAdapter.genererPdf(avtale)).thenThrow(HttpClientErrorException.class);
         journalpostFactory.konverterTilJournalpost(avtale);
         verify(dokgenAdapter, atLeastOnce()).genererPdf(avtale);
