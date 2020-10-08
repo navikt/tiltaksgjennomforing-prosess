@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
+import java.io.ByteArrayInputStream;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
@@ -13,8 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.io.ByteArrayInputStream;
 
 @Ignore("Til manuell sjekk av pdf layout - kjøres mot tag-dokgen lokalt")
 @RunWith(SpringRunner.class)
@@ -49,16 +48,6 @@ public class ManuellAvtaleTilPdfTest {
     public void lagerForventetMentortilskuddPDF() throws Exception {
         Avtale mentorAvtale = TestData.opprettMentorAvtale();
         opprettPdfFil(mentorAvtale);
-    }
-
-    @Test
-    public void lagerForventetPDFAvGammelPDFGen() throws Exception {
-        Avtale arbeidstrening = TestData.opprettArbeidstreningAvtale();
-        byte[] bytes = new AvtaleTilPdf().tilBytesAvPdf(arbeidstrening);
-
-        PDDocument pdf = PDDocument.load(new ByteArrayInputStream(bytes));
-        pdf.save("src/test/resources/PDF/gammel-pdfGen.pdf");
-        pdf.close();
     }
 
     private void opprettPdfFil(Avtale avtale) throws Exception {

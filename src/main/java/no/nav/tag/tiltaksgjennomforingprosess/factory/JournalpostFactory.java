@@ -1,20 +1,27 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.Unleash;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.*;
-import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
-import org.springframework.stereotype.Component;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.FILTYPE_PDF;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.FILTYPE_XML;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.VARIANFORMAT_PDF;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.VARIANFORMAT_XML;
+import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost.JORURNALFØRENDE_ENHET;
 
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
-
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.*;
-import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost.JORURNALFØRENDE_ENHET;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import no.finn.unleash.Unleash;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Avsender;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Bruker;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Sak;
+import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -40,9 +47,7 @@ public class JournalpostFactory {
         journalpost.setAvsenderMottaker(new Avsender(avtale.getBedriftNr(), avtale.getBedriftNavn()));
         List<DokumentVariant> dokumentVarianter = new ArrayList<>(2);
 
-        final byte[] dokumentPdfAsBytes = unleash.isEnabled("tag.tiltak.prosess.dokgen") ?
-                dokgenAdapter.genererPdf(avtale) :
-                new AvtaleTilPdf().tilBytesAvPdf(avtale);
+        final byte[] dokumentPdfAsBytes = dokgenAdapter.genererPdf(avtale);
 
         dokumentVarianter.add(new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, encodeToBase64(dokumentPdfAsBytes)));
         Dokument dokument = new Dokument();
