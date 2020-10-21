@@ -84,6 +84,7 @@ public class TestData {
         avtale.setOtpBelop(448);
         avtale.setSumLonnsutgifter(26070);
         avtale.setSumLonnstilskudd(15642);
+        avtale.setManedslonn100pst((avtale.getSumLonnsutgifter() * 100 / avtale.getStillingprosent()));
         return avtale;
     }
 

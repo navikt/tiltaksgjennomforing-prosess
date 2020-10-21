@@ -59,6 +59,7 @@ public class Avtale {
     private Integer otpBelop;
     private Integer sumLonnsutgifter;
     private Integer sumLonnstilskudd;
+    private Integer manedslonn100pst;
 
     public BigDecimal getFeriepengesats() {
         return Optional.ofNullable(this.feriepengesats)
