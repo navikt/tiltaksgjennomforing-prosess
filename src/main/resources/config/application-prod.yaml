@@ -12,7 +12,7 @@ prosess:
       bruker: ${tiltaksgjennomforing.consumer.user}
       passord: ${tiltaksgjennomforing.consumer.password}
     api:
-      uri: http://tiltaksgjennomforing-api/tiltaksgjennomforing-api
+      uri: http://tiltaksgjennomforing-api.arbeidsgiver/tiltaksgjennomforing-api
     unleash:
       uri: https://unleash.nais.adeo.no/api/
     dokgen:
