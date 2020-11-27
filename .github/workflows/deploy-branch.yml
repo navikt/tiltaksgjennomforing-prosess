@@ -39,7 +39,7 @@ jobs:
           git merge-base --is-ancestor origin/master $COMMIT
 
       - name: Sett miljøvariabel IMAGE
-        run: echo "::set-env name=IMAGE::$IMAGE_BASE:$COMMIT"
+        run: echo "IMAGE=$IMAGE_BASE:$COMMIT" >> $GITHUB_ENV
 
       - name: Deploy til dev-fss
         uses: nais/deploy/actions/deploy@v1
@@ -47,7 +47,7 @@ jobs:
           TEAM: arbeidsgiver
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-fss
-          RESOURCE: naiserator.yaml
+          RESOURCE: nais/naiserator.yaml
           PRINT_PAYLOAD: true
           VARS: nais/dev-fss.json
           REF: ${{ env.COMMIT }}
