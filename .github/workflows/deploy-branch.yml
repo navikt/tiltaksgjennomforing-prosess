@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
 
       - name: Sett miljøvariabel COMMIT
-        run: echo "::set-env name=COMMIT::$(git rev-parse HEAD)"
+        run: echo "COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Sjekk om COMMIT er oppdatert mot master
         run: |

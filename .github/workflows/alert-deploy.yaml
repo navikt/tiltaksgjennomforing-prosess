@@ -17,7 +17,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-fss
-          RESOURCE: ./alerts.yaml
+          RESOURCE: alerts.yaml
 #      - name: deploy to prod
 #        uses: nais/deploy/actions/deploy@v1
 #        env:
