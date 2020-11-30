@@ -76,7 +76,7 @@ jobs:
           CLUSTER: dev-fss
           RESOURCE: nais/naiserator.yaml,nais/alerterator.yaml
           PRINT_PAYLOAD: true
-          VARS: nais/dev-fss.json
+          VARS: nais/dev-fss.json,namespace=arbeidsgiver
 
   deploy-prod:
     name: Deploy til prod
@@ -93,4 +93,4 @@ jobs:
           CLUSTER: prod-fss
           RESOURCE: nais/naiserator.yaml
           PRINT_PAYLOAD: true
-          VARS: nais/prod-fss.json
+          VARS: nais/prod-fss.json,namespace=arbeidsgiver
