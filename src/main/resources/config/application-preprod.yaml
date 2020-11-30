@@ -8,7 +8,7 @@ prosess:
     joark:
       uri: https://dokarkiv-q1.nais.preprod.local
     sts:
-      uri: http://security-token-service
+      uri: http://security-token-service.default.svc.nais.local
       bruker: ${tiltaksgjennomforing.consumer.user}
       passord: ${tiltaksgjennomforing.consumer.password}
     api:
