@@ -19,7 +19,7 @@ public class DokgenAdapter {
         try {
         return restTemplate.postForObject(dokGenProperties.getUri(), avtale, byte[].class);
         } catch (Exception e){
-            log.error("Feil v/generering pdf av avtale-versjon " + avtale.getAvtaleVersjonId());
+            log.error("Feil v/generering pdf av avtale-versjon " + avtale.getAvtaleVersjonId(), e);
             throw new PdfGenException(e);
         }
     }
