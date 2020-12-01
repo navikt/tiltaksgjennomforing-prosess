@@ -13,7 +13,7 @@ spec:
   alerts:
     - alert: applikasjon nede
       expr: up{app="tiltaksgjennomforing-prosess", job="kubernetes-pods"} == 0
-      for: 5m
+      for: 30m
       description: "{{ $labels.app }} er nede i {{ $labels.kubernetes_namespace }}"
       action: "`kubectl describe pod tiltaksgjennomforing-prosess -n arbeidsgiver` for events, og `kubectl logs tiltaksgjennomforing-prosess -n arbeidsgiver` for logger"
     - alert: høy feilrate i logger
