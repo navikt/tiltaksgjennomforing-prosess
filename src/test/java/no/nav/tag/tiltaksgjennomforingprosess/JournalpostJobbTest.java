@@ -1,6 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
 import no.finn.unleash.Unleash;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.PdfGenException;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
@@ -130,6 +131,33 @@ public class JournalpostJobbTest {
 
         journalpostJobb.avtalerTilJournalfoering();
         verify(joarkService, times(1)).sendJournalpost(eq(journalpost1));
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2));
+        verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
+    }
+
+    @Test
+    public void pdfGenFeilerPåEnAvtale() {
+
+        Avtale avtale1 = TestData.opprettArbeidstreningAvtale();
+        Avtale avtale2 = TestData.opprettArbeidstreningAvtale();
+
+        Journalpost journalpost1 = new Journalpost();
+        journalpost1.setEksternReferanseId(avtale1.getAvtaleId().toString());
+        Journalpost journalpost2 = new Journalpost();
+        journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
+
+        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
+        jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
+
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
+
+        when(journalpostFactory.konverterTilJournalpost(avtale1)).thenThrow(PdfGenException.class);
+        when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
+
+        when(joarkService.sendJournalpost(eq(journalpost2))).thenReturn(JOURNALPOST_ID);
+
+        journalpostJobb.avtalerTilJournalfoering();
+        verify(joarkService, never()).sendJournalpost(eq(journalpost1));
         verify(joarkService, times(1)).sendJournalpost(eq(journalpost2));
         verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
     }

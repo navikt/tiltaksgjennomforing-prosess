@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.Unleash;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.PdfGenException;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
@@ -72,6 +73,8 @@ public class JournalpostJobb {
         log.debug("avtaleId={}, tiltak={}, fraDato={}, tilDato={}", avtale.getAvtaleId(), avtale.getTiltakstype(), avtale.getStartDato(), avtale.getSluttDato());
         try {
             return Optional.of(journalpostFactory.konverterTilJournalpost(avtale));
+        }catch (PdfGenException e){
+            return Optional.empty();
         } catch (Throwable t) {
             log.error("Feil ved mapping av avtale {} versjon {} til journalpost: ", avtale.getAvtaleId(), avtale.getVersjon(), t);
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), MAPPING_FEIL);

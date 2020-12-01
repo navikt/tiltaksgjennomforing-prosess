@@ -16,7 +16,7 @@ prosess:
     unleash:
       uri: https://unleash.nais.adeo.no/api/
     dokgen:
-      uri: http://tag-dokgen/template/tiltak-avtale/create-pdf
+      uri: http://tag-dokgen.nais.adeo.no/template/tiltak-avtale/create-pdf
 
 
 
