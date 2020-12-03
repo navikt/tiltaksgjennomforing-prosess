@@ -14,7 +14,7 @@ prosess:
     api:
       uri: http://tiltaksgjennomforing-api.arbeidsgiver/tiltaksgjennomforing-api
     unleash:
-      uri: https://unleash.nais.adeo.no/api/
+      uri: https://unleash.nais.io/api/
     dokgen:
       uri: https://tag-dokgen.nais.preprod.local/template/tiltak-avtale/create-pdf
 
