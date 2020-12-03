@@ -81,6 +81,7 @@ public class TestData {
         avtale.setFeriepengerBelop(2400);
         avtale.setArbeidsgiveravgift(BigDecimal.valueOf(0.141));
         avtale.setArbeidsgiveravgiftBelop(3222);
+        avtale.setOtpSats(0.05);
         avtale.setOtpBelop(448);
         avtale.setSumLonnsutgifter(26070);
         avtale.setSumLonnstilskudd(15642);
