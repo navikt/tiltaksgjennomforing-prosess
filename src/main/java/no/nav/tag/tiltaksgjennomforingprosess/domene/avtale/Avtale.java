@@ -17,6 +17,7 @@ import java.util.UUID;
 @ToString
 public class Avtale {
     private final static BigDecimal HUNDRE = BigDecimal.valueOf(100);
+    private final static Double DEFAULT_OTP = 2.0;
 
     private Tiltakstype tiltakstype;
     private UUID avtaleId;
@@ -56,6 +57,7 @@ public class Avtale {
     private Integer feriepengerBelop;
     private BigDecimal arbeidsgiveravgift;
     private Integer arbeidsgiveravgiftBelop;
+    private Double otpSats;
     private Integer otpBelop;
     private Integer sumLonnsutgifter;
     private Integer sumLonnstilskudd;
@@ -71,6 +73,12 @@ public class Avtale {
         return Optional.ofNullable(this.arbeidsgiveravgift)
                 .orElse(BigDecimal.ZERO)
                 .multiply(HUNDRE);
+    }
+
+    public Double getOtpSats() {
+        return Optional.ofNullable(this.otpSats)
+                .map(otp -> otp * 100)
+                .orElse(DEFAULT_OTP);
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd")
