@@ -1,6 +1,8 @@
 package no.nav.tag.tiltaksgjennomforingprosess.featuretoggles;
 
 import java.net.URI;
+
+import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.DefaultUnleash;
 import no.finn.unleash.FakeUnleash;
 import no.finn.unleash.Unleash;
@@ -10,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-
+@Slf4j
 @Configuration
 public class FeatureToggleConfig {
 
@@ -26,6 +28,7 @@ public class FeatureToggleConfig {
                 .instanceId(APP_NAME + "-" + byEnvironmentStrategy.aktivtMiljø())
                 .unleashAPI(unleashUrl)
                 .build();
+        log.info("Unleash URL: {}", config.getUnleashURLs().getFetchTogglesURL());
 
         return new DefaultUnleash(
                 config,
