@@ -75,7 +75,7 @@ public class Avtale {
                 .multiply(HUNDRE);
     }
 
-    public Double getOtp() {
+    public Double getOtpSats() {
         return Optional.ofNullable(this.otpSats)
                 .map(otp -> otp * 100)
                 .orElse(DEFAULT_OTP);
