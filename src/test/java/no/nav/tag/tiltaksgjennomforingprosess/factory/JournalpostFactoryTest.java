@@ -17,6 +17,7 @@ import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
 import org.junit.Before;
@@ -78,11 +79,10 @@ public class JournalpostFactoryTest {
         assertEquals("Avtale om arbeidstrening", journalpost.getTittel());
         assertNull(journalpost.getBehandlingsTema());
         assertEquals(1, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
-        assertEquals(Tiltakstype.ARBEIDSTRENING.getTittel(), journalpost.getDokumenter().get(0).getTittel());
     }
 
     @Test
-    public void journalpostLonnstilskuddTilArena(){
+    public void journalpostLonnstilskuddTilArena() {
         Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
         when(avtaleTilXml.genererXml(avtale)).thenCallRealMethod();
 
@@ -97,7 +97,7 @@ public class JournalpostFactoryTest {
     }
 
     @Test
-    public void journalpostLonnstilskuddSkalIkkeTilArena(){
+    public void journalpostLonnstilskuddSkalIkkeTilArena() {
         Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
         avtale.setVersjon(2);
 
@@ -111,7 +111,7 @@ public class JournalpostFactoryTest {
     }
 
     @Test
-    public void journalpostVarigLonnstilskuddTilArena(){
+    public void journalpostVarigLonnstilskuddTilArena() {
         Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
         avtale.setTiltakstype(Tiltakstype.VARIG_LONNSTILSKUDD);
 
@@ -128,7 +128,7 @@ public class JournalpostFactoryTest {
     }
 
     @Test
-    public void journalpostMentorSkalIkkeTilArena(){
+    public void journalpostMentorSkalIkkeTilArena() {
         Avtale avtale = TestData.opprettMentorAvtale();
         avtale.setVersjon(2);
 
@@ -142,7 +142,7 @@ public class JournalpostFactoryTest {
     }
 
     @Test
-    public void journalpostMentorTilArena(){
+    public void journalpostMentorTilArena() {
         Avtale avtale = TestData.opprettMentorAvtale();
 
         when(avtaleTilXml.genererXml(avtale)).thenCallRealMethod();
@@ -169,12 +169,12 @@ public class JournalpostFactoryTest {
 
     @Test(expected = RuntimeException.class)
     public void avtaleTilXmlFeiler() throws Exception {
-       Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
         when(avtaleTilXml.genererXml(avtale)).thenThrow(RuntimeException.class);
         journalpostFactory.konverterTilJournalpost(avtale);
     }
 
-    private void assertGenereltInnhold(Journalpost journalpost, Avtale avtale){
+    private void assertGenereltInnhold(Journalpost journalpost, Avtale avtale) {
         assertEquals("INNGAAENDE", journalpost.getJournalposttype());
         assertEquals("NAV_NO", journalpost.getKanal());
         assertEquals("TIL", journalpost.getTema());
@@ -188,14 +188,18 @@ public class JournalpostFactoryTest {
 
         assertEquals(1, journalpost.getDokumenter().size());
 
-        journalpost.getDokumenter().get(0).getDokumentVarianter().forEach(dokumentVariant -> {
+        Dokument dokument = journalpost.getDokumenter().get(0);
+        assertEquals(avtale.getTiltakstype().getTittel(), journalpost.getDokumenter().get(0).getTittel());
+        assertEquals(avtale.getTiltakstype().getBrevkode(), journalpost.getDokumenter().get(0).getBrevkode());
+
+        dokument.getDokumentVarianter().forEach(dokumentVariant -> {
             if (dokumentVariant.getFiltype().equals("XML")) {
                 assertEquals("ORIGINAL", dokumentVariant.getVariantformat());
             } else if (dokumentVariant.getFiltype().equals("PDFA")) {
-        assertEquals("ARKIV", dokumentVariant.getVariantformat());
+                assertEquals("ARKIV", dokumentVariant.getVariantformat());
             } else {
                 fail("DokumentType: " + dokumentVariant.getFiltype());
-    }
+            }
             assertFalse(dokumentVariant.getFysiskDokument().isEmpty());
         });
     }
