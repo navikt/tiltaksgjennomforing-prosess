@@ -52,6 +52,7 @@ public class JournalpostFactory {
         dokumentVarianter.add(new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, encodeToBase64(dokumentPdfAsBytes)));
         Dokument dokument = new Dokument();
         dokument.setTittel(avtale.getTiltakstype().getTittel());
+        dokument.setBrevkode(avtale.getTiltakstype().getBrevkode());
         dokument.setDokumentVarianter(dokumentVarianter);
         journalfoerMedStatus(journalpost, avtale, dokument);
         journalpost.setDokumenter(Collections.singletonList(dokument));
