@@ -50,9 +50,10 @@ jobs:
       - name: Bygg, tag og push Docker-image
         if: steps.sjekk-mot-master.outputs.oppdatert == 'ja'
         run: |
-          docker build --tag $IMAGE_BASE:$GITHUB_SHA .
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
-          docker push $IMAGE_BASE
+          echo "IMAGE=$(echo "$IMAGE_BASE:${{ github.sha }}")" >> $GITHUB_ENV
+          docker build --tag $IMAGE --tag $IMAGE_BASE:latest .
+          echo $GITHUB_TOKEN | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
+          docker push $IMAGE
 
       - name: Lukk gamle deployment-issues
         if: steps.sjekk-mot-master.outputs.oppdatert == 'ja'
