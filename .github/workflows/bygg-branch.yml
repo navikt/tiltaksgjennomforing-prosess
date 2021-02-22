@@ -47,10 +47,12 @@ jobs:
         run: |
           echo ::set-output name=branch::"$(echo ${GITHUB_REF#refs/heads/})"
 
+      - name: Sett IMAGE
+        run: echo "IMAGE=$(echo "$IMAGE_BASE:${{ github.sha }}")" >> $GITHUB_ENV
+
       - name: Bygg, tag og push Docker-image
         if: steps.sjekk-mot-master.outputs.oppdatert == 'ja'
         run: |
-          echo "IMAGE=$(echo "$IMAGE_BASE:${{ github.sha }}")" >> $GITHUB_ENV
           docker build --tag $IMAGE --tag $IMAGE_BASE:latest .
           echo $GITHUB_TOKEN | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
           docker push $IMAGE
