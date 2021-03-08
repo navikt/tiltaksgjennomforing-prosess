@@ -6,9 +6,6 @@ on:
       - 'master'
 
 env:
-  APP: tiltaksgjennomforing-prosess
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GITHUB_REPOSITORY: ${{ github.repository }}
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
 jobs:
