@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("local")
 @DirtiesContext
 public class TiltaksgjennomforingApiIntTest {
 
