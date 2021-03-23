@@ -15,9 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.MAPPING_FEIL;
@@ -67,7 +67,7 @@ public class JournalpostJobbTest {
         jorurnalførteAvtaler.put(okAvtale.getAvtaleVersjonId(), JOURNALPOST_ID);
         jorurnalførteAvtaler.put(feiletAvt.getAvtaleVersjonId(), MAPPING_FEIL);
 
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(okAvtale, feiletAvt));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(okAvtale, feiletAvt));
 
         when(journalpostFactory.konverterTilJournalpost(okAvtale)).thenReturn(okJournalpost);
         when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenThrow(RuntimeException.class);
@@ -89,10 +89,11 @@ public class JournalpostJobbTest {
         Journalpost journalpost2 = new Journalpost();
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
 
-        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
+        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>();
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
+        jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), null);
 
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
@@ -121,7 +122,7 @@ public class JournalpostJobbTest {
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
         jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
 
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
@@ -146,10 +147,11 @@ public class JournalpostJobbTest {
         Journalpost journalpost2 = new Journalpost();
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
 
-        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
+        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>();
+        jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), null);
         jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
 
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenThrow(PdfGenException.class);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);

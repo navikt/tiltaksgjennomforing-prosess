@@ -1,11 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.Unleash;
@@ -19,6 +13,9 @@ import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringA
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -46,21 +43,22 @@ public class JournalpostJobb {
             return;
         }
 
-        List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering();
+        Set<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering();
         avtalerTilJournalforing = filtrerTiltakPaaFeatureToggles(avtalerTilJournalforing);
 
         if (avtalerTilJournalforing.isEmpty()) {
             return;
         }
 
-        log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
-        Map<UUID, String> journalfoerteAvtaler = journalfoerAvtaler(avtalerTilJournalforing);
+        log.info("Hentet {} avtaleversjoner som skal journalføres", avtalerTilJournalforing.size());
+        Map<UUID, String> journalfoerteAvtaler = new HashMap<>(avtalerTilJournalforing.size());
+        avtalerTilJournalforing.forEach(avtale -> journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), null));
+
+        journalfoerAvtaler(avtalerTilJournalforing, journalfoerteAvtaler);
         registrerAvtalerSomJournalfoert(journalfoerteAvtaler);
     }
 
-    private Map<UUID, String> journalfoerAvtaler(List<Avtale> avtalerTilJournalforing) {
-
-        Map<UUID, String> journalfoerteAvtaler = new HashMap<>(avtalerTilJournalforing.size());
+    private Map<UUID, String> journalfoerAvtaler(Set<Avtale> avtalerTilJournalforing, Map<UUID, String> journalfoerteAvtaler) {
         avtalerTilJournalforing
                 .forEach(avtale -> {
                     Optional<Journalpost> optJournalpost = opprettJournalpost(avtale, journalfoerteAvtaler);
@@ -70,14 +68,14 @@ public class JournalpostJobb {
     }
 
     private Optional<Journalpost> opprettJournalpost(Avtale avtale, Map<UUID, String> journalfoerteAvtaler) {
-        log.debug("avtaleId={}, tiltak={}, fraDato={}, tilDato={}", avtale.getAvtaleId(), avtale.getTiltakstype(), avtale.getStartDato(), avtale.getSluttDato());
+        log.debug("avtaleVersjonId={}, tiltak={}, fraDato={}, tilDato={}", avtale.getAvtaleVersjonId(), avtale.getTiltakstype(), avtale.getStartDato(), avtale.getSluttDato());
         try {
             return Optional.of(journalpostFactory.konverterTilJournalpost(avtale));
-        }catch (PdfGenException e){
-            return Optional.empty();
+        } catch (PdfGenException e) {
+            return Optional.empty(); //retry
         } catch (Throwable t) {
-            log.error("Feil ved mapping av avtale {} versjon {} til journalpost: ", avtale.getAvtaleId(), avtale.getVersjon(), t);
-            journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), MAPPING_FEIL);
+            log.error("Feil ved mapping av avtaleVersjon {} til journalpost: ", avtale.getAvtaleVersjonId(), t);
+            journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), MAPPING_FEIL); //Ikke retry
             return Optional.empty();
         }
     }
@@ -93,17 +91,13 @@ public class JournalpostJobb {
     }
 
     private void registrerAvtalerSomJournalfoert(Map<UUID, String> journalfoeringer) {
-        if (journalfoeringer.isEmpty()) {
-            log.warn("Ingen avtaler registert som journalført. Sjekk feil v/journalføring");
-            return;
-        }
         try {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(journalfoeringer);
         } catch (Exception e) {
-            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
+            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtaleVersjon-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
             JournalpostJobb.deaktiverJobb();
         }
-        log.info("Ferdig journalført {} avtaler/versjoner: {}", journalfoeringer.keySet().stream().filter(key -> !journalfoeringer.get(key).equals(MAPPING_FEIL)).count(), avtalerJournalfortInfo(journalfoeringer));
+        log.info("Av {} avtaler ble disse ferdig journalført: {}", journalfoeringer.size(), avtalerJournalfortInfo(journalfoeringer));
     }
 
     private static void deaktiverJobb() {
@@ -115,12 +109,12 @@ public class JournalpostJobb {
         return journalfoeringer.keySet().stream().map(uuid -> uuid.toString() + " :: " + journalfoeringer.get(uuid)).collect(Collectors.toList());
     }
 
-    private List<Avtale> filtrerTiltakPaaFeatureToggles(List<Avtale> avtalerTilJournalforing) {
+    private Set<Avtale> filtrerTiltakPaaFeatureToggles(Set<Avtale> avtalerTilJournalforing) {
 
         if (!unleash.isEnabled("tag.tiltak.prosess.mentor")) {
             if (avtalerTilJournalforing.stream().anyMatch(avtale -> avtale.getTiltakstype().equals(Tiltakstype.MENTOR))) {
                 log.warn("Feature 'tag.tiltak.mentor' er ikke skrudd på. Kan ikke behandle mentor-avtaler.");
-                avtalerTilJournalforing = avtalerTilJournalforing.stream().filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MENTOR)).collect(Collectors.toList());
+                avtalerTilJournalforing = avtalerTilJournalforing.stream().filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MENTOR)).collect(Collectors.toSet());
             }
         }
         return avtalerTilJournalforing;

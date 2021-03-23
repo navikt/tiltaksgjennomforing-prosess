@@ -17,8 +17,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -47,16 +47,16 @@ public class TiltaksgjennomfoeringApiService {
         headers.setContentType((MediaType.APPLICATION_JSON));
     }
 
-    public List<Avtale> finnAvtalerTilJournalfoering() {
+    public Set<Avtale> finnAvtalerTilJournalfoering() {
         headers.setBearerAuth(stsService.hentToken());
         try {
-            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<Set<Avtale>>() {
             }).getBody();
         } catch (Exception e) {
             log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
             stsService.evict();
             headers.setBearerAuth(stsService.hentToken());
-            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<Set<Avtale>>() {
             }).getBody();
         }
     }

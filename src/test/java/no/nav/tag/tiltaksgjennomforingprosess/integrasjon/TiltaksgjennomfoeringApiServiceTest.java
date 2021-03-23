@@ -1,19 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
-import static no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService.PATH;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,8 +14,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
+import java.net.URI;
+import java.util.Optional;
+import java.util.Set;
+
+import static no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService.PATH;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TiltaksgjennomfoeringApiServiceTest {
@@ -47,18 +43,18 @@ public class TiltaksgjennomfoeringApiServiceTest {
 
     @Test
     public void kall_mot_finn_avtaler_ok_skal_returnere_avtaler() {
-        List<Avtale> avtaleListe = Arrays.asList(new Avtale());
-        when(restTemplate.exchange(eq(expUri), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class))).thenReturn(ResponseEntity.of(Optional.of(avtaleListe)));
-        assertThat(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(), equalTo(avtaleListe));
+        Set<Avtale> avtaler = Set.of(new Avtale());
+        when(restTemplate.exchange(eq(expUri), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class))).thenReturn(ResponseEntity.of(Optional.of(avtaler)));
+        assertThat(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(), equalTo(avtaler));
     }
     
     @Test
     public void kall_mot_finn_avtaler_feiler_skal_hente_nytt_sts_token_og_forsøke_på_nytt() {
-        List<Avtale> avtaleListe = Arrays.asList(new Avtale());
+        Set<Avtale> avtaler = Set.of(new Avtale());
         when(restTemplate.exchange(eq(expUri), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class)))
-            .thenThrow(RuntimeException.class)
-            .thenReturn(ResponseEntity.of(Optional.of(avtaleListe)));
-        assertThat(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(), equalTo(avtaleListe));
+                .thenThrow(RuntimeException.class)
+                .thenReturn(ResponseEntity.of(Optional.of(avtaler)));
+        assertThat(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering(), equalTo(avtaler));
         verify(stsService).evict();
         verify(stsService, times(2)).hentToken();
         verify(restTemplate, times(2)).exchange(eq(expUri), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class));

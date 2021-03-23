@@ -12,8 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -43,9 +43,9 @@ public class TiltaksgjennomforingApiIntTest {
 
     @Test
     public void henterAvtalerTilJournalfoering() {
-        List<Avtale> avtaleList;
-        avtaleList = service.finnAvtalerTilJournalfoering();
-        Avtale avtale = avtaleList.stream().filter(avt -> avt.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING)).findFirst().orElseThrow(() -> new AssertionError("Arbeidstrening-avtale mangler"));
+        Set<Avtale> avtaler;
+        avtaler = service.finnAvtalerTilJournalfoering();
+        Avtale avtale = avtaler.stream().filter(avt -> avt.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING)).findFirst().orElseThrow(() -> new AssertionError("Arbeidstrening-avtale mangler"));
         assertEquals("79001b47-6b3a-43bd-b548-d114ed8965f6", avtale.getAvtaleId().toString());
         assertEquals("9f17ac5f-6a3e-47b6-828e-590de574250e", avtale.getAvtaleVersjonId().toString());
         assertEquals("24096122116", avtale.getDeltakerFnr());
@@ -69,7 +69,7 @@ public class TiltaksgjennomforingApiIntTest {
         assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvVeileder());
         assertTrue(avtale.isGodkjentPaVegneAv());
 
-        assertTrue(avtaleList.stream().anyMatch(avt -> avt.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)));
-        assertTrue(avtaleList.stream().anyMatch(avt -> avt.getTiltakstype().equals(Tiltakstype.MENTOR)));
+        assertTrue(avtaler.stream().anyMatch(avt -> avt.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)));
+        assertTrue(avtaler.stream().anyMatch(avt -> avt.getTiltakstype().equals(Tiltakstype.MENTOR)));
     }
 }
