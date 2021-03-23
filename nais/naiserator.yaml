@@ -10,7 +10,7 @@ spec:
   team: arbeidsgiver
   port: 8080
   replicas:
-    min: 1
+    min: {{min-replicas}}
     max: {{max-replicas}}
   liveness:
     path: /tiltaksgjennomforing-prosess/internal/healthcheck
