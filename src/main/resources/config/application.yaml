@@ -27,5 +27,7 @@ prosess:
       passord: ${srvpassord}
     tiltaksgjennomforing:
       uri: url
+    dokgen:
+      uri: http://tiltak-dokgen/template/tiltak-avtale/create-pdf
 
 elector.path: ${ELECTOR_PATH}

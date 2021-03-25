@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
+import java.io.ByteArrayInputStream;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
@@ -14,9 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.ByteArrayInputStream;
-
-@Ignore("Til manuell sjekk av pdf layout - kjøres mot tag-dokgen lokalt")
+@Ignore("Til manuell sjekk av pdf layout - kjøres mot tiltak-dokgen lokalt")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("local")
