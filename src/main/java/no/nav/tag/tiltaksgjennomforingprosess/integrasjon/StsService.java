@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static no.nav.tag.tiltaksgjennomforingprosess.integrasjon.StsCacheConfig.STS_CACHE;
-
 import java.net.URI;
 import java.util.Arrays;
+
+import static no.nav.tag.tiltaksgjennomforingprosess.integrasjon.StsCacheConfig.STS_CACHE;
 
 @Service
 public class StsService {

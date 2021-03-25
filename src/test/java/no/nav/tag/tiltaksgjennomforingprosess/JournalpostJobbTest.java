@@ -91,7 +91,6 @@ public class JournalpostJobbTest {
 
         Map<UUID, String> jorurnalførteAvtaler = new HashMap<>();
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
-        jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), null);
 
         when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(avtale1, avtale2));
 
@@ -148,7 +147,6 @@ public class JournalpostJobbTest {
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
 
         Map<UUID, String> jorurnalførteAvtaler = new HashMap<>();
-        jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), null);
         jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
 
         when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(avtale1, avtale2));

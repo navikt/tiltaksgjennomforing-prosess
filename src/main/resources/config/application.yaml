@@ -27,3 +27,5 @@ prosess:
       passord: ${srvpassord}
     tiltaksgjennomforing:
       uri: url
+
+elector.path: ${ELECTOR_PATH}
