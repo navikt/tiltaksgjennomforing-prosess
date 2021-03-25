@@ -15,7 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@Ignore("Til manuell sjekk av pdf layout - kjøres mot tag-dokgen lokalt")
+@Ignore("Til manuell sjekk av pdf layout - kjøres mot tiltak-dokgen lokalt")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("dev")
