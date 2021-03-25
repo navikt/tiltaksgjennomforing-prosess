@@ -20,3 +20,5 @@ prosess:
       uri: http://localhost:8091/tiltaksgjennomforing-api
     dokgen:
       uri: http://localhost:8091/template/tiltak-avtale/create-pdf
+
+elector.path: http://localhost:8091/dummy
