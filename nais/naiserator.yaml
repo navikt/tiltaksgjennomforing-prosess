@@ -12,7 +12,6 @@ spec:
   replicas:
     min: {{min-replicas}}
     max: {{max-replicas}}
-  leaderElection: true
   liveness:
     path: /tiltaksgjennomforing-prosess/internal/healthcheck
     initialDelay: 30
