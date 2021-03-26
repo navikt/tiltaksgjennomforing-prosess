@@ -10,6 +10,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
+import no.nav.tag.tiltaksgjennomforingprosess.leader.LeaderPodCheck;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ public class JournalpostJobb {
 
     private JoarkService joarkService;
 
+    private LeaderPodCheck leaderPodCheck;
+
     static final String MAPPING_FEIL = "FEILET";
 
     @Scheduled(cron = "${prosess.cron}")
@@ -40,6 +43,11 @@ public class JournalpostJobb {
 
         if (!enabled) {
             log.warn("Prosessen ble skrudd av pga. en feil. Sjekk tidligere feilmelding i loggen");
+            return;
+        }
+
+        if (!leaderPodCheck.isLeaderPod()) {
+            log.warn("Prosessen kjører med flere pod'er. Dropper cronjobb");
             return;
         }
 
