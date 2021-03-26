@@ -10,7 +10,6 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
-import no.nav.tag.tiltaksgjennomforingprosess.leader.LeaderPodCheck;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -34,8 +33,6 @@ public class JournalpostJobb {
 
     private JoarkService joarkService;
 
-    private LeaderPodCheck leaderPodCheck;
-
     static final String MAPPING_FEIL = "FEILET";
 
     @Scheduled(cron = "${prosess.cron}")
@@ -46,12 +43,7 @@ public class JournalpostJobb {
             return;
         }
 
-        if (!leaderPodCheck.isLeaderPod()) {
-            log.warn("Prosessen kjører med flere pod'er. Dropper cronjobb");
-            return;
-        }
-
-        Set<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering();
+        List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering();
         avtalerTilJournalforing = filtrerTiltakPaaFeatureToggles(avtalerTilJournalforing);
 
         if (avtalerTilJournalforing.isEmpty()) {
@@ -63,7 +55,7 @@ public class JournalpostJobb {
         registrerAvtalerSomJournalfoert(journalfoerteAvtaler);
     }
 
-    private Map<UUID, String> journalfoerAvtaler(Set<Avtale> avtalerTilJournalforing) {
+    private Map<UUID, String> journalfoerAvtaler(List<Avtale> avtalerTilJournalforing) {
 
         Map<UUID, String> journalfoerteAvtaler = new HashMap<>(avtalerTilJournalforing.size());
         avtalerTilJournalforing
@@ -120,12 +112,12 @@ public class JournalpostJobb {
         return journalfoeringer.keySet().stream().map(uuid -> uuid.toString() + " :: " + journalfoeringer.get(uuid)).collect(Collectors.toList());
     }
 
-    private Set<Avtale> filtrerTiltakPaaFeatureToggles(Set<Avtale> avtalerTilJournalforing) {
+    private List<Avtale> filtrerTiltakPaaFeatureToggles(List<Avtale> avtalerTilJournalforing) {
 
         if (!unleash.isEnabled("tag.tiltak.prosess.mentor")) {
             if (avtalerTilJournalforing.stream().anyMatch(avtale -> avtale.getTiltakstype().equals(Tiltakstype.MENTOR))) {
                 log.warn("Feature 'tag.tiltak.mentor' er ikke skrudd på. Kan ikke behandle mentor-avtaler.");
-                avtalerTilJournalforing = avtalerTilJournalforing.stream().filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MENTOR)).collect(Collectors.toSet());
+                avtalerTilJournalforing = avtalerTilJournalforing.stream().filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MENTOR)).collect(Collectors.toList());
             }
         }
         return avtalerTilJournalforing;

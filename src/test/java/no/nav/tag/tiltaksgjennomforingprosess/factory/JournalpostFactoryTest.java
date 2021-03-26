@@ -174,8 +174,9 @@ public class JournalpostFactoryTest {
         assertEquals(avtale.getBedriftNr(), journalpost.getAvsenderMottaker().getId());
         assertEquals("ORGNR", journalpost.getAvsenderMottaker().getIdType());
         assertEquals(avtale.getBedriftNavn(), journalpost.getAvsenderMottaker().getNavn());
-        assertEquals("AVT" + avtale.getAvtaleVersjonId(), journalpost.getEksternReferanseId());
+        assertEquals("AVT-" + avtale.getAvtaleVersjonId(), journalpost.getEksternReferanseId());
         assertNotNull(journalpost.getTittel());
+        assertNotNull(journalpost.getEksternReferanseId());
 
         assertEquals(1, journalpost.getDokumenter().size());
 

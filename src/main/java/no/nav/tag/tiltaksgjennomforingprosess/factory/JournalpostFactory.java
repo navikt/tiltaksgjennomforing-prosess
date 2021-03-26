@@ -21,7 +21,7 @@ import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalp
 @RequiredArgsConstructor
 public class JournalpostFactory {
 
-    private final static String EKSTREF_PREFIKS = "AVT";
+    private final static String EKSTREF_PREFIKS = "AVT-";
 
     private final AvtaleTilXml avtaleTilXml;
     private final DokgenAdapter dokgenAdapter;
@@ -58,7 +58,7 @@ public class JournalpostFactory {
             journalfoerSomMidlertidig(journalpost, avtale, dokument.getDokumentVarianter());
             return;
         }
-        journalfoerSomferdig(journalpost, avtale);
+        journalfoerSomferdig(journalpost);
     }
 
     private void journalfoerSomMidlertidig(Journalpost journalpost, Avtale avtale, List<DokumentVariant> dokumentVarianter) {
@@ -68,7 +68,7 @@ public class JournalpostFactory {
         dokumentVarianter.add(new DokumentVariant(FILTYPE_XML, VARIANFORMAT_XML, encodeToBase64(dokumentXml.getBytes())));
     }
 
-    private void journalfoerSomferdig(Journalpost journalpost, Avtale avtale) {
+    private void journalfoerSomferdig(Journalpost journalpost) {
         journalpost.setJournalfoerendeEnhet(JORURNALFØRENDE_ENHET);
         journalpost.setSak(new Sak());
     }

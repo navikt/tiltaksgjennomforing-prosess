@@ -7,7 +7,6 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
-import no.nav.tag.tiltaksgjennomforingprosess.leader.LeaderPodCheck;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.MAPPING_FEIL;
@@ -42,9 +41,6 @@ public class JournalpostJobbTest {
     @Mock
     private JoarkService joarkService;
 
-    @Mock
-    private LeaderPodCheck leaderPodCheck;
-
     @InjectMocks
     private JournalpostJobb journalpostJobb;
 
@@ -56,18 +52,6 @@ public class JournalpostJobbTest {
     @After
     public void tearDown() {
         JournalpostJobb.enabled = true;
-    }
-
-    @Test
-    public void prosessererIkkeHvisIkkeLeaderPod() {
-        when(leaderPodCheck.isLeaderPod()).thenReturn(false);
-
-        journalpostJobb.avtalerTilJournalfoering();
-
-        verify(tiltaksgjennomfoeringApiService, never()).finnAvtalerTilJournalfoering();
-        verify(journalpostFactory, never()).konverterTilJournalpost(any());
-        verify(joarkService, never()).sendJournalpost(any());
-        verify(tiltaksgjennomfoeringApiService, never()).settAvtalerTilJournalfoert(any());
     }
 
     @Test
@@ -83,8 +67,7 @@ public class JournalpostJobbTest {
         jorurnalførteAvtaler.put(okAvtale.getAvtaleVersjonId(), JOURNALPOST_ID);
         jorurnalførteAvtaler.put(feiletAvt.getAvtaleVersjonId(), MAPPING_FEIL);
 
-        when(leaderPodCheck.isLeaderPod()).thenReturn(true);
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(okAvtale, feiletAvt));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(okAvtale, feiletAvt));
 
         when(journalpostFactory.konverterTilJournalpost(okAvtale)).thenReturn(okJournalpost);
         when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenThrow(RuntimeException.class);
@@ -106,11 +89,10 @@ public class JournalpostJobbTest {
         Journalpost journalpost2 = new Journalpost();
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
 
-        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>();
+        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
 
-        when(leaderPodCheck.isLeaderPod()).thenReturn(true);
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(avtale1, avtale2));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
@@ -139,8 +121,7 @@ public class JournalpostJobbTest {
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
         jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
 
-        when(leaderPodCheck.isLeaderPod()).thenReturn(true);
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(avtale1, avtale2));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
@@ -165,11 +146,10 @@ public class JournalpostJobbTest {
         Journalpost journalpost2 = new Journalpost();
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
 
-        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>();
+        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
         jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
 
-        when(leaderPodCheck.isLeaderPod()).thenReturn(true);
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Set.of(avtale1, avtale2));
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenThrow(PdfGenException.class);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
@@ -180,5 +160,27 @@ public class JournalpostJobbTest {
         verify(joarkService, never()).sendJournalpost(eq(journalpost1));
         verify(joarkService, times(1)).sendJournalpost(eq(journalpost2));
         verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
+    }
+
+    @Test
+    public void journalførerDobbelt() {
+
+        Avtale feiletAvt = TestData.opprettArbeidstreningAvtale();
+        Journalpost okJournalpost = new Journalpost();
+        okJournalpost.setEksternReferanseId(feiletAvt.getAvtaleVersjonId().toString());
+
+
+        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
+        jorurnalførteAvtaler.put(feiletAvt.getAvtaleVersjonId(), null);
+
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(feiletAvt));
+
+        when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenReturn(okJournalpost);
+
+        when(joarkService.sendJournalpost(eq(okJournalpost))).thenThrow(RuntimeException.class);
+
+        journalpostJobb.avtalerTilJournalfoering();
+        verify(joarkService, times(1)).sendJournalpost(eq(okJournalpost));
+        verify(tiltaksgjennomfoeringApiService, never()).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
     }
 }
