@@ -1,6 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess.leader;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.LeaderPodProperties;
@@ -14,11 +13,18 @@ import java.net.UnknownHostException;
 @Component
 @Slf4j
 @Profile("!local")
-@AllArgsConstructor
 public class LeaderPodCheckImpl implements LeaderPodCheck {
 
     final LeaderPodProperties leaderPodProperties;
     final RestTemplate restTemplate;
+    final String path;
+
+    public LeaderPodCheckImpl(LeaderPodProperties leaderPodProperties, RestTemplate restTemplate) {
+        this.leaderPodProperties = leaderPodProperties;
+        this.restTemplate = restTemplate;
+        this.path = leaderPodProperties.getPath() + "/";
+    }
+
 
     @Override
     public boolean isLeaderPod() {
@@ -27,7 +33,7 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
         String hostname;
         String leader;
         try {
-            JSONObject leaderJson = getJSONFromUrl(leaderPodProperties.getPath());
+            JSONObject leaderJson = getJSONFromUrl(path);
             leader = leaderJson.getAsString("name");
             hostname = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
