@@ -27,8 +27,8 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
         this.restTemplate = restTemplate;
         this.path = "http://" + leaderPodProperties.getPath() + "/";
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        // headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.ALL));
         entity = new HttpEntity<>(headers);
     }
 
@@ -54,10 +54,10 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
     }
 
     private JSONObject getJSONFromUrl(String electorPath) {
-        ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(electorPath, HttpMethod.GET, entity, JSONObject.class);
+        ResponseEntity responseEntity = restTemplate.exchange(electorPath, HttpMethod.GET, entity, JSONObject.class);
         log.info("RESP.toString: {}", responseEntity.toString());
         log.info("RESP.status: {}", responseEntity.getStatusCodeValue());
         log.info("RESP.body: {}", responseEntity.getBody());
-        return responseEntity.getBody();
+        return (JSONObject) responseEntity.getBody();
     }
 }

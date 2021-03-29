@@ -3,7 +3,7 @@
     {
       "request": {
         "method": "GET",
-        "urlPathPattern": "/dummy"
+        "urlPathPattern": "/"
       },
       "response": {
         "status": 200,
