@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.LeaderPodProperties;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -57,6 +54,10 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
     }
 
     private JSONObject getJSONFromUrl(String electorPath) {
-        return restTemplate.exchange(electorPath, HttpMethod.GET, entity, JSONObject.class).getBody();
+        ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(electorPath, HttpMethod.GET, entity, JSONObject.class);
+        log.info("RESP.toString: {}", responseEntity.toString());
+        log.info("RESP.status: {}", responseEntity.getStatusCodeValue());
+        log.info("RESP.body: {}", responseEntity.getBody());
+        return responseEntity.getBody();
     }
 }
