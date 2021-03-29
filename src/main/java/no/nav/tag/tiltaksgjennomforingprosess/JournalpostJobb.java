@@ -47,7 +47,7 @@ public class JournalpostJobb {
         }
 
         if (!leaderPodCheck.isLeaderPod()) {
-            log.warn("Prosessen kjører med flere pod'er. Dropper cronjobb");
+            log.warn("Prosessen kjører med flere pod'er.");
             return;
         }
 

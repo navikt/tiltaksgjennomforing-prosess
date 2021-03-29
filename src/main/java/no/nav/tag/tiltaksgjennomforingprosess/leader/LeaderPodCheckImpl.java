@@ -22,14 +22,20 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
 
     @Override
     public boolean isLeaderPod() {
-        JSONObject leaderJson = getJSONFromUrl(leaderPodProperties.getPath());
-        String leader = leaderJson.getAsString("name");
+        log.info("leader-elector url={}", leaderPodProperties.getPath());
+
         String hostname;
+        String leader;
         try {
+            JSONObject leaderJson = getJSONFromUrl(leaderPodProperties.getPath());
+            leader = leaderJson.getAsString("name");
             hostname = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
             log.error("Feil v/henting av host. Dropper jobb", e);
             return false;
+        } catch (Exception e) {
+            log.error("Feil v/oppslag i leader-elector", e);
+            throw e;
         }
         return hostname.equals(leader);
     }
