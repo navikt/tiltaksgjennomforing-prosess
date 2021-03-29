@@ -35,7 +35,6 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
         entity = new HttpEntity<>(headers);
     }
 
-
     @Override
     public boolean isLeaderPod() {
         String hostname;
