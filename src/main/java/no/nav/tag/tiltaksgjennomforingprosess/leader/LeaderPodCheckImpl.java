@@ -22,13 +22,13 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
     public LeaderPodCheckImpl(LeaderPodProperties leaderPodProperties, RestTemplate restTemplate) {
         this.leaderPodProperties = leaderPodProperties;
         this.restTemplate = restTemplate;
-        this.path = leaderPodProperties.getPath() + "/";
+        this.path = leaderPodProperties.getPath();
     }
 
 
     @Override
     public boolean isLeaderPod() {
-        log.info("leader-elector url={}", leaderPodProperties.getPath());
+        log.info("leader-elector url={}", path);
 
         String hostname;
         String leader;
