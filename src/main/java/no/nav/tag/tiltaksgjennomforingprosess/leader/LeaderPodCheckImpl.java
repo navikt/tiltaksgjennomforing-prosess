@@ -30,6 +30,7 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
         this.restTemplate = restTemplate;
         this.path = "http://" + leaderPodProperties.getPath() + "/";
         HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         entity = new HttpEntity<>(headers);
     }
