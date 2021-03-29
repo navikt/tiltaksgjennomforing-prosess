@@ -22,7 +22,7 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
     public LeaderPodCheckImpl(LeaderPodProperties leaderPodProperties, RestTemplate restTemplate) {
         this.leaderPodProperties = leaderPodProperties;
         this.restTemplate = restTemplate;
-        this.path = leaderPodProperties.getPath();
+        this.path = "http://" + leaderPodProperties.getPath() + "/";
     }
 
 

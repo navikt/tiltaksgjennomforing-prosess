@@ -30,4 +30,4 @@ prosess:
     dokgen:
       uri: http://tiltak-dokgen/template/tiltak-avtale/create-pdf
 
-elector.path: http://${ELECTOR_PATH}/
+elector.path: ${ELECTOR_PATH}
