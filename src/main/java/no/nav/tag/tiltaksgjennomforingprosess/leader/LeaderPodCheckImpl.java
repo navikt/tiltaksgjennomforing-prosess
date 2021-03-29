@@ -4,11 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.LeaderPodProperties;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -18,11 +23,15 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
     final LeaderPodProperties leaderPodProperties;
     final RestTemplate restTemplate;
     final String path;
+    HttpEntity<String> entity;
 
     public LeaderPodCheckImpl(LeaderPodProperties leaderPodProperties, RestTemplate restTemplate) {
         this.leaderPodProperties = leaderPodProperties;
         this.restTemplate = restTemplate;
         this.path = "http://" + leaderPodProperties.getPath() + "/";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        entity = new HttpEntity<>(headers);
     }
 
 
@@ -47,6 +56,6 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
     }
 
     private JSONObject getJSONFromUrl(String electorPath) {
-        return restTemplate.getForEntity(electorPath, JSONObject.class).getBody();
+        return restTemplate.exchange(electorPath, HttpMethod.GET, entity, JSONObject.class).getBody();
     }
 }
