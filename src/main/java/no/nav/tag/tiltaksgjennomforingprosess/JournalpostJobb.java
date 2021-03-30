@@ -47,7 +47,7 @@ public class JournalpostJobb {
         }
 
         if (!leaderPodCheck.isLeaderPod()) {
-            log.warn("Prosessen kjører med flere pod'er. Re-deploy og se til av kun en pod kjører");
+            log.warn("Prosessen kjører med flere pod'er.");
             return;
         }
 
