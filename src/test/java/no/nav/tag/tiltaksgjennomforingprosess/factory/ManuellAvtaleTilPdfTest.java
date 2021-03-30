@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Ignore("Til manuell sjekk av pdf layout - kjøres mot tiltak-dokgen lokalt")
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("local")
 @DirtiesContext
 public class ManuellAvtaleTilPdfTest {
 

@@ -7,6 +7,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
+import no.nav.tag.tiltaksgjennomforingprosess.leader.LeaderPodCheck;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,6 +42,9 @@ public class JournalpostJobbTest {
     @Mock
     private JoarkService joarkService;
 
+    @Mock
+    private LeaderPodCheck leaderPodCheck;
+
     @InjectMocks
     private JournalpostJobb journalpostJobb;
 
@@ -52,6 +56,18 @@ public class JournalpostJobbTest {
     @After
     public void tearDown() {
         JournalpostJobb.enabled = true;
+    }
+
+    @Test
+    public void prosessererIkkeHvisIkkeLeaderPod() {
+        when(leaderPodCheck.isLeaderPod()).thenReturn(false);
+
+        journalpostJobb.avtalerTilJournalfoering();
+
+        verify(tiltaksgjennomfoeringApiService, never()).finnAvtalerTilJournalfoering();
+        verify(journalpostFactory, never()).konverterTilJournalpost(any());
+        verify(joarkService, never()).sendJournalpost(any());
+        verify(tiltaksgjennomfoeringApiService, never()).settAvtalerTilJournalfoert(any());
     }
 
     @Test
@@ -67,7 +83,8 @@ public class JournalpostJobbTest {
         jorurnalførteAvtaler.put(okAvtale.getAvtaleVersjonId(), JOURNALPOST_ID);
         jorurnalførteAvtaler.put(feiletAvt.getAvtaleVersjonId(), MAPPING_FEIL);
 
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(okAvtale, feiletAvt));
+        when(leaderPodCheck.isLeaderPod()).thenReturn(true);
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(List.of(okAvtale, feiletAvt));
 
         when(journalpostFactory.konverterTilJournalpost(okAvtale)).thenReturn(okJournalpost);
         when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenThrow(RuntimeException.class);
@@ -89,10 +106,11 @@ public class JournalpostJobbTest {
         Journalpost journalpost2 = new Journalpost();
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
 
-        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
+        Map<UUID, String> jorurnalførteAvtaler = new HashMap<>();
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
 
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
+        when(leaderPodCheck.isLeaderPod()).thenReturn(true);
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(List.of(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
@@ -121,7 +139,8 @@ public class JournalpostJobbTest {
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
         jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
 
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
+        when(leaderPodCheck.isLeaderPod()).thenReturn(true);
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(List.of(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
@@ -149,7 +168,8 @@ public class JournalpostJobbTest {
         Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
         jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
 
-        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(Arrays.asList(avtale1, avtale2));
+        when(leaderPodCheck.isLeaderPod()).thenReturn(true);
+        when(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).thenReturn(List.of(avtale1, avtale2));
 
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenThrow(PdfGenException.class);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);

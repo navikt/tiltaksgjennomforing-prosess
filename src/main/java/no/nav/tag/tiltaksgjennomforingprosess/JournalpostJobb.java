@@ -1,11 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.Unleash;
@@ -16,9 +10,13 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
+import no.nav.tag.tiltaksgjennomforingprosess.leader.LeaderPodCheck;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,6 +34,8 @@ public class JournalpostJobb {
 
     private JoarkService joarkService;
 
+    private LeaderPodCheck leaderPodCheck;
+
     static final String MAPPING_FEIL = "FEILET";
 
     @Scheduled(cron = "${prosess.cron}")
@@ -46,6 +46,11 @@ public class JournalpostJobb {
             return;
         }
 
+        if (!leaderPodCheck.isLeaderPod()) {
+            log.warn("Prosessen kjører med flere pod'er. Re-deploy og se til av kun en pod kjører");
+            return;
+        }
+
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering();
         avtalerTilJournalforing = filtrerTiltakPaaFeatureToggles(avtalerTilJournalforing);
 
@@ -53,7 +58,7 @@ public class JournalpostJobb {
             return;
         }
 
-        log.info("Hentet {} avtaler som skal journalføres", avtalerTilJournalforing.size());
+        log.info("Hentet {} avtaleversjoner som skal journalføres", avtalerTilJournalforing.size());
         Map<UUID, String> journalfoerteAvtaler = journalfoerAvtaler(avtalerTilJournalforing);
         registrerAvtalerSomJournalfoert(journalfoerteAvtaler);
     }
@@ -70,13 +75,13 @@ public class JournalpostJobb {
     }
 
     private Optional<Journalpost> opprettJournalpost(Avtale avtale, Map<UUID, String> journalfoerteAvtaler) {
-        log.debug("avtaleId={}, tiltak={}, fraDato={}, tilDato={}", avtale.getAvtaleId(), avtale.getTiltakstype(), avtale.getStartDato(), avtale.getSluttDato());
+        log.debug("avtaleVersjonId={}, tiltak={}, fraDato={}, tilDato={}", avtale.getAvtaleVersjonId(), avtale.getTiltakstype(), avtale.getStartDato(), avtale.getSluttDato());
         try {
             return Optional.of(journalpostFactory.konverterTilJournalpost(avtale));
-        }catch (PdfGenException e){
+        } catch (PdfGenException e) {
             return Optional.empty();
         } catch (Throwable t) {
-            log.error("Feil ved mapping av avtale {} versjon {} til journalpost: ", avtale.getAvtaleId(), avtale.getVersjon(), t);
+            log.error("Feil ved mapping av avtaleVersjon {} til journalpost: ", avtale.getAvtaleVersjonId(), t);
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), MAPPING_FEIL);
             return Optional.empty();
         }
@@ -100,7 +105,7 @@ public class JournalpostJobb {
         try {
             tiltaksgjennomfoeringApiService.settAvtalerTilJournalfoert(journalfoeringer);
         } catch (Exception e) {
-            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtale-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
+            log.error("FEIL Journalførte avtaler ble ikke lagret Tiltaksgjennomføring databasen! Avtaler som ble journalført (avtaleVersjon-id :: journalpost-id): {}", avtalerJournalfortInfo(journalfoeringer), e);
             JournalpostJobb.deaktiverJobb();
         }
         log.info("Ferdig journalført {} avtaler/versjoner: {}", journalfoeringer.keySet().stream().filter(key -> !journalfoeringer.get(key).equals(MAPPING_FEIL)).count(), avtalerJournalfortInfo(journalfoeringer));

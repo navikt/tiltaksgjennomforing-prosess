@@ -1,18 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
@@ -27,6 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.client.HttpClientErrorException;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JournalpostFactoryTest {
@@ -184,7 +174,9 @@ public class JournalpostFactoryTest {
         assertEquals(avtale.getBedriftNr(), journalpost.getAvsenderMottaker().getId());
         assertEquals("ORGNR", journalpost.getAvsenderMottaker().getIdType());
         assertEquals(avtale.getBedriftNavn(), journalpost.getAvsenderMottaker().getNavn());
+        assertEquals("AVT-" + avtale.getAvtaleVersjonId(), journalpost.getEksternReferanseId());
         assertNotNull(journalpost.getTittel());
+        assertNotNull(journalpost.getEksternReferanseId());
 
         assertEquals(1, journalpost.getDokumenter().size());
 

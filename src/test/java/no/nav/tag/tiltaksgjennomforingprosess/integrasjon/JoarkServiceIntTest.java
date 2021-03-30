@@ -16,10 +16,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("local")
 @DirtiesContext
 public class JoarkServiceIntTest {
 
@@ -87,6 +88,19 @@ public class JoarkServiceIntTest {
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
         String jounalpostId = joarkService.sendJournalpost(journalpost);
         assertEquals("001", jounalpostId);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void journalføring_gir_duplikatfeil() {
+        unleash.enableAll();
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        avtale.setBedriftNavn("Maura og Kolbu regnskap");
+        avtale.setBedriftNr("999999999");
+        avtale.setVersjon(2);
+
+        Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
+        assertNotNull(journalpost);
+        joarkService.sendJournalpost(journalpost);
     }
 
 }

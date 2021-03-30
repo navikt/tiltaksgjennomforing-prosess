@@ -13,7 +13,7 @@ public class ByEnvironmentStrategyTest {
     @Test
     public void miljø_som_ikke_matcher() {
         Environment environment = mock(Environment.class);
-        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"foo"});
         ByEnvironmentStrategy strategy = new ByEnvironmentStrategy(environment);
         assertThat(strategy.isEnabled(Map.of("miljø", "test"))).isFalse();
     }
@@ -21,8 +21,8 @@ public class ByEnvironmentStrategyTest {
     @Test
     public void miljø_som_matcher() {
         Environment environment = mock(Environment.class);
-        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev", "foo"});
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"local", "foo"});
         ByEnvironmentStrategy strategy = new ByEnvironmentStrategy(environment);
-        assertThat(strategy.isEnabled(Map.of("miljø", "foobar,dev"))).isTrue();
+        assertThat(strategy.isEnabled(Map.of("miljø", "foobar,local"))).isTrue();
     }
 }

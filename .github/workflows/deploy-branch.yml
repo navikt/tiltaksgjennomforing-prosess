@@ -48,7 +48,7 @@ jobs:
           CLUSTER: dev-fss
           RESOURCE: nais/naiserator.yaml
           PRINT_PAYLOAD: true
-          VARS: nais/dev-fss.json
+          VARS: nais/dev-fss.json, ${{env.ELECTOR_PATH}}
           REF: ${{ env.COMMIT }}
           IMAGE: ${{ env.IMAGE }}
           
