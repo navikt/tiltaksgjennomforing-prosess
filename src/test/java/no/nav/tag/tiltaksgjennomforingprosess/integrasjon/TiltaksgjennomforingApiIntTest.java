@@ -64,6 +64,7 @@ public class TiltaksgjennomforingApiIntTest {
         assertEquals("Følge opp med Arb.trening", avtale.getOppfolging());
         assertEquals("Legget til rette", avtale.getTilrettelegging());
         assertEquals(70, avtale.getStillingprosent().intValue());
+        assertEquals(3, avtale.getAntallDagerPerUke().intValue());
         assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvDeltaker());
         assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvArbeidsgiver());
         assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvVeileder());

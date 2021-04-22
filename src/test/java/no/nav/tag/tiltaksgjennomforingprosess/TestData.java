@@ -74,6 +74,7 @@ public class TestData {
         avtale.setStillingstype("Utvikler");
         avtale.setArbeidsoppgaver("Spille bordtennis");
         avtale.setStillingprosent(60);
+        avtale.setAntallDagerPerUke(4);
         avtale.setArbeidsgiverKontonummer("99998888777");
         avtale.setLonnstilskuddProsent(40);
         avtale.setManedslonn(20000);
