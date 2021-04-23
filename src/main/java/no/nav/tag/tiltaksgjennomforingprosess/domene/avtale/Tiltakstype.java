@@ -8,7 +8,10 @@ public enum Tiltakstype {
     ARBEIDSTRENING("Arbeidstrening", "ab0422", "Avtale om arbeidstrening", "tiltak-arbtren"),
     MIDLERTIDIG_LONNSTILSKUDD("LonnstilskuddMidlertidig", "ab0336", "Avtale om midlertidig lønnstilskudd", "tiltak-midl-lønnst"),
     VARIG_LONNSTILSKUDD("LonnstilskuddVarig", "ab0337", "Avtale om varig lønnstilskudd", "tiltak-varig-lønnst"),
-    MENTOR("mentor", "ab0416", "Avtale om tilskudd til mentor", "tiltak-mentor");
+    MENTOR("mentor", "ab0416", "Avtale om tilskudd til mentor", "tiltak-mentor"),
+
+    // Sjekke hva som er riktig behandlingstema og brevkode
+    SOMMERJOBB("Sommerjobb", "", "Avtale om sommerjobb", "tiltak-sommerjobb");
 
     private final String dokforTiltakskodeSkjema;
     private final String behandlingstema;
