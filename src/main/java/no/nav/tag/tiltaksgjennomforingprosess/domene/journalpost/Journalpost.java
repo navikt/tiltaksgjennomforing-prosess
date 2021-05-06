@@ -51,6 +51,6 @@ public class Journalpost {
 
     public boolean skalBehandlesIArena(){
         //TODO: Oppdatere til behandlingstemaet til sommerjobb nar det er pa plass.
-        return avtaleVersjon == 1 && !behandlingsTema.isBlank();
+        return avtaleVersjon == 1;
     }
 }
