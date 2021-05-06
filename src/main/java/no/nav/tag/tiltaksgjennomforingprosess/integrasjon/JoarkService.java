@@ -3,6 +3,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.RequestResponseLoggingInterceptor;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
@@ -61,7 +62,7 @@ public class JoarkService {
     }
 
     private URI uri(Journalpost journalpost) {
-        if (journalpost.skalBehandlesIArena()) {
+        if (journalpost.skalBehandlesIArena() && journalpost.getTittel() != Tiltakstype.SOMMERJOBB.getTittel()) {
             return uriArena;
         }
         return uri;

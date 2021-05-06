@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.*;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
 import org.springframework.stereotype.Component;
@@ -54,7 +55,7 @@ public class JournalpostFactory {
     }
 
     private void journalfoerMedStatus(Journalpost journalpost, Avtale avtale, Dokument dokument) {
-        if (journalpost.skalBehandlesIArena()) {
+        if (journalpost.skalBehandlesIArena() && avtale.getTiltakstype() != Tiltakstype.SOMMERJOBB) {
             journalfoerSomMidlertidig(journalpost, avtale, dokument.getDokumentVarianter());
             return;
         }
