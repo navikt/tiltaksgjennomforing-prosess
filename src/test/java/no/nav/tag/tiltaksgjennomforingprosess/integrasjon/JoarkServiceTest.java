@@ -14,7 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService.*;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,8 +24,8 @@ import static org.mockito.Mockito.*;
 public class JoarkServiceTest {
 
     private final URI uri = URI.create("http://localhost:8090");
-    private final URI expUriTilArena = UriComponentsBuilder.fromUri(uri).path(PATH).query(FORSOEK_FERDIGSTILL_FALSE).build().toUri();
-    private final URI expUriIkkeTilArena = UriComponentsBuilder.fromUri(uri).path(PATH).query(FORSOEK_FERDIGSTILL_TRUE).build().toUri();
+    private final URI expUriTilArena = UriComponentsBuilder.fromUri(uri).path("/rest/journalpostapi/v1/journalpost").query("forsoekFerdigstill=false").build().toUri();
+    private final URI expUriIkkeTilArena = UriComponentsBuilder.fromUri(uri).path("/rest/journalpostapi/v1/journalpost").query("forsoekFerdigstill=true").build().toUri();
 
     private Journalpost journalpost = new Journalpost();
 

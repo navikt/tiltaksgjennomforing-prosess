@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
-import no.nav.tag.tiltaksgjennomforingprosess.factory.RequestResponseLoggingInterceptor;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,25 +15,18 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.Collections;
 
 @Slf4j
 @Service
 public class JoarkService {
 
-    static final String PATH = "/rest/journalpostapi/v1/journalpost";
-    static final String FORSOEK_FERDIGSTILL_FALSE = "forsoekFerdigstill=false";
-    static final String FORSOEK_FERDIGSTILL_TRUE = "forsoekFerdigstill=true";
-    private final URI uri;
-    private final URI uriArena;
     private final HttpHeaders headers = new HttpHeaders();
-
     private final RestTemplate restTemplate;
     private final StsService stsService;
+    private final JournalpostProperties journalpostProperties;
 
     public JoarkService(JournalpostProperties journalpostProperties, RestTemplate restTemplate, StsService stsService) {
-        uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri()).path(PATH).query(FORSOEK_FERDIGSTILL_TRUE).build().toUri();
-        uriArena = UriComponentsBuilder.fromUri(journalpostProperties.getUri()).path(PATH).query(FORSOEK_FERDIGSTILL_FALSE).build().toUri();
+        this.journalpostProperties = journalpostProperties;
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
         this.restTemplate = restTemplate;
@@ -62,10 +53,11 @@ public class JoarkService {
     }
 
     private URI uri(Journalpost journalpost) {
+        UriComponentsBuilder uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri()).path("/rest/journalpostapi/v1/journalpost");
         if (journalpost.skalBehandlesIArena() && journalpost.getTittel() != Tiltakstype.SOMMERJOBB.getTittel()) {
-            return uriArena;
+            return uri.query("forsoekFerdigstill=false").build().toUri();
         }
-        return uri;
+        return uri.query("forsoekFerdigstill=true").build().toUri();
     }
 
     private HttpEntity<Journalpost> entityMedStsToken(final Journalpost journalpost) {
