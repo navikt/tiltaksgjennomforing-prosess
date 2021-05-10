@@ -37,6 +37,8 @@ public class JoarkService {
         debugLogJournalpost(journalpost);
         JoarkResponse response = null;
         try {
+            String uri = uri(journalpost).toString();
+            log.info("Forsøker journalføring av type: {}, på sak: {}, med uri: {}", journalpost.getTittel(), journalpost.getSak() , uri);
             response = restTemplate.postForObject(uri(journalpost), entityMedStsToken(journalpost), JoarkResponse.class);
         } catch (Exception e1) {
             stsService.evict();
