@@ -90,7 +90,8 @@ public class JournalpostJobb {
     private void journalfoer(Avtale avtale, Journalpost journalpost, Map<UUID, String> journalfoerteAvtaler) {
         log.info("Forsøker å journalføre versjon {} av avtale {} med versjonId {} på tiltak {}", avtale.getVersjon(), avtale.getAvtaleId(), avtale.getAvtaleVersjonId(), avtale.getTiltakstype());
         try {
-            String journalpostId = joarkService.sendJournalpost(journalpost);
+            boolean ferdigstill = journalpost.getAvtaleVersjon() == 1 && avtale.getTiltakstype() != Tiltakstype.SOMMERJOBB;
+            String journalpostId = joarkService.sendJournalpost(journalpost, ferdigstill);
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
         } catch (Exception e) {
             log.error("Feil oppsto ved journalføring av avtale {} versjon {}", journalpost.getAvtaleId(), journalpost.getAvtaleVersjon(), e);

@@ -33,18 +33,18 @@ public class JoarkService {
         this.stsService = stsService;
     }
 
-    public String sendJournalpost(final Journalpost journalpost) {
+    public String sendJournalpost(final Journalpost journalpost, boolean ferdigstill) {
         debugLogJournalpost(journalpost);
         JoarkResponse response = null;
         try {
-            String uri = uri(journalpost).toString();
+            URI uri = uri(ferdigstill);
             log.info("Forsøker journalføring av type: {}, på sak: {}, med uri: {}", journalpost.getTittel(), journalpost.getSak() , uri);
-            response = restTemplate.postForObject(uri(journalpost), entityMedStsToken(journalpost), JoarkResponse.class);
+            response = restTemplate.postForObject(uri, entityMedStsToken(journalpost), JoarkResponse.class);
         } catch (Exception e1) {
             stsService.evict();
             log.warn("Feil ved kommunikasjon mot journalpost-API. Henter nytt sts-token og forsøker igjen");
             try {
-                response = restTemplate.postForObject(uri(journalpost), entityMedStsToken(journalpost), JoarkResponse.class);
+                response = restTemplate.postForObject(uri(ferdigstill), entityMedStsToken(journalpost), JoarkResponse.class);
             } catch (Exception e2) {
                 log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e2);
                 throw new RuntimeException("Kall til Joark feilet: " + e2);
@@ -54,12 +54,13 @@ public class JoarkService {
         return response.getJournalpostId();
     }
 
-    private URI uri(Journalpost journalpost) {
+    private URI uri(boolean ferdigstill) {
         UriComponentsBuilder uri = UriComponentsBuilder.fromUri(journalpostProperties.getUri()).path("/rest/journalpostapi/v1/journalpost");
-        if (journalpost.skalBehandlesIArena() && journalpost.getTittel() != Tiltakstype.SOMMERJOBB.getTittel()) {
+        if (ferdigstill) {
+            return uri.query("forsoekFerdigstill=true").build().toUri();
+        } else {
             return uri.query("forsoekFerdigstill=false").build().toUri();
         }
-        return uri.query("forsoekFerdigstill=true").build().toUri();
     }
 
     private HttpEntity<Journalpost> entityMedStsToken(final Journalpost journalpost) {

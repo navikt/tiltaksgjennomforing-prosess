@@ -65,6 +65,7 @@ public class TestData {
         avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
         avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.endaEnOppgave()));
         avtale.setStillingprosent(80);
+        avtale.setVersjon(1);
         return avtale;
     }
 
