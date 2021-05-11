@@ -43,14 +43,6 @@ public class JoarkServiceIntTest {
         journalpostFactory = new JournalpostFactory(avtaleTilXml, dokgenAdapter, unleash);
     }
 
-//    private boolean ferdigstill(Journalpost journalpost, Avtale avtale) {
-//        if (journalpost.getAvtaleVersjon() == 1 && avtale.getTiltakstype() != Tiltakstype.SOMMERJOBB) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
-
     @Test
     public void oppretterJournalpost_til_arena() {
         unleash.disableAll();
