@@ -50,7 +50,6 @@ public class Journalpost {
     private Integer avtaleVersjon;
 
     public boolean skalBehandlesIArena(){
-        //TODO: Oppdatere til behandlingstemaet til sommerjobb nar det er pa plass.
         return avtaleVersjon == 1;
     }
 }

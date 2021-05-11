@@ -16,12 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.MAPPING_FEIL;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -90,10 +88,10 @@ public class JournalpostJobbTest {
         when(journalpostFactory.konverterTilJournalpost(okAvtale)).thenReturn(okJournalpost);
         when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenThrow(RuntimeException.class);
 
-        when(joarkService.sendJournalpost(eq(okJournalpost), eq(true))).thenReturn(JOURNALPOST_ID);
+        when(joarkService.sendJournalpost(eq(okJournalpost), eq(false))).thenReturn(JOURNALPOST_ID);
 
         journalpostJobb.avtalerTilJournalfoering();
-        verify(joarkService, times(1)).sendJournalpost(eq(okJournalpost), eq(true));
+        verify(joarkService, times(1)).sendJournalpost(eq(okJournalpost), eq(false));
         verify(tiltaksgjennomfoeringApiService, atLeastOnce()).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
     }
 
