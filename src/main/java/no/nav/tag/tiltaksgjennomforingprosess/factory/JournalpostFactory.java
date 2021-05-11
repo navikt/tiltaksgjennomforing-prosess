@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.*;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
+import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.ferdigstill;
 import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.*;
 import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost.JORURNALFØRENDE_ENHET;
 
@@ -54,7 +56,7 @@ public class JournalpostFactory {
     }
 
     private void journalfoerMedStatus(Journalpost journalpost, Avtale avtale, Dokument dokument) {
-        if (journalpost.skalBehandlesIArena()) {
+        if (!ferdigstill(journalpost, avtale)) {
             journalfoerSomMidlertidig(journalpost, avtale, dokument.getDokumentVarianter());
             return;
         }

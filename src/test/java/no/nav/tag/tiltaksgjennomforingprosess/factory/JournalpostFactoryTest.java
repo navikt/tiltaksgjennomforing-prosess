@@ -49,7 +49,6 @@ public class JournalpostFactoryTest {
         assertGenereltInnhold(journalpost, avtale);
         assertEquals("ab0422", journalpost.getBehandlingsTema());
         assertEquals("Avtale om arbeidstrening", journalpost.getTittel());
-        assertTrue(journalpost.skalBehandlesIArena());
         assertEquals(2, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 
@@ -62,7 +61,6 @@ public class JournalpostFactoryTest {
         verify(avtaleTilXml, never()).genererXml(avtale);
 
         assertGenereltInnhold(journalpost, avtale);
-        assertFalse(journalpost.skalBehandlesIArena());
         assertEquals(1, journalpost.getDokumenter().size());
         assertEquals("9999", journalpost.getJournalfoerendeEnhet());
         assertEquals("GENERELL_SAK", journalpost.getSak().getSakstype());
@@ -82,7 +80,6 @@ public class JournalpostFactoryTest {
         assertGenereltInnhold(journalpost, avtale);
         assertEquals("Avtale om midlertidig lønnstilskudd", journalpost.getTittel());
         assertEquals("ab0336", journalpost.getBehandlingsTema());
-        assertTrue(journalpost.skalBehandlesIArena());
         assertEquals(2, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 
@@ -96,7 +93,6 @@ public class JournalpostFactoryTest {
         assertGenereltInnhold(journalpost, avtale);
         assertEquals(avtale.getTiltakstype().getTittel(), journalpost.getTittel());
         assertNull(journalpost.getBehandlingsTema());
-        assertFalse(journalpost.skalBehandlesIArena());
         assertEquals(1, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 
@@ -113,7 +109,6 @@ public class JournalpostFactoryTest {
         assertGenereltInnhold(journalpost, avtale);
         assertEquals("Avtale om varig lønnstilskudd", journalpost.getTittel());
         assertEquals("ab0337", journalpost.getBehandlingsTema());
-        assertTrue(journalpost.skalBehandlesIArena());
         assertEquals(2, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 
@@ -127,7 +122,6 @@ public class JournalpostFactoryTest {
         assertGenereltInnhold(journalpost, avtale);
         assertEquals("Avtale om tilskudd til mentor", journalpost.getTittel());
         assertNull(journalpost.getBehandlingsTema());
-        assertFalse(journalpost.skalBehandlesIArena());
         assertEquals(1, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 
@@ -143,7 +137,6 @@ public class JournalpostFactoryTest {
         assertGenereltInnhold(journalpost, avtale);
         assertEquals("Avtale om tilskudd til mentor", journalpost.getTittel());
         assertEquals("ab0416", journalpost.getBehandlingsTema());
-        assertTrue(journalpost.skalBehandlesIArena());
         assertEquals(2, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 

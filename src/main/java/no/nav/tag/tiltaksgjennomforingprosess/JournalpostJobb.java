@@ -90,7 +90,7 @@ public class JournalpostJobb {
     private void journalfoer(Avtale avtale, Journalpost journalpost, Map<UUID, String> journalfoerteAvtaler) {
         log.info("Forsøker å journalføre versjon {} av avtale {} med versjonId {} på tiltak {}", avtale.getVersjon(), avtale.getAvtaleId(), avtale.getAvtaleVersjonId(), avtale.getTiltakstype());
         try {
-            String journalpostId = joarkService.sendJournalpost(journalpost);
+            String journalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
         } catch (Exception e) {
             log.error("Feil oppsto ved journalføring av avtale {} versjon {}", journalpost.getAvtaleId(), journalpost.getAvtaleVersjon(), e);
@@ -129,6 +129,14 @@ public class JournalpostJobb {
             }
         }
         return avtalerTilJournalforing;
+    }
+
+    public static boolean ferdigstill(Journalpost journalpost, Avtale avtale) {
+        if (journalpost.getAvtaleVersjon() == 1 && avtale.getTiltakstype() != Tiltakstype.SOMMERJOBB) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 

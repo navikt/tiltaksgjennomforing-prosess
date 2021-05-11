@@ -15,6 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.ferdigstill;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -49,8 +50,21 @@ public class JoarkServiceIntTest {
         avtale.setVersjon(1);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
-        String jounalpostId = joarkService.sendJournalpost(journalpost);
+        String jounalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
         assertEquals("002", jounalpostId);
+    }
+
+    @Test
+    public void sommerjobb_ikke_til_arena() {
+        unleash.disableAll();
+        Avtale avtale = TestData.opprettSommerjobbAvtale();
+        avtale.setVersjon(1);
+
+        Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
+        String jounalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
+
+        assertEquals("9999", journalpost.getJournalfoerendeEnhet());
+        assertEquals("005", jounalpostId);
     }
 
     @Test
@@ -62,7 +76,7 @@ public class JoarkServiceIntTest {
         avtale.setVersjon(2);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
-        String jounalpostId = joarkService.sendJournalpost(journalpost);
+        String jounalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
         assertEquals("001", jounalpostId);
     }
 
@@ -73,7 +87,7 @@ public class JoarkServiceIntTest {
         avtale.setVersjon(1);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
-        String jounalpostId = joarkService.sendJournalpost(journalpost);
+        String jounalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
         assertEquals("002", jounalpostId);
     }
 
@@ -86,7 +100,7 @@ public class JoarkServiceIntTest {
         avtale.setVersjon(2);
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
-        String jounalpostId = joarkService.sendJournalpost(journalpost);
+        String jounalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
         assertEquals("001", jounalpostId);
     }
 
@@ -100,7 +114,7 @@ public class JoarkServiceIntTest {
 
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
         assertNotNull(journalpost);
-        joarkService.sendJournalpost(journalpost);
+        joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
     }
 
 }

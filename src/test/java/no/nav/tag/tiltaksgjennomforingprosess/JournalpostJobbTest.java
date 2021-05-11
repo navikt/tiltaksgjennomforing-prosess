@@ -16,12 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.MAPPING_FEIL;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -66,7 +64,7 @@ public class JournalpostJobbTest {
 
         verify(tiltaksgjennomfoeringApiService, never()).finnAvtalerTilJournalfoering();
         verify(journalpostFactory, never()).konverterTilJournalpost(any());
-        verify(joarkService, never()).sendJournalpost(any());
+        verify(joarkService, never()).sendJournalpost(any(), anyBoolean());
         verify(tiltaksgjennomfoeringApiService, never()).settAvtalerTilJournalfoert(any());
     }
 
@@ -76,6 +74,7 @@ public class JournalpostJobbTest {
         Avtale okAvtale = TestData.opprettArbeidstreningAvtale();
         Journalpost okJournalpost = new Journalpost();
         okJournalpost.setEksternReferanseId(okAvtale.getAvtaleId().toString());
+        okJournalpost.setAvtaleVersjon(okAvtale.getVersjon());
 
         Avtale feiletAvt = TestData.opprettArbeidstreningAvtale();
 
@@ -89,10 +88,10 @@ public class JournalpostJobbTest {
         when(journalpostFactory.konverterTilJournalpost(okAvtale)).thenReturn(okJournalpost);
         when(journalpostFactory.konverterTilJournalpost(feiletAvt)).thenThrow(RuntimeException.class);
 
-        when(joarkService.sendJournalpost(eq(okJournalpost))).thenReturn(JOURNALPOST_ID);
+        when(joarkService.sendJournalpost(eq(okJournalpost), eq(false))).thenReturn(JOURNALPOST_ID);
 
         journalpostJobb.avtalerTilJournalfoering();
-        verify(joarkService, times(1)).sendJournalpost(eq(okJournalpost));
+        verify(joarkService, times(1)).sendJournalpost(eq(okJournalpost), eq(false));
         verify(tiltaksgjennomfoeringApiService, atLeastOnce()).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
     }
 
@@ -103,8 +102,10 @@ public class JournalpostJobbTest {
 
         Journalpost journalpost1 = new Journalpost();
         journalpost1.setEksternReferanseId(avtale1.getAvtaleId().toString());
+        journalpost1.setAvtaleVersjon(1);
         Journalpost journalpost2 = new Journalpost();
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
+        journalpost2.setAvtaleVersjon(1);
 
         Map<UUID, String> jorurnalførteAvtaler = new HashMap<>();
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
@@ -115,12 +116,12 @@ public class JournalpostJobbTest {
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
 
-        when(joarkService.sendJournalpost(eq(journalpost1))).thenReturn(JOURNALPOST_ID);
-        when(joarkService.sendJournalpost(eq(journalpost2))).thenThrow(RuntimeException.class);
+        when(joarkService.sendJournalpost(eq(journalpost1), anyBoolean())).thenReturn(JOURNALPOST_ID);
+        when(joarkService.sendJournalpost(eq(journalpost2), anyBoolean())).thenThrow(RuntimeException.class);
 
         journalpostJobb.avtalerTilJournalfoering();
-        verify(joarkService, times(1)).sendJournalpost(eq(journalpost1));
-        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2));
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost1), anyBoolean());
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2), anyBoolean());
         verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
     }
 
@@ -132,8 +133,10 @@ public class JournalpostJobbTest {
 
         Journalpost journalpost1 = new Journalpost();
         journalpost1.setEksternReferanseId(avtale1.getAvtaleId().toString());
+        journalpost1.setAvtaleVersjon(1);
         Journalpost journalpost2 = new Journalpost();
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
+        journalpost2.setAvtaleVersjon(1);
 
         Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(2);
         jorurnalførteAvtaler.put(avtale1.getAvtaleVersjonId(), JOURNALPOST_ID);
@@ -145,12 +148,12 @@ public class JournalpostJobbTest {
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenReturn(journalpost1);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
 
-        when(joarkService.sendJournalpost(eq(journalpost1))).thenReturn(JOURNALPOST_ID);
-        when(joarkService.sendJournalpost(eq(journalpost2))).thenReturn(JOURNALPOST_ID);
+        when(joarkService.sendJournalpost(eq(journalpost1), anyBoolean())).thenReturn(JOURNALPOST_ID);
+        when(joarkService.sendJournalpost(eq(journalpost2), anyBoolean())).thenReturn(JOURNALPOST_ID);
 
         journalpostJobb.avtalerTilJournalfoering();
-        verify(joarkService, times(1)).sendJournalpost(eq(journalpost1));
-        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2));
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost1), anyBoolean());
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2), anyBoolean());
         verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
     }
 
@@ -162,8 +165,10 @@ public class JournalpostJobbTest {
 
         Journalpost journalpost1 = new Journalpost();
         journalpost1.setEksternReferanseId(avtale1.getAvtaleId().toString());
+        journalpost1.setAvtaleVersjon(1);
         Journalpost journalpost2 = new Journalpost();
         journalpost2.setEksternReferanseId(avtale2.getAvtaleId().toString());
+        journalpost2.setAvtaleVersjon(1);
 
         Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(1);
         jorurnalførteAvtaler.put(avtale2.getAvtaleVersjonId(), JOURNALPOST_ID);
@@ -174,11 +179,11 @@ public class JournalpostJobbTest {
         when(journalpostFactory.konverterTilJournalpost(avtale1)).thenThrow(PdfGenException.class);
         when(journalpostFactory.konverterTilJournalpost(avtale2)).thenReturn(journalpost2);
 
-        when(joarkService.sendJournalpost(eq(journalpost2))).thenReturn(JOURNALPOST_ID);
+        when(joarkService.sendJournalpost(eq(journalpost2), anyBoolean())).thenReturn(JOURNALPOST_ID);
 
         journalpostJobb.avtalerTilJournalfoering();
-        verify(joarkService, never()).sendJournalpost(eq(journalpost1));
-        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2));
+        verify(joarkService, never()).sendJournalpost(eq(journalpost1), anyBoolean());
+        verify(joarkService, times(1)).sendJournalpost(eq(journalpost2), anyBoolean());
         verify(tiltaksgjennomfoeringApiService, times(1)).settAvtalerTilJournalfoert(eq(jorurnalførteAvtaler));
     }
 }

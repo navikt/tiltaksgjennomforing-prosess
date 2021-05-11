@@ -65,6 +65,7 @@ public class TestData {
         avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
         avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.endaEnOppgave()));
         avtale.setStillingprosent(80);
+        avtale.setVersjon(1);
         return avtale;
     }
 
@@ -74,6 +75,30 @@ public class TestData {
         avtale.setStillingstype("Utvikler");
         avtale.setArbeidsoppgaver("Spille bordtennis");
         avtale.setStillingprosent(60);
+        avtale.setAntallDagerPerUke(4);
+        avtale.setArbeidsgiverKontonummer("99998888777");
+        avtale.setLonnstilskuddProsent(40);
+        avtale.setManedslonn(20000);
+        avtale.setFeriepengesats(BigDecimal.valueOf(0.102));
+        avtale.setFeriepengerBelop(2400);
+        avtale.setArbeidsgiveravgift(BigDecimal.valueOf(0.141));
+        avtale.setArbeidsgiveravgiftBelop(3222);
+        avtale.setOtpSats(0.05);
+        avtale.setOtpBelop(448);
+        avtale.setSumLonnsutgifter(26070);
+        avtale.setSumLonnstilskudd(15642);
+        avtale.setManedslonn100pst((avtale.getSumLonnsutgifter() * 100 / avtale.getStillingprosent()));
+        return avtale;
+    }
+
+    public static Avtale opprettSommerjobbAvtale() {
+        Avtale avtale = opprettEnAvtale();
+        avtale.setBedriftNr("910825518");
+        avtale.setBedriftNavn("Saltrød og Hønseby");
+        avtale.setTiltakstype(Tiltakstype.SOMMERJOBB);
+        avtale.setStillingstype("Utvikler");
+        avtale.setArbeidsoppgaver("Spille bordtennis");
+        avtale.setStillingprosent(50);
         avtale.setAntallDagerPerUke(4);
         avtale.setArbeidsgiverKontonummer("99998888777");
         avtale.setLonnstilskuddProsent(40);
