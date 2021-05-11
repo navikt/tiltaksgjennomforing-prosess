@@ -48,8 +48,4 @@ public class Journalpost {
 
     @JsonIgnore
     private Integer avtaleVersjon;
-
-    public boolean skalBehandlesIArena(){
-        return avtaleVersjon == 1;
-    }
 }

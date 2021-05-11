@@ -14,6 +14,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
+import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.ferdigstill;
 import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.DokumentVariant.*;
 import static no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost.JORURNALFØRENDE_ENHET;
 
@@ -55,7 +56,7 @@ public class JournalpostFactory {
     }
 
     private void journalfoerMedStatus(Journalpost journalpost, Avtale avtale, Dokument dokument) {
-        if (journalpost.skalBehandlesIArena() && avtale.getTiltakstype() != Tiltakstype.SOMMERJOBB) {
+        if (!ferdigstill(journalpost, avtale)) {
             journalfoerSomMidlertidig(journalpost, avtale, dokument.getDokumentVarianter());
             return;
         }
