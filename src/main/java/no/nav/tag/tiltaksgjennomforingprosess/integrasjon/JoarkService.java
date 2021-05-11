@@ -37,9 +37,8 @@ public class JoarkService {
         debugLogJournalpost(journalpost);
         JoarkResponse response = null;
         try {
-            URI uri = uri(ferdigstill);
-            log.info("Forsøker journalføring av type: {}, på sak: {}, med uri: {}", journalpost.getTittel(), journalpost.getSak() , uri);
-            response = restTemplate.postForObject(uri, entityMedStsToken(journalpost), JoarkResponse.class);
+            log.info("Forsøker journalføring av type: {}, på sak: {}, med uri: {}", journalpost.getTittel(), journalpost.getSak() , uri(ferdigstill));
+            response = restTemplate.postForObject(uri(ferdigstill), entityMedStsToken(journalpost), JoarkResponse.class);
         } catch (Exception e1) {
             stsService.evict();
             log.warn("Feil ved kommunikasjon mot journalpost-API. Henter nytt sts-token og forsøker igjen");
