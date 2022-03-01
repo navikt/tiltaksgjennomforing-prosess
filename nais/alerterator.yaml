@@ -21,3 +21,8 @@ spec:
       for: 10m
       description: "{{ $labels.app }} feiler mye {{ $labels.kubernetes_namespace }}"
       action: "Sjekk loggene til app {{ $labels.app }} i namespace {{ $labels.kubernetes_namespace }}, for å se hvorfor det er så mye feil"
+    - alert: Warnings i prosess
+      expr: round(sum(increase(logd_messages_total{log_app="tiltaksgjennomforing-prosess",log_level=~"Warning|Error"}[10m]))) > 2
+      for: 10m
+      description: "{{ $labels.app }} feilmeldinger i {{ $labels.kubernetes_namespace }}"
+      action: "Sjekk loggene til app tiltaksgjennomforing-prosess: https://logs.adeo.no/goto/e8fbddda1b6f991a1d33970355649d0f"
