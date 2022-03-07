@@ -8,7 +8,7 @@ metadata:
 spec:
   receivers:
     slack:
-      channel: 'arbeidsgiver-notifications-test'
+      channel: '#arbeidsgiver-notifications-test'
       prependText: '<!here> | '
   alerts:
     - alert: applikasjon nede
