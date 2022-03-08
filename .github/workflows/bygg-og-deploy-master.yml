@@ -89,6 +89,6 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
-          RESOURCE: nais/naiserator.yaml,nais/alerterator.yaml,nais/alerteratorTest.yaml
+          RESOURCE: nais/naiserator.yaml,nais/alerterator.yaml
           PRINT_PAYLOAD: true
           VARS: nais/prod-fss.json
