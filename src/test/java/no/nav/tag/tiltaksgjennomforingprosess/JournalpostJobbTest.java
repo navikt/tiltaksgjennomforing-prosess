@@ -8,6 +8,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
 import no.nav.tag.tiltaksgjennomforingprosess.leader.LeaderPodCheck;
+import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +46,9 @@ public class JournalpostJobbTest {
 
     @InjectMocks
     private JournalpostJobb journalpostJobb;
+
+    @Mock
+    private PilotProperties pilotProperties;
 
     @Before
     public void setUp() {

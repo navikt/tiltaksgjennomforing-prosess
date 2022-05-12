@@ -15,4 +15,5 @@ prosess:
       uri: http://tiltaksgjennomforing-api.arbeidsgiver/tiltaksgjennomforing-api
     unleash:
       uri: https://unleash.nais.io/api/
-
+  pilot:
+    pilotvirksomheter: ${tiltaksgjennomforing.pilot.pilotvirksomheter}

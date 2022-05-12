@@ -20,5 +20,7 @@ prosess:
       uri: http://localhost:8091/tiltaksgjennomforing-api
     dokgen:
       uri: http://localhost:8091/template/tiltak-avtale/create-pdf
+  pilot:
+    pilotvirksomheter: 999999999
 
 elector.path: localhost:8091
