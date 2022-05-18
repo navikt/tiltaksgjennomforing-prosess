@@ -72,7 +72,7 @@ public class TiltaksgjennomforingApiIntTest {
 
         Avtale tilskuddAvtale = avtaleList.stream().filter(avt -> avt.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)).findFirst().orElseThrow(() -> new AssertionError("Midlertidling lønnstilskudd-avtale mangler"));
         if(tilskuddAvtale.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)) {
-            assertEquals(2, tilskuddAvtale.getTilskuddsPerioder().size());
+            assertEquals(3, tilskuddAvtale.getTilskuddsPerioder().size());
         }
 
         assertTrue(avtaleList.stream().anyMatch(avt -> avt.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)));
