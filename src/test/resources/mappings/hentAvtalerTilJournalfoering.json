@@ -102,7 +102,32 @@
             "godkjentAvDeltaker": "2020-02-11",
             "godkjentAvArbeidsgiver": "2020-02-11",
             "godkjentAvVeileder": "2020-02-11",
-            "godkjentPaVegneAv": false
+            "godkjentPaVegneAv": false,
+            "tilskuddsPerioder": [
+              {
+                "beløp": 804,
+                "startDato": "2022-05-14",
+                "sluttDato": "2022-05-14",
+                "lonnstilskuddProsent": 60,
+                "godkjentAvNavIdent": null,
+                "godkjentTidspunkt": null,
+                "enhet": null,
+                "enhetsnavn": null,
+                "avslagsårsaker": [],
+                "avslagsforklaring": null,
+                "avslåttAvNavIdent": null,
+                "avslåttTidspunkt": null,
+                "løpenummer": 1,
+                "status": null,
+                "aktiv": true
+              },
+              {
+                "beløp": 804,
+                "startDato": "2022-05-14",
+                "sluttDato": "2022-05-14",
+                "lonnstilskuddProsent": 60
+              }
+            ]
           },
           {
             "tiltakstype": "ARBEIDSTRENING",

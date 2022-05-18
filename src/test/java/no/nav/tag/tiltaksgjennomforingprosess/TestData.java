@@ -45,9 +45,10 @@ public class TestData {
         avtale.setGodkjentAvVeileder(LocalDate.now().plusDays(2));
         avtale.setGodkjentPaVegneAv(true);
         avtale.setGodkjentPaVegneGrunn(enGrunn());
+        avtale.setHarFamilietilknytning(true);
+        avtale.setFamilietilknytningForklaring("Bror, mor og far");
         return avtale;
     }
-
     public static Avtale opprettMentorAvtale() {
         Avtale avtale = opprettEnAvtale();
         avtale.setTiltakstype(Tiltakstype.MENTOR);
