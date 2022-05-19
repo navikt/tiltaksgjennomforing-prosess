@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 //@Ignore("Til manuell sjekk av pdf layout - kjøres mot tiltak-dokgen lokalt")
-@Disabled
+@Disabled("Til manuell sjekk av pdf layout - kjøres mot tiltak-dokgen lokal. husk å endre port i application.local til porten doken kjører på lokalt.")
 //@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("local")

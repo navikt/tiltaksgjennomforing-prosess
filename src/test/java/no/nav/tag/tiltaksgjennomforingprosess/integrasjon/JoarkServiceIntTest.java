@@ -7,6 +7,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.AvtaleTilXml;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +37,7 @@ public class JoarkServiceIntTest {
 
     private JournalpostFactory journalpostFactory;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
         unleash = new FakeUnleash();
         journalpostFactory = new JournalpostFactory(avtaleTilXml, dokgenAdapter, unleash);
