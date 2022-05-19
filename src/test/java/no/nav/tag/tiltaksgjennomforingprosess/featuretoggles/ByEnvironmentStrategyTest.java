@@ -1,6 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.featuretoggles;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.env.Environment;
 
 import java.util.Map;

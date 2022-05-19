@@ -7,18 +7,21 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+//import org.junit.Before;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.client.HttpClientErrorException;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class JournalpostFactoryTest {
 
     @Mock
@@ -33,7 +36,7 @@ public class JournalpostFactoryTest {
     @InjectMocks
     private JournalpostFactory journalpostFactory;
 
-    @Before
+    @BeforeAll
     public void before() {
         when(dokgenAdapter.genererPdf(any(Avtale.class))).thenReturn(new byte[1]);
     }
@@ -140,21 +143,25 @@ public class JournalpostFactoryTest {
         assertEquals(2, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void pdfDocGenFeiler() throws Exception {
-        Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        assertThrows(RuntimeException.class, () -> {
+            Avtale avtale = TestData.opprettArbeidstreningAvtale();
 
-        when(dokgenAdapter.genererPdf(avtale)).thenThrow(HttpClientErrorException.class);
-        journalpostFactory.konverterTilJournalpost(avtale);
-        verify(dokgenAdapter, atLeastOnce()).genererPdf(avtale);
-        verify(avtaleTilXml, never()).genererXml(avtale);
+            when(dokgenAdapter.genererPdf(avtale)).thenThrow(HttpClientErrorException.class);
+            journalpostFactory.konverterTilJournalpost(avtale);
+            verify(dokgenAdapter, atLeastOnce()).genererPdf(avtale);
+            verify(avtaleTilXml, never()).genererXml(avtale);
+        });
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void avtaleTilXmlFeiler() throws Exception {
+        assertThrows(RuntimeException.class, () -> {
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
         when(avtaleTilXml.genererXml(avtale)).thenThrow(RuntimeException.class);
         journalpostFactory.konverterTilJournalpost(avtale);
+        });
     }
 
     private void assertGenereltInnhold(Journalpost journalpost, Avtale avtale) {

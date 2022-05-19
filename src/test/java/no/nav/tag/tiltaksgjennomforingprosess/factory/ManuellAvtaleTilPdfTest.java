@@ -6,17 +6,20 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+//import org.junit.Ignore;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@Ignore("Til manuell sjekk av pdf layout - kjøres mot tiltak-dokgen lokalt")
-@RunWith(SpringRunner.class)
+//@Ignore("Til manuell sjekk av pdf layout - kjøres mot tiltak-dokgen lokalt")
+@Disabled
+//@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("local")
 @DirtiesContext
