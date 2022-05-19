@@ -63,6 +63,9 @@ public class Avtale {
     private Integer sumLonnsutgifter;
     private Integer sumLonnstilskudd;
     private Integer manedslonn100pst;
+    private List<TilskuddsPeriode> tilskuddsPerioder = new ArrayList<>();
+    private Boolean harFamilietilknytning;
+    private String familietilknytningForklaring;
 
     public BigDecimal getFeriepengesats() {
         return Optional.ofNullable(this.feriepengesats)
