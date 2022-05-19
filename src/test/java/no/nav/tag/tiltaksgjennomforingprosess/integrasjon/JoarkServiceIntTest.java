@@ -6,7 +6,6 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.AvtaleTilXml;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.ferdigstill;
 import static org.junit.jupiter.api.Assertions.*;
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNotNull;
 
-//@RunWith(SpringRunner.class)
+
 @SpringBootTest
 @ActiveProfiles("local")
 @DirtiesContext
