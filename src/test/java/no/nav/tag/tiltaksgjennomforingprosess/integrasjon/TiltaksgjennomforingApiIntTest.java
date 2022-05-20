@@ -2,13 +2,11 @@ package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -16,9 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("local")
 @DirtiesContext
@@ -71,7 +70,7 @@ public class TiltaksgjennomforingApiIntTest {
         assertTrue(avtale.isGodkjentPaVegneAv());
 
         Avtale tilskuddAvtale = avtaleList.stream().filter(avt -> avt.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)).findFirst().orElseThrow(() -> new AssertionError("Midlertidling lønnstilskudd-avtale mangler"));
-        if(tilskuddAvtale.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)) {
+        if (tilskuddAvtale.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)) {
             assertEquals(3, tilskuddAvtale.getTilskuddsPerioder().size());
         }
 

@@ -2,25 +2,25 @@ package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JoarkServiceTest {
 
     private final URI uri = URI.create("http://localhost:8090");
@@ -47,7 +47,7 @@ public class JoarkServiceTest {
         JoarkResponse joarkResponse = new JoarkResponse();
         joarkResponse.setJournalpostId("123");
         when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenReturn(joarkResponse);
-        assertThat(joarkService.sendJournalpost(journalpost, false), equalTo("123"));
+        assertThat(joarkService.sendJournalpost(journalpost, false)).isEqualTo("123");
     }
 
     @Test
@@ -56,14 +56,17 @@ public class JoarkServiceTest {
         JoarkResponse joarkResponse = new JoarkResponse();
         joarkResponse.setJournalpostId("123");
         when(restTemplate.postForObject(eq(expUriIkkeTilArena), any(HttpEntity.class), any())).thenReturn(joarkResponse);
-        assertThat(joarkService.sendJournalpost(journalpost, true), equalTo("123"));
+        assertThat(joarkService.sendJournalpost(journalpost, true)).isEqualTo("123");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void oppretterJournalpost_status_500() {
-        journalpost.setAvtaleVersjon(1);
-        when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenThrow(RuntimeException.class);
-        joarkService.sendJournalpost(journalpost, false);
+        assertThrows(RuntimeException.class, () -> {
+            journalpost.setAvtaleVersjon(1);
+            when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenThrow(RuntimeException.class);
+            joarkService.sendJournalpost(journalpost, false);
+
+        });
     }
 
     @Test
