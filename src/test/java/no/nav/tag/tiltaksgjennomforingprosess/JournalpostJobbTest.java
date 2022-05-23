@@ -9,22 +9,24 @@ import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
 import no.nav.tag.tiltaksgjennomforingprosess.leader.LeaderPodCheck;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.MAPPING_FEIL;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JournalpostJobbTest {
 
     private final String JOURNALPOST_ID = "1234";
@@ -50,12 +52,12 @@ public class JournalpostJobbTest {
     @Mock
     private PilotProperties pilotProperties;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         JournalpostJobb.enabled = true;
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         JournalpostJobb.enabled = true;
     }
@@ -100,7 +102,7 @@ public class JournalpostJobbTest {
     }
 
     @Test
-    public void toAvtalerDerEttjoarkKallFeiler(){
+    public void toAvtalerDerEttjoarkKallFeiler() {
         Avtale avtale1 = TestData.opprettArbeidstreningAvtale();
         Avtale avtale2 = TestData.opprettArbeidstreningAvtale();
 

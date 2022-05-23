@@ -5,14 +5,14 @@ import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.TestData.START_DATO;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class AvtaleTilXmlTest {
@@ -22,7 +22,7 @@ public class AvtaleTilXmlTest {
     private AvtaleTilXml avtaleTilXml = new AvtaleTilXml();
 
     @Test
-    public void lagerXmlAvArbeidstrening(){
+    public void lagerXmlAvArbeidstrening() {
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
 
         avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
@@ -35,7 +35,7 @@ public class AvtaleTilXmlTest {
     }
 
     @Test
-    public void lagerXmlAvMidlertidigLonnstilskudd(){
+    public void lagerXmlAvMidlertidigLonnstilskudd() {
         Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
 
         avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
@@ -48,7 +48,7 @@ public class AvtaleTilXmlTest {
     }
 
     @Test
-    public void lagerXmlAvVarigLonnstilskudd(){
+    public void lagerXmlAvVarigLonnstilskudd() {
         Avtale avtale = TestData.opprettLonnstilskuddsAvtale();
         avtale.setTiltakstype(Tiltakstype.VARIG_LONNSTILSKUDD);
 

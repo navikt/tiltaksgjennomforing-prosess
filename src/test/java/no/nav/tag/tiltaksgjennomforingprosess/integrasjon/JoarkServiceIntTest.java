@@ -7,20 +7,17 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.AvtaleTilXml;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static no.nav.tag.tiltaksgjennomforingprosess.JournalpostJobb.ferdigstill;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 @ActiveProfiles("local")
 @DirtiesContext
@@ -41,7 +38,7 @@ public class JoarkServiceIntTest {
     @Autowired
     private PilotProperties pilotProperties;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         unleash = new FakeUnleash();
         journalpostFactory = new JournalpostFactory(avtaleTilXml, dokgenAdapter, unleash, pilotProperties);
@@ -108,17 +105,19 @@ public class JoarkServiceIntTest {
         assertEquals("001", jounalpostId);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void journalføring_gir_duplikatfeil() {
-        unleash.enableAll();
-        Avtale avtale = TestData.opprettArbeidstreningAvtale();
-        avtale.setBedriftNavn("Maura og Kolbu regnskap");
-        avtale.setBedriftNr("999999999");
-        avtale.setVersjon(2);
+        assertThrows(RuntimeException.class, () -> {
+            unleash.enableAll();
+            Avtale avtale = TestData.opprettArbeidstreningAvtale();
+            avtale.setBedriftNavn("Maura og Kolbu regnskap");
+            avtale.setBedriftNr("999999999");
+            avtale.setVersjon(2);
 
-        Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
-        assertNotNull(journalpost);
-        joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale, pilotProperties));
+            Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
+            assertNotNull(journalpost);
+            joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale, pilotProperties));
+        });
     }
 
 }
