@@ -7,6 +7,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
+import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +33,9 @@ public class JournalpostFactoryTest {
 
     @InjectMocks
     private JournalpostFactory journalpostFactory;
+
+    @Mock
+    private PilotProperties pilotProperties;
 
     @BeforeEach
     public void before() {

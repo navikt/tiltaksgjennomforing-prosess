@@ -7,6 +7,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.*;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
+import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class JournalpostFactory {
     private final AvtaleTilXml avtaleTilXml;
     private final DokgenAdapter dokgenAdapter;
     private final Unleash unleash;
+    private final PilotProperties pilotProperties;
 
     public Journalpost konverterTilJournalpost(Avtale avtale) {
 
@@ -56,7 +58,7 @@ public class JournalpostFactory {
     }
 
     private void journalfoerMedStatus(Journalpost journalpost, Avtale avtale, Dokument dokument) {
-        if (!ferdigstill(journalpost, avtale)) {
+        if (!ferdigstill(journalpost, avtale, pilotProperties)) {
             journalfoerSomMidlertidig(journalpost, avtale, dokument.getDokumentVarianter());
             return;
         }
