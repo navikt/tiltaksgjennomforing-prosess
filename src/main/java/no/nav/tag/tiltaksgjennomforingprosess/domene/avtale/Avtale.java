@@ -67,6 +67,10 @@ public class Avtale {
     private Boolean harFamilietilknytning;
     private String familietilknytningForklaring;
 
+    // Inkluderingstilskudd
+    private List<Inkluderingstilskuddsutgift> inkluderingstilskuddsutgift = new ArrayList<>();
+    private String inkluderingstilskuddBegrunnelse;
+
     public BigDecimal getFeriepengesats() {
         return Optional.ofNullable(this.feriepengesats)
                 .orElse(BigDecimal.ZERO)
