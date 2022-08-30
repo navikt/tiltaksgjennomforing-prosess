@@ -67,6 +67,10 @@ public class Avtale {
     private Boolean harFamilietilknytning;
     private String familietilknytningForklaring;
 
+    // Inkluderingstilskudd
+    private List<Inkluderingstilskuddsutgift> inkluderingstilskuddsutgift = new ArrayList<>();
+    private String inkluderingstilskuddBegrunnelse;
+
     public BigDecimal getFeriepengesats() {
         return Optional.ofNullable(this.feriepengesats)
                 .orElse(BigDecimal.ZERO)
@@ -102,6 +106,8 @@ public class Avtale {
     private LocalDate godkjentAvArbeidsgiver;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate godkjentAvVeileder;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate godkjentTaushetserklæringAvMentor;
 
     private boolean godkjentPaVegneAv;
 
