@@ -106,6 +106,8 @@ public class Avtale {
     private LocalDate godkjentAvArbeidsgiver;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate godkjentAvVeileder;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate godkjentTaushetserklæringAvMentor;
 
     private boolean godkjentPaVegneAv;
 
