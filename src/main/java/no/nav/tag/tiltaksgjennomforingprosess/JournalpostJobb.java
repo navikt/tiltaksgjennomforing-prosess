@@ -55,7 +55,6 @@ public class JournalpostJobb {
         }
 
         List<Avtale> avtalerTilJournalforing = tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering();
-        avtalerTilJournalforing = filtrerTiltakPaaFeatureToggles(avtalerTilJournalforing);
 
         if (avtalerTilJournalforing.isEmpty()) {
             return;
@@ -121,17 +120,6 @@ public class JournalpostJobb {
 
     private List<String> avtalerJournalfortInfo(Map<UUID, String> journalfoeringer) {
         return journalfoeringer.keySet().stream().map(uuid -> uuid.toString() + " :: " + journalfoeringer.get(uuid)).collect(Collectors.toList());
-    }
-
-    private List<Avtale> filtrerTiltakPaaFeatureToggles(List<Avtale> avtalerTilJournalforing) {
-
-        if (!unleash.isEnabled("tag.tiltak.prosess.mentor")) {
-            if (avtalerTilJournalforing.stream().anyMatch(avtale -> avtale.getTiltakstype().equals(Tiltakstype.MENTOR))) {
-                log.warn("Feature 'tag.tiltak.mentor' er ikke skrudd på. Kan ikke behandle mentor-avtaler.");
-                avtalerTilJournalforing = avtalerTilJournalforing.stream().filter(avtale -> !avtale.getTiltakstype().equals(Tiltakstype.MENTOR)).collect(Collectors.toList());
-            }
-        }
-        return avtalerTilJournalforing;
     }
 
     public static boolean ferdigstill(Journalpost journalpost, Avtale avtale, PilotProperties pilotProperties) {
