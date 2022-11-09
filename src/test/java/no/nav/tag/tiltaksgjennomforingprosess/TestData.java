@@ -55,7 +55,7 @@ public class TestData {
         avtale.setMentorFornavn("Magne");
         avtale.setMentorEtternavn("Mentori");
         avtale.setMentorOppgaver("Litt av hvert");
-        avtale.setMentorAntallTimer(20);
+        avtale.setMentorAntallTimer(20.5);
         avtale.setMentorTimelonn(400);
         return avtale;
     }

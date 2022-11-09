@@ -45,7 +45,7 @@ public class Avtale {
     private String mentorFornavn;
     private String mentorEtternavn;
     private String mentorOppgaver;
-    private Integer mentorAntallTimer;
+    private Double mentorAntallTimer;
     private Integer mentorTimelonn;
     private String mentorFnr;
 
