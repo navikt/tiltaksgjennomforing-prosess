@@ -3,7 +3,7 @@ logging:
     no.nav.tag.tiltaksgjennomforingprosess: ${process.log.level}
 
 prosess:
-  cron: "5/30 * 07-20 * * MON-FRI"
+  cron: "2/10 * * * * *"
   integrasjon:
     joark:
       uri: https://dokarkiv-q1.nais.preprod.local
