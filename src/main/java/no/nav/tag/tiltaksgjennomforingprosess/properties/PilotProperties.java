@@ -12,4 +12,5 @@ import java.util.List;
 @ConfigurationProperties(prefix = "prosess.pilot")
 public class PilotProperties {
     private List<String> pilotvirksomheter = new ArrayList<>();
+    private List<String> pilotenheter = new ArrayList<>();
 }

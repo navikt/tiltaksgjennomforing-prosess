@@ -41,6 +41,7 @@ public class Avtale {
     private String tilrettelegging;
     private Integer stillingprosent;
     private Integer antallDagerPerUke;
+    private String enhetOppfolging;
     private Integer versjon;
     private String mentorFornavn;
     private String mentorEtternavn;

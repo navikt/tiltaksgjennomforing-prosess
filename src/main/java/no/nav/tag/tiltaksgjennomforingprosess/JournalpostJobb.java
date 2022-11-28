@@ -124,7 +124,8 @@ public class JournalpostJobb {
 
     public static boolean ferdigstill(Journalpost journalpost, Avtale avtale, PilotProperties pilotProperties) {
         boolean erPilotAvtale = pilotProperties.getPilotvirksomheter().contains(avtale.getBedriftNr());
-        if (erPilotAvtale) {
+        boolean erPilotKontor = pilotProperties.getPilotenheter().contains(avtale.getEnhetOppfolging());
+        if (erPilotAvtale || erPilotKontor) {
             log.info("Avtale tilhører pilot-virksomhet. Ferdigstiller journalpost. Avtale: {}, Virksomhet: {}", avtale.getAvtaleId(), avtale.getBedriftNr());
             return true;
         }
