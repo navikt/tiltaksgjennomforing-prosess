@@ -243,7 +243,8 @@
             "godkjentPaVegneGrunn": {
               "ikkeBankId": true,
               "digitalKompetanse": false,
-              "reservert": false
+              "reservert": false,
+              "arenaMigreringDeltaker": false
             },
             "godkjentAvDeltaker": "2020-02-03",
             "godkjentAvArbeidsgiver": "2020-02-03",
