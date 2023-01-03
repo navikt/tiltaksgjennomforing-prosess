@@ -143,6 +143,7 @@ public class TestData {
         GodkjentPaVegneGrunn godkjentPaVegneGrunn = new GodkjentPaVegneGrunn();
         godkjentPaVegneGrunn.setIkkeBankId(true);
         godkjentPaVegneGrunn.setDigitalKompetanse(true);
+        godkjentPaVegneGrunn.setArenaMigreringDeltaker(true);
         return godkjentPaVegneGrunn;
     }
 
