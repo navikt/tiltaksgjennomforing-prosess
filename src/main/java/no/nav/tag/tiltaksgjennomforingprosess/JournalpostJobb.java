@@ -5,13 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.PdfGenException;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.JoarkService;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.TiltaksgjennomfoeringApiService;
 import no.nav.tag.tiltaksgjennomforingprosess.leader.LeaderPodCheck;
-import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -38,8 +36,6 @@ public class JournalpostJobb {
     private LeaderPodCheck leaderPodCheck;
 
     static final String MAPPING_FEIL = "FEILET";
-
-    private final PilotProperties pilotProperties;
 
     @Scheduled(cron = "${prosess.cron}")
     public void avtalerTilJournalfoering() {
@@ -92,7 +88,7 @@ public class JournalpostJobb {
     private void journalfoer(Avtale avtale, Journalpost journalpost, Map<UUID, String> journalfoerteAvtaler) {
         log.info("Forsøker å journalføre versjon {} av avtale {} med versjonId {} på tiltak {}", avtale.getVersjon(), avtale.getAvtaleId(), avtale.getAvtaleVersjonId(), avtale.getTiltakstype());
         try {
-            String journalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale, pilotProperties));
+            String journalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
             journalfoerteAvtaler.put(avtale.getAvtaleVersjonId(), journalpostId);
         } catch (Exception e) {
             log.error("Feil oppsto ved journalføring av avtale {} versjon {}", journalpost.getAvtaleId(), journalpost.getAvtaleVersjon(), e);
@@ -122,19 +118,10 @@ public class JournalpostJobb {
         return journalfoeringer.keySet().stream().map(uuid -> uuid.toString() + " :: " + journalfoeringer.get(uuid)).collect(Collectors.toList());
     }
 
-    public static boolean ferdigstill(Journalpost journalpost, Avtale avtale, PilotProperties pilotProperties) {
-        boolean erPilotAvtale = pilotProperties.getPilotvirksomheter().contains(avtale.getBedriftNr());
-        boolean erPilotKontor = pilotProperties.getPilotenheter().contains(avtale.getEnhetOppfolging());
-        if (erPilotAvtale || erPilotKontor) {
-            log.info("Avtale tilhører pilot-virksomhet. Ferdigstiller journalpost. Avtale: {}, Virksomhet: {}", avtale.getAvtaleId(), avtale.getBedriftNr());
-            return true;
-        }
-
-        if (journalpost.getAvtaleVersjon() == 1 && avtale.getTiltakstype() != Tiltakstype.SOMMERJOBB) {
-            return false;
-        } else {
-            return true;
-        }
+    public static boolean ferdigstill(Journalpost journalpost, Avtale avtale) {
+        boolean skalTilArena = avtale.getTiltakstype().skalTilArena || avtale.getVersjon() == 1;
+        // Ferdigstill hvis den ikke skal til arena
+        return !skalTilArena;
     }
 }
 
