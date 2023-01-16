@@ -119,7 +119,7 @@ public class JournalpostJobb {
     }
 
     public static boolean ferdigstill(Journalpost journalpost, Avtale avtale) {
-        boolean skalTilArena = avtale.getTiltakstype().skalTilArena || avtale.getVersjon() == 1;
+        boolean skalTilArena = avtale.getTiltakstype().skalTilArena && journalpost.getAvtaleVersjon() == 1;
         // Ferdigstill hvis den ikke skal til arena
         return !skalTilArena;
     }
