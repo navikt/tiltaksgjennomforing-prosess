@@ -28,8 +28,6 @@ public class JournalpostFactory {
 
     private final AvtaleTilXml avtaleTilXml;
     private final DokgenAdapter dokgenAdapter;
-    private final Unleash unleash;
-    private final PilotProperties pilotProperties;
 
     public Journalpost konverterTilJournalpost(Avtale avtale) {
 
@@ -58,7 +56,7 @@ public class JournalpostFactory {
     }
 
     private void journalfoerMedStatus(Journalpost journalpost, Avtale avtale, Dokument dokument) {
-        if (!ferdigstill(journalpost, avtale, pilotProperties)) {
+        if (!ferdigstill(journalpost, avtale)) {
             journalfoerSomMidlertidig(journalpost, avtale, dokument.getDokumentVarianter());
             return;
         }
