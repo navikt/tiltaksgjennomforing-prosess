@@ -1,28 +1,41 @@
-apiVersion: nais.io/v1
-kind: Alert
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
 metadata:
-  name: tiltaksgjennomforing-prosess-alert
+  name: tiltaksgjennomforing-prosess
   namespace: arbeidsgiver
   labels:
-    team: arbeidsgiver
+    team: team-tiltak
 spec:
-  receivers:
-    slack:
-      channel: '#arbeidsgiver-tiltak-alerts'
-      prependText: '<!here> | '
-  alerts:
-    - alert: applikasjon nede
-      expr: up{app="tiltaksgjennomforing-prosess", job="kubernetes-pods"} == 0
-      for: 30m
-      description: "{{ $labels.app }} er nede i {{ $labels.kubernetes_namespace }}"
-      action: "`kubectl describe pod tiltaksgjennomforing-prosess -n arbeidsgiver` for events, og `kubectl logs tiltaksgjennomforing-prosess -n arbeidsgiver` for logger"
-    - alert: høy feilrate i logger
-      expr: (5 * sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="tiltaksgjennomforing-prosess",log_level=~"Warning|Error"}[3m])) / sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="tiltaksgjennomforing-prosess"}[3m]))) > 10
-      for: 10m
-      description: "{{ $labels.app }} feiler mye {{ $labels.kubernetes_namespace }}"
-      action: "Sjekk loggene til app tiltaksgjennomforing-prosess i namespace arbeidsgiver, for å se hvorfor det er så mye feil"
-    - alert: Warnings i prosess
-      expr: round(sum(increase(logd_messages_total{log_app="tiltaksgjennomforing-prosess",log_level=~"Warning|Error"}[10m]))) > 2
-      for: 10m
-      description: "feilmeldinger i tiltaksgjennomforing-prosess"
-      action: "Sjekk loggene til app tiltaksgjennomforing-prosess: https://logs.adeo.no/goto/e8fbddda1b6f991a1d33970355649d0f"
+  groups:
+    - name: tiltaksgjennomforing-prosess-alerts
+      rules:
+        - alert: applikasjon nede
+          expr: sum(up{app="tiltaksgjennomforing-prosess", job="nais-system/monitoring-apps-tenant"}) == 0
+          for: 1s
+          annotations:
+            summary: tiltaksgjennomforing-prosess er nede
+            action: "`kubectl describe pod {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for logger"
+          labels:
+            namespace: team-tiltak
+            severity: critical
+
+        - alert: Antall restarts
+          expr: sum(increase(kube_pod_container_status_restarts_total{container=~"tiltaksgjennomforing-prosess"}[30m])) by (container) > 2
+          for: 5m
+          annotations:
+            summary: tiltaksgjennomforing-prosess har restartet flere ganger siste halvtimen!
+            action: "`kubectl describe pod {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for logger"
+          labels:
+            namespace: team-tiltak
+            severity: critical
+
+        - alert: tiltaksgjennomforing-prosess ERROR!
+          expr: sum(increase(logd_messages_total{log_app="tiltak-okonomi",log_level="Error"}[10m])) > 0
+          for: 10s
+          annotations:
+            summary: |-
+              tiltaksgjennomforing-prosess har logget en feil :error: Sjekk loggene om noe bør gjøres!
+            action: "Sjekk logs.adeo.no for logger: https://logs.adeo.no/goto/e8fbddda1b6f991a1d33970355649d0f"
+          labels:
+            namespace: team-tiltak
+            severity: critical
