@@ -3,13 +3,16 @@ package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
+import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jetty.util.StringUtil;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -44,6 +47,23 @@ public class JoarkService {
             log.warn("Feil ved kommunikasjon mot journalpost-API. Henter nytt sts-token og forsøker igjen");
             try {
                 response = restTemplate.postForObject(uri(ferdigstill), entityMedStsToken(journalpost), JoarkResponse.class);
+                log.info("Fikk en fin respons!");
+            } catch (HttpClientErrorException clientErrorException) {
+                // Om det er 409 duplicate, returnere journalpost-id som kommer i responsen fra Joark.
+                if(clientErrorException.getStatusCode().equals(HttpStatus.CONFLICT)) {
+                    if(StringUtils.isNotBlank(clientErrorException.getResponseBodyAsString())) {
+                        try {
+                            JoarkResponse joarkResponse = new ObjectMapper().readValue(clientErrorException.getResponseBodyAsString(), JoarkResponse.class);
+                            log.warn("Konflikt i Joark, journalført versjon {} av avtale {}", journalpost.getAvtaleVersjon(), journalpost.getAvtaleId());
+                            return joarkResponse.getJournalpostId();
+                        } catch (JsonProcessingException e) {
+                            log.error("Kall til Joark feilet", clientErrorException);
+                            throw new RuntimeException("Kall til Joark feilet: ", clientErrorException);
+                        }
+                    }
+                }
+                log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", clientErrorException);
+                throw new RuntimeException("Kall til Joark feilet: " + clientErrorException.getMessage());
             } catch (Exception e2) {
                 log.error("Kall til Joark feilet: {}", response != null ? response.getMelding() : "", e2);
                 throw new RuntimeException("Kall til Joark feilet: " + e2);

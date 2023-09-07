@@ -1,7 +1,10 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
+import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,10 +12,13 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.nio.charset.Charset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -77,6 +83,17 @@ public class JoarkServiceTest {
         verify(stsService).evict();
         verify(stsService, times(2)).hentToken();
         verify(restTemplate, times(2)).postForObject(eq(expUriTilArena), any(HttpEntity.class), any());
+    }
+
+    @Test
+    public void konflikt_409_mot_joark_skal_prøves_journalføre() throws JsonProcessingException {
+        JoarkResponse joarkResponse = new JoarkResponse();
+        joarkResponse.setJournalpostId("1234");
+        HttpClientErrorException.Conflict.create(HttpStatus.CONFLICT, "Conflict", null, new ObjectMapper().writeValueAsString(joarkResponse).getBytes(), Charset.defaultCharset());
+        journalpost.setAvtaleVersjon(1);
+        when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenThrow(HttpClientErrorException.class).thenThrow(HttpClientErrorException.Conflict.create(HttpStatus.CONFLICT, "Conflict", null, new ObjectMapper().writeValueAsString(joarkResponse).getBytes(), Charset.defaultCharset()));
+        String journalPostId = joarkService.sendJournalpost(journalpost, false);
+        assertThat(journalPostId).isEqualTo("1234");
     }
 
 }
