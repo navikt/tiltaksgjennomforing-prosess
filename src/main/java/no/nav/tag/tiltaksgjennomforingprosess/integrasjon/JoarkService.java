@@ -47,7 +47,6 @@ public class JoarkService {
             log.warn("Feil ved kommunikasjon mot journalpost-API. Henter nytt sts-token og forsøker igjen");
             try {
                 response = restTemplate.postForObject(uri(ferdigstill), entityMedStsToken(journalpost), JoarkResponse.class);
-                log.info("Fikk en fin respons!");
             } catch (HttpClientErrorException clientErrorException) {
                 // Om det er 409 duplicate, returnere journalpost-id som kommer i responsen fra Joark.
                 if(clientErrorException.getStatusCode().equals(HttpStatus.CONFLICT)) {
