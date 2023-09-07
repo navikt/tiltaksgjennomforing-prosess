@@ -12,6 +12,8 @@ env:
 jobs:
   bygg:
     name: Bygg branch og lag deployment-issue
+    permissions:
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - name: Sjekk ut kode

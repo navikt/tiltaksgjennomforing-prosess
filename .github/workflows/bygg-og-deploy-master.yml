@@ -11,6 +11,8 @@ env:
 jobs:
   bygg:
     name: Bygg
+    permissions:
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - name: Lukk deployment-issues

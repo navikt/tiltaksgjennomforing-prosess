@@ -8,8 +8,9 @@ env:
 jobs:
   deploy-branch:
     name: Deploy til dev
+    permissions:
+      packages: write
     runs-on: ubuntu-latest
-    
     steps:
       - name: Kommenterer med link til action
         uses: actions/github-script@0.5.0
