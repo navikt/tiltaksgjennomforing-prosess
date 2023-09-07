@@ -1,9 +1,7 @@
 name: Bygg og deploy master
 
 on:
-  push:
-    branches:
-      - 'master'
+  workflow_dispatch:
 
 env:
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
@@ -77,20 +75,3 @@ jobs:
           RESOURCE: nais/naiserator.yaml
           PRINT_PAYLOAD: true
           VARS: nais/dev-fss.json
-
-  deploy-prod:
-    name: Deploy til prod
-    runs-on: ubuntu-latest
-    needs: deploy-dev
-    steps:
-      - name: Sjekk ut kode
-        uses: actions/checkout@v2
-
-      - name: Deploy til prod-fss
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-fss
-          RESOURCE: nais/naiserator.yaml,nais/alerterator.yaml
-          PRINT_PAYLOAD: true
-          VARS: nais/prod-fss.json
