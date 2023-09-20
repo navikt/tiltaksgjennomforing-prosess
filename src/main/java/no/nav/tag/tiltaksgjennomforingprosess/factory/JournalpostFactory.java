@@ -2,12 +2,9 @@ package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.*;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
-import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

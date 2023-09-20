@@ -2,7 +2,6 @@ package no.nav.tag.tiltaksgjennomforingprosess;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.PdfGenException;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
@@ -24,8 +23,6 @@ import java.util.stream.Collectors;
 public class JournalpostJobb {
 
     static boolean enabled = true;
-
-    private final Unleash unleash;
 
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService;
 
