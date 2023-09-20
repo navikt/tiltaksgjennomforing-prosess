@@ -81,7 +81,6 @@
             <artifactId>pdfbox</artifactId>
             <version>2.0.24</version>
         </dependency>
-        
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
@@ -89,11 +88,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>no.finn.unleash</groupId>
-            <artifactId>unleash-client-java</artifactId>
-            <version>3.2.8</version>
-        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>junit</groupId>-->
 <!--            <artifactId>junit</artifactId>-->

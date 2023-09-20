@@ -1,12 +1,10 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
-import no.finn.unleash.FakeUnleash;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.AvtaleTilXml;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
-import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,19 +29,15 @@ public class JoarkServiceIntTest {
     @Autowired
     private DokgenAdapter dokgenAdapter;
 
-    private FakeUnleash unleash;
-
     private JournalpostFactory journalpostFactory;
 
     @BeforeEach
     public void setUp() {
-        unleash = new FakeUnleash();
         journalpostFactory = new JournalpostFactory(avtaleTilXml, dokgenAdapter);
     }
 
     @Test
     public void oppretterJournalpost_til_arena() {
-        unleash.disableAll();
         Avtale avtale = TestData.opprettMentorAvtale();
         avtale.setVersjon(1);
 
@@ -54,7 +48,6 @@ public class JoarkServiceIntTest {
 
     @Test
     public void sommerjobb_ikke_til_arena() {
-        unleash.disableAll();
         Avtale avtale = TestData.opprettSommerjobbAvtale();
         avtale.setVersjon(1);
 
@@ -67,7 +60,6 @@ public class JoarkServiceIntTest {
 
     @Test
     public void oppretterJournalpost_ikke_til_arena() {
-        unleash.disableAll();
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setBedriftNavn("Maura og Kolbu regnskap");
         avtale.setBedriftNr("910825518");
@@ -80,7 +72,6 @@ public class JoarkServiceIntTest {
 
     @Test
     public void oppretterJournalpost_til_arena_med_dokgen() {
-        unleash.enableAll();
         Avtale avtale = TestData.opprettMentorAvtale();
         avtale.setVersjon(1);
 
@@ -91,7 +82,6 @@ public class JoarkServiceIntTest {
 
     @Test
     public void oppretterJournalpost_ikke_til_arena_med_dokgen() {
-        unleash.enableAll();
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setBedriftNavn("Maura og Kolbu regnskap");
         avtale.setBedriftNr("910825518");
@@ -105,7 +95,6 @@ public class JoarkServiceIntTest {
     @Test
     public void journalføring_gir_duplikatfeil() {
         assertThrows(RuntimeException.class, () -> {
-            unleash.enableAll();
             Avtale avtale = TestData.opprettArbeidstreningAvtale();
             avtale.setBedriftNavn("Maura og Kolbu regnskap");
             avtale.setBedriftNr("999999999");

@@ -1,6 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess.factory;
 
-import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
@@ -27,9 +26,6 @@ public class JournalpostFactoryTest {
 
     @Mock
     private DokgenAdapter dokgenAdapter;
-
-    @Mock
-    private Unleash unleash;
 
     @InjectMocks
     private JournalpostFactory journalpostFactory;

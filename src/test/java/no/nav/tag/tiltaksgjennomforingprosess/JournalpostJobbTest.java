@@ -1,6 +1,5 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
-import no.finn.unleash.Unleash;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.PdfGenException;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
@@ -30,9 +29,6 @@ import static org.mockito.Mockito.*;
 public class JournalpostJobbTest {
 
     private final String JOURNALPOST_ID = "1234";
-
-    @Mock
-    private Unleash unleash;
 
     @Mock
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService;
