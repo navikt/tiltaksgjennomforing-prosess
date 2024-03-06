@@ -3,7 +3,7 @@ logging:
     no.nav.tag.tiltaksgjennomforingprosess: ${process.log.level}
 
 prosess:
-  cron: "5/30 * 07-19 * * MON-FRI"
+  cron: "0 0/5 7-19 ? * MON-FRI"
   integrasjon:
     joark:
       uri: https://dokarkiv.nais.adeo.no
