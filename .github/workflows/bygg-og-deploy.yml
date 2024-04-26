@@ -30,12 +30,12 @@ jobs:
         run: mvn package -B -Dsurefire.useFile=false
 
       - name: Push docker image to GAR
-          uses: nais/docker-build-push@v0
-          id: docker-build-push
-          with:
-            team: arbeidsgiver
-            identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-            project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: arbeidsgiver
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   deploy-dev:
     name: Deploy til dev
