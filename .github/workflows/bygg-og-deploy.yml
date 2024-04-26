@@ -57,7 +57,7 @@ jobs:
     name: Deploy til prod
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
-    needs: [build, deploy-dev]
+    needs: [bygg, deploy-dev]
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
