@@ -94,7 +94,7 @@ public class JoarkService {
         }
     }
 
-    private boolean isNotBlank(String muligTomStreng) {
+    private static boolean isNotBlank(String muligTomStreng) {
         return muligTomStreng != null && !muligTomStreng.trim().isEmpty();
     }
 

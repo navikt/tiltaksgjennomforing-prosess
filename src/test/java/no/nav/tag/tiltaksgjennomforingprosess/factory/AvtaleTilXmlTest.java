@@ -90,7 +90,7 @@ public class AvtaleTilXmlTest {
         assertTrue(xml.contains("<versjon>1</versjon>"));
     }
 
-    private String substringBetween(String streng, String start, String slutt) {
+    private static String substringBetween(String streng, String start, String slutt) {
         var del1 = streng.substring(streng.indexOf(start) + start.length());
         return del1.substring(0, del1.indexOf(slutt));
     }
