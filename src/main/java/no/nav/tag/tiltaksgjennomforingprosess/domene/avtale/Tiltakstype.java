@@ -12,7 +12,8 @@ public enum Tiltakstype {
     INKLUDERINGSTILSKUDD("inkluderingstilskudd", "ab0417", "Avtale om inkluderingstilskudd", "tiltak-inkl-tilsk", true),
 
     // Sjekke hva som er riktig behandlingstema og brevkode
-    SOMMERJOBB("Sommerjobb", "", "Avtale om sommerjobb", "tiltak-sommerjobb", false);
+    SOMMERJOBB("Sommerjobb", "", "Avtale om sommerjobb", "tiltak-sommerjobb", false),
+    VTAO("vtao", "ab0418", "Avtale om varig tilrettelagt arbeid i ordinær virksomhet", "tiltak-vtao", true);
 
     private final String dokforTiltakskodeSkjema;
     private final String behandlingstema;
