@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -81,14 +80,18 @@ public class AvtaleTilXmlTest {
         assertTrue(xml.contains(avtale.getBedriftNr()));
         assertTrue(xml.contains(avtale.getDeltakerFornavn()));
 
-        String xmlElemStr = StringUtils.substringBetween(xml, "<fraDato>", "</fraDato>");
+        String xmlElemStr = substringBetween(xml, "<fraDato>", "</fraDato>");
         LocalDate faktiskDato = LocalDate.parse(xmlElemStr);
         assertEquals(START_DATO, faktiskDato);
 
-        xmlElemStr = StringUtils.substringBetween(xml, "<tilDato>", "</tilDato>");
+        xmlElemStr = substringBetween(xml, "<tilDato>", "</tilDato>");
         faktiskDato = LocalDate.parse(xmlElemStr);
         assertEquals(avtale.getSluttDato(), faktiskDato);
         assertTrue(xml.contains("<versjon>1</versjon>"));
     }
 
+    private static String substringBetween(String streng, String start, String slutt) {
+        var del1 = streng.substring(streng.indexOf(start) + start.length());
+        return del1.substring(0, del1.indexOf(slutt));
+    }
 }

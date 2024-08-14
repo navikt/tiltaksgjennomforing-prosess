@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
-import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jetty.util.StringUtil;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -50,7 +48,7 @@ public class JoarkService {
             } catch (HttpClientErrorException clientErrorException) {
                 // Om det er 409 duplicate, returnere journalpost-id som kommer i responsen fra Joark.
                 if(clientErrorException.getStatusCode().equals(HttpStatus.CONFLICT)) {
-                    if(StringUtils.isNotBlank(clientErrorException.getResponseBodyAsString())) {
+                    if(isNotBlank(clientErrorException.getResponseBodyAsString())) {
                         try {
                             JoarkResponse joarkResponse = new ObjectMapper().readValue(clientErrorException.getResponseBodyAsString(), JoarkResponse.class);
                             log.warn("Konflikt i Joark, journalført versjon {} av avtale {}", journalpost.getAvtaleVersjon(), journalpost.getAvtaleId());
@@ -94,6 +92,10 @@ public class JoarkService {
             } catch (JsonProcessingException e) {
             }
         }
+    }
+
+    private static boolean isNotBlank(String muligTomStreng) {
+        return muligTomStreng != null && !muligTomStreng.trim().isEmpty();
     }
 
 }
