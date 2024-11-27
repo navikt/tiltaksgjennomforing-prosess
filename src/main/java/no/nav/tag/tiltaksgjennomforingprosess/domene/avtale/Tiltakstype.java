@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Tiltakstype {
 
-    ARBEIDSTRENING("Arbeidstrening", "ab0422", "Avtale om arbeidstrening", "tiltak-arbtren", true),
+    ARBEIDSTRENING("Arbeidstrening", "ab0422", "Avtale om arbeidstrening", "tiltak-arbtren", false),
     MIDLERTIDIG_LONNSTILSKUDD("LonnstilskuddMidlertidig", "ab0336", "Avtale om midlertidig lønnstilskudd", "tiltak-midl-lønnst", false),
     VARIG_LONNSTILSKUDD("LonnstilskuddVarig", "ab0337", "Avtale om varig lønnstilskudd", "tiltak-varig-lønnst", false),
     MENTOR("mentor", "ab0416", "Avtale om tilskudd til mentor", "tiltak-mentor", true),
