@@ -39,7 +39,7 @@ public class TestData {
         avtale.setStartDato(START_DATO);
         avtale.setSluttDato(START_DATO.plusMonths(2));
         avtale.setVersjon(1);
-        avtale.setStillingprosent(60);
+        avtale.setStillingprosent(60.0);
         avtale.setGodkjentAvArbeidsgiver(LocalDate.now());
         avtale.setGodkjentAvDeltaker(LocalDate.now().plusDays(1));
         avtale.setGodkjentAvVeileder(LocalDate.now().plusDays(2));
@@ -65,7 +65,7 @@ public class TestData {
         avtale.setTiltakstype(Tiltakstype.ARBEIDSTRENING);
         avtale.setMaal(List.of(TestData.etMaal(), TestData.etMaal()));
         avtale.setOppgaver(List.of(TestData.enOppgave(), TestData.endaEnOppgave()));
-        avtale.setStillingprosent(80);
+        avtale.setStillingprosent(80.0);
         avtale.setVersjon(1);
         return avtale;
     }
@@ -75,8 +75,8 @@ public class TestData {
         avtale.setTiltakstype(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD);
         avtale.setStillingstype("Utvikler");
         avtale.setArbeidsoppgaver("Spille bordtennis");
-        avtale.setStillingprosent(60);
-        avtale.setAntallDagerPerUke(4);
+        avtale.setStillingprosent(60.0);
+        avtale.setAntallDagerPerUke(4.0);
         avtale.setArbeidsgiverKontonummer("99998888777");
         avtale.setLonnstilskuddProsent(40);
         avtale.setManedslonn(20000);
@@ -88,7 +88,7 @@ public class TestData {
         avtale.setOtpBelop(448);
         avtale.setSumLonnsutgifter(26070);
         avtale.setSumLonnstilskudd(15642);
-        avtale.setManedslonn100pst((avtale.getSumLonnsutgifter() * 100 / avtale.getStillingprosent()));
+        avtale.setManedslonn100pst((int) Math.round(avtale.getSumLonnsutgifter() * 100 / avtale.getStillingprosent()));
         return avtale;
     }
 
@@ -99,8 +99,8 @@ public class TestData {
         avtale.setTiltakstype(Tiltakstype.SOMMERJOBB);
         avtale.setStillingstype("Utvikler");
         avtale.setArbeidsoppgaver("Spille bordtennis");
-        avtale.setStillingprosent(50);
-        avtale.setAntallDagerPerUke(4);
+        avtale.setStillingprosent(50.0);
+        avtale.setAntallDagerPerUke(4.0);
         avtale.setArbeidsgiverKontonummer("99998888777");
         avtale.setLonnstilskuddProsent(40);
         avtale.setManedslonn(20000);
@@ -112,7 +112,7 @@ public class TestData {
         avtale.setOtpBelop(448);
         avtale.setSumLonnsutgifter(26070);
         avtale.setSumLonnstilskudd(15642);
-        avtale.setManedslonn100pst((avtale.getSumLonnsutgifter() * 100 / avtale.getStillingprosent()));
+        avtale.setManedslonn100pst((int) Math.round(avtale.getSumLonnsutgifter() * 100 / avtale.getStillingprosent()));
         return avtale;
     }
 
