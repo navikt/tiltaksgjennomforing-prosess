@@ -27,6 +27,7 @@ public class Avtale {
     private String veilederNavIdent;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate opprettet;
+    private Integer opprettetAar;
     private String deltakerFornavn;
     private String deltakerEtternavn;
     private String deltakerTlf;
@@ -49,6 +50,9 @@ public class Avtale {
     private Double mentorAntallTimer;
     private Integer mentorTimelonn;
     private String mentorFnr;
+    private String fadderFornavn;
+    private String fadderEtternavn;
+    private String fadderTlf;
 
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
     private String arbeidsgiverKontonummer;
