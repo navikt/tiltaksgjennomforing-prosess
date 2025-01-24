@@ -73,12 +73,12 @@ public class JournalpostJobbTest {
     @Test
     public void kallerIkkeJoarkMedEnAvtaleSomFeilet() {
 
-        Avtale okAvtale = TestData.opprettArbeidstreningAvtale();
+        Avtale okAvtale = TestData.opprettMentorAvtale();
         Journalpost okJournalpost = new Journalpost();
         okJournalpost.setEksternReferanseId(okAvtale.getAvtaleId().toString());
         okJournalpost.setAvtaleVersjon(okAvtale.getVersjon());
 
-        Avtale feiletAvt = TestData.opprettArbeidstreningAvtale();
+        Avtale feiletAvt = TestData.opprettMentorAvtale();
 
         Map<UUID, String> jorurnalførteAvtaler = new HashMap<>(2);
         jorurnalførteAvtaler.put(okAvtale.getAvtaleVersjonId(), JOURNALPOST_ID);

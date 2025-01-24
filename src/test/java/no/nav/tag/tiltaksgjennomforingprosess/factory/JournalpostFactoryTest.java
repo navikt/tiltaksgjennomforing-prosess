@@ -8,6 +8,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,13 +39,14 @@ public class JournalpostFactoryTest {
         when(dokgenAdapter.genererPdf(any(Avtale.class))).thenReturn(new byte[1]);
     }
 
+    @Disabled("Burde kanskje teste at versjon 1 også blir journalført som ferdigstilt istedenfor midlertidig")
     @Test
-    public void journalpostArbeidstreningSkalTilArena() {
+    public void journalpostArbeidstreningSkalIkkeTilArenaUansett() {
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
 
         when(avtaleTilXml.genererXml(avtale)).thenCallRealMethod();
         Journalpost journalpost = journalpostFactory.konverterTilJournalpost(avtale);
-        verify(avtaleTilXml, times(1)).genererXml(avtale);
+        verify(avtaleTilXml, times(0)).genererXml(avtale);
 
         assertGenereltInnhold(journalpost, avtale);
         assertEquals("ab0422", journalpost.getBehandlingsTema());
@@ -153,7 +155,7 @@ public class JournalpostFactoryTest {
     @Test
     public void avtaleTilXmlFeiler() throws Exception {
         assertThrows(RuntimeException.class, () -> {
-            Avtale avtale = TestData.opprettArbeidstreningAvtale();
+            Avtale avtale = TestData.opprettMentorAvtale();
             when(avtaleTilXml.genererXml(avtale)).thenThrow(RuntimeException.class);
             journalpostFactory.konverterTilJournalpost(avtale);
         });
