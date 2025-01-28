@@ -40,8 +40,8 @@ public class Avtale {
     private String veilederTlf;
     private String oppfolging;
     private String tilrettelegging;
-    private Integer stillingprosent;
-    private Integer antallDagerPerUke;
+    private BigDecimal stillingprosent;
+    private BigDecimal antallDagerPerUke;
     private String enhetOppfolging;
     private Integer versjon;
     private String mentorFornavn;
@@ -121,5 +121,3 @@ public class Avtale {
         return this.versjon > 1;
     }
 }
-
-
