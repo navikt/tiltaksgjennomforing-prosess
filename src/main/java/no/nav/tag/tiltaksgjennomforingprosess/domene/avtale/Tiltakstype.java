@@ -13,7 +13,7 @@ public enum Tiltakstype {
 
     // Sjekke hva som er riktig behandlingstema og brevkode
     SOMMERJOBB("Sommerjobb", "", "Avtale om sommerjobb", "tiltak-sommerjobb", false),
-    VTAO("vtao", "ab0418", "Avtale om varig tilrettelagt arbeid i ordinær virksomhet", "tiltak-vtao", true);
+    VTAO("vtao", "ab0418", "Avtale om varig tilrettelagt arbeid i ordinær virksomhet", "tiltak-vtao", false);
 
     private final String dokforTiltakskodeSkjema;
     private final String behandlingstema;
