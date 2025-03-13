@@ -13,6 +13,8 @@ prosess:
       passord: ${tiltaksgjennomforing.consumer.password}
     api:
       uri: http://tiltaksgjennomforing-api.arbeidsgiver/tiltaksgjennomforing-api
+    persondata:
+      uri: https://pdl-api.intern.nav.no/graphql
 
 
 
