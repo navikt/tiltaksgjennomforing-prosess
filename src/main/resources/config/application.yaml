@@ -18,6 +18,10 @@ spring:
   cache:
     type: caffeine
 
+no.nav.security.jwt:
+  client:
+    registration:
+
 prosess:
   cron:
   integrasjon:

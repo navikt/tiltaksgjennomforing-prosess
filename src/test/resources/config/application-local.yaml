@@ -9,6 +9,11 @@ spring:
   main:
     banner-mode: "console"
 
+no.nav.security.jwt:
+  issuer:
+  client:
+    registration:
+
 prosess:
   cron: "2/10 * * * * *"
   integrasjon:
