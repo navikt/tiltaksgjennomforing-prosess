@@ -20,6 +20,11 @@ spec:
     initialDelay: 30
   ingresses:
     - {{ingress}}
+  accessPolicy:
+    outbound:
+      rules:
+        - application: pdl-api
+          namespace: pdl
   vault:
     enabled: true
     paths:
