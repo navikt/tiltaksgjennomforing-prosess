@@ -33,6 +33,18 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- OIDC Support -->
+        <dependency>
+            <groupId>no.nav.security</groupId>
+            <artifactId>token-validation-spring</artifactId>
+            <version>4.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.security</groupId>
+            <artifactId>token-client-spring</artifactId>
+            <version>4.1.5</version>
+        </dependency>
+
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
