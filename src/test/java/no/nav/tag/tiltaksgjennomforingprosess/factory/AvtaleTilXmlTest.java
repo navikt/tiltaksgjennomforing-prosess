@@ -19,6 +19,19 @@ public class AvtaleTilXmlTest {
     private final static String ID_AVTALE = "72c365e7-177a-43ad-9d91-48c6479a6cf0";
 
     private AvtaleTilXml avtaleTilXml = new AvtaleTilXml();
+    @Test
+    public void lagerXmlAvArbeidstrening_skal_sladde_deltaker_info() {
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        avtale.setSkalSladdes(true);
+
+        avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
+        String xml = avtaleTilXml.genererXml(avtale);
+        assertGenerellInnhold(xml, avtale);
+        log.debug(xml);
+        assertTrue(xml.contains("<deltakerFornavn>***********</deltakerFornavn>"));
+        assertTrue(xml.contains("<deltakerEtternavn>***********</deltakerEtternavn>"));
+        assertTrue(xml.contains("<deltakerFnr>***********</deltakerFnr>"));
+    }
 
     @Test
     public void lagerXmlAvArbeidstrening() {
