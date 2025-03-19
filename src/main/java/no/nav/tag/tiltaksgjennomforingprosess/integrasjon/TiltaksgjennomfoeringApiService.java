@@ -85,7 +85,7 @@ public class TiltaksgjennomfoeringApiService {
             Map<String, Diskresjonskode> diskresjonskoder = persondataService.hentDiskresjonskoder(fnrDeltakere);
             avtaler.forEach(avtale -> avtale.setSkalSladdes(diskresjonskoder.get(avtale.getDeltakerFnr()).erKode6Eller7()));
         }catch (Exception e){
-            log.warn("Feil ved kommunikasjon mot PDL.");
+            log.error("Feil ved kommunikasjon mot PDL.", e);
             //TODO: Håndtere feil fra PDL ?????
         }
         return avtaler;
