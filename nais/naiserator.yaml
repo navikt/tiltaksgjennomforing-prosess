@@ -8,11 +8,10 @@ metadata:
 spec:
   image: {{image}}
   port: 8080
+  webproxy: true
   azure:
     application:
       enabled: true
-      allowAllUsers: true
-      tenant: nav.no
   replicas:
     min: 1
     max: 1
