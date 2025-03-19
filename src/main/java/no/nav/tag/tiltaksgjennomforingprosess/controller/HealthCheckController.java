@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.controller;
 
+import no.nav.security.token.support.core.api.Unprotected;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
+@Unprotected
 public class HealthCheckController {
 
     private final RestTemplate restTemplate;
