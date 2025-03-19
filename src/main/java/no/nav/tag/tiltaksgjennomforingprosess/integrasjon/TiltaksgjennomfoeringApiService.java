@@ -52,20 +52,18 @@ public class TiltaksgjennomfoeringApiService {
 
     public List<Avtale> finnAvtalerTilJournalfoering() {
         headers.setBearerAuth(stsService.hentToken());
-
         List<Avtale> avtaleList = Collections.emptyList();
         try {
             avtaleList = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
             }).getBody();
-            return sladdeKode6og7Avtaler(avtaleList);
         } catch (Exception e) {
             log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
             stsService.evict();
             headers.setBearerAuth(stsService.hentToken());
             avtaleList = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
             }).getBody();
-            return sladdeKode6og7Avtaler(avtaleList);
         }
+        return sladdeKode6og7Avtaler(avtaleList);
     }
 
     public void settAvtalerTilJournalfoert(Map<UUID, String> avtalerTilJournalfoert) {
