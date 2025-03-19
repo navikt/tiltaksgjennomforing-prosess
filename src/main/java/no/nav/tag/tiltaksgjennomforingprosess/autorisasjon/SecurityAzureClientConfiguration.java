@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.util.Arrays;
 
-@EnableOAuth2Client
+@EnableOAuth2Client(cacheEnabled = true)
 @Configuration
 @Slf4j
 public class SecurityAzureClientConfiguration {

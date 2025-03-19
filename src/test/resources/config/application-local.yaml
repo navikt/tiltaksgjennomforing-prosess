@@ -11,8 +11,13 @@ spring:
 
 no.nav.security.jwt:
   issuer:
-  client:
-    registration:
+    aad:
+      discoveryurl: https://tiltak-fakelogin.ekstern.dev.nav.no/metadata?issuer=aad
+      accepted_audience: fake-aad
+    tokenx:
+      discoveryurl: https://tiltak-fakelogin.ekstern.dev.nav.no/metadata?issuer=tokenx
+      accepted_audience: fake-tokenx
+  client: null
 
 prosess:
   cron: "2/10 * * * * *"
