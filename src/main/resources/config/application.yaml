@@ -56,7 +56,7 @@ prosess:
     tiltaksgjennomforing:
       uri: url
     dokgen:
-      uri: http://tiltak-dokgen/template/tiltak-avtale/create-pdf
+      uri: http://tiltak-dokgen.arbeidsgiver.svc.nais.local/template/tiltak-avtale/create-pdf
     pilot:
       pilotvirksomheter: ${tiltaksgjennomforing.pilot.pilotvirksomheter}
       pilotenheter: ${tiltaksgjennomforing.pilot.pilotenheter}
