@@ -52,12 +52,12 @@ public class TiltaksgjennomfoeringApiService {
 
     public List<Avtale> finnAvtalerTilJournalfoering() {
         headers.setBearerAuth(stsService.hentToken());
-        List<Avtale> avtaleList = Collections.emptyList();
+        List<Avtale> avtaleList;
         try {
             avtaleList = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
             }).getBody();
         } catch (Exception e) {
-            log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
+            log.warn("Feil ved kommunikasjon mot avtale-API ved get ({}). Henter nytt sts-token og forsøker igjen", e.getMessage());
             stsService.evict();
             headers.setBearerAuth(stsService.hentToken());
             avtaleList = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
@@ -72,7 +72,7 @@ public class TiltaksgjennomfoeringApiService {
         try {
             restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);
         } catch (Exception e) {
-            log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
+            log.warn("Feil ved kommunikasjon mot avtale-API ved put ({}).  Henter nytt sts-token og forsøker igjen", e.getMessage());
             stsService.evict();
             headers.setBearerAuth(stsService.hentToken());
             restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);
@@ -80,14 +80,9 @@ public class TiltaksgjennomfoeringApiService {
     }
 
     public List<Avtale> sladdeKode6og7Avtaler(List<Avtale> avtaler){
-        try{
-            Set<String> fnrDeltakere = avtaler.stream().map(Avtale::getDeltakerFnr).collect(Collectors.toSet());
-            Map<String, Diskresjonskode> diskresjonskoder = persondataService.hentDiskresjonskoder(fnrDeltakere);
-            avtaler.forEach(avtale -> avtale.setSkalSladdes(diskresjonskoder.get(avtale.getDeltakerFnr()).erKode6Eller7()));
-        }catch (Exception e){
-            log.error("Feil ved kommunikasjon mot PDL.", e);
-            //TODO: Håndtere feil fra PDL ?????
-        }
+        Set<String> fnrDeltakere = avtaler.stream().map(Avtale::getDeltakerFnr).collect(Collectors.toSet());
+        Map<String, Diskresjonskode> diskresjonskoder = persondataService.hentDiskresjonskoder(fnrDeltakere);
+        avtaler.forEach(avtale -> avtale.setSkalSladdes(diskresjonskoder.get(avtale.getDeltakerFnr()).erKode6Eller7()));
         return avtaler;
     }
 
