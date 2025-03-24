@@ -1,5 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess.controller;
 
+import lombok.extern.slf4j.Slf4j;
+import no.nav.security.token.support.core.api.Unprotected;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
+@Unprotected
+@Slf4j
 public class HealthCheckController {
 
     private final RestTemplate restTemplate;
@@ -34,6 +38,7 @@ public class HealthCheckController {
         try {
             ping = restTemplate.getForObject(uri, String.class);
         } catch (Throwable t) {
+            log.error("PING KALL TIL TILTAKSGJENNOMFORING FEILET",t);
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, API_FEIL);
         }
 

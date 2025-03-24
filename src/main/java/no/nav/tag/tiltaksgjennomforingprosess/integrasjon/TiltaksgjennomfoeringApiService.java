@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
+import no.nav.tag.tiltaksgjennomforingprosess.persondata.Diskresjonskode;
+import no.nav.tag.tiltaksgjennomforingprosess.persondata.PersondataService;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -16,10 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,6 +33,9 @@ public class TiltaksgjennomfoeringApiService {
 
     @Autowired
     private StsService stsService;
+
+    @Autowired
+    private PersondataService persondataService;
 
     static final String PATH = "/internal/avtaler";
     private URI uri;
@@ -49,16 +52,18 @@ public class TiltaksgjennomfoeringApiService {
 
     public List<Avtale> finnAvtalerTilJournalfoering() {
         headers.setBearerAuth(stsService.hentToken());
+        List<Avtale> avtaleList;
         try {
-            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
+            avtaleList = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
             }).getBody();
         } catch (Exception e) {
-            log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
+            log.warn("Feil ved kommunikasjon mot avtale-API ved get ({}). Henter nytt sts-token og forsøker igjen", e.getMessage());
             stsService.evict();
             headers.setBearerAuth(stsService.hentToken());
-            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
+            avtaleList = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<List<Avtale>>() {
             }).getBody();
         }
+        return sladdeKode6og7Avtaler(avtaleList);
     }
 
     public void settAvtalerTilJournalfoert(Map<UUID, String> avtalerTilJournalfoert) {
@@ -67,11 +72,23 @@ public class TiltaksgjennomfoeringApiService {
         try {
             restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);
         } catch (Exception e) {
-            log.warn("Feil ved kommunikasjon mot avtale-API. Henter nytt sts-token og forsøker igjen");
+            log.warn("Feil ved kommunikasjon mot avtale-API ved put ({}).  Henter nytt sts-token og forsøker igjen", e.getMessage());
             stsService.evict();
             headers.setBearerAuth(stsService.hentToken());
             restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<>(avtalerTilJournalfoert, headers), Void.class);
         }
+    }
+
+    public List<Avtale> sladdeKode6og7Avtaler(List<Avtale> avtaler){
+        Set<String> fnrDeltakere = avtaler.stream().map(Avtale::getDeltakerFnr).collect(Collectors.toSet());
+        Map<String, Diskresjonskode> diskresjonskoder = persondataService.hentDiskresjonskoder(fnrDeltakere);
+        avtaler.forEach(avtale -> {
+            var diskresjonskode = diskresjonskoder.get(avtale.getDeltakerFnr());
+            if (diskresjonskode != null) {
+                avtale.setSkalSladdes(diskresjonskode.erKode6Eller7());
+            }
+        });
+        return avtaler;
     }
 
     private void debugApiKall(Map<UUID, String> avtalerTilJournalfoert) {
