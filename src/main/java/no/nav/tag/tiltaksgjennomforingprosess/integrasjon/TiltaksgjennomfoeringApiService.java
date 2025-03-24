@@ -82,7 +82,12 @@ public class TiltaksgjennomfoeringApiService {
     public List<Avtale> sladdeKode6og7Avtaler(List<Avtale> avtaler){
         Set<String> fnrDeltakere = avtaler.stream().map(Avtale::getDeltakerFnr).collect(Collectors.toSet());
         Map<String, Diskresjonskode> diskresjonskoder = persondataService.hentDiskresjonskoder(fnrDeltakere);
-        avtaler.forEach(avtale -> avtale.setSkalSladdes(diskresjonskoder.get(avtale.getDeltakerFnr()).erKode6Eller7()));
+        avtaler.forEach(avtale -> {
+            var diskresjonskode = diskresjonskoder.get(avtale.getDeltakerFnr());
+            if (diskresjonskode != null) {
+                avtale.setSkalSladdes(diskresjonskode.erKode6Eller7());
+            }
+        });
         return avtaler;
     }
 
