@@ -1,23 +1,25 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
+import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
-
+import no.nav.tag.tiltaksgjennomforingprosess.persondata.Diskresjonskode;
+import no.nav.tag.tiltaksgjennomforingprosess.persondata.PersondataService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("local")
@@ -26,6 +28,9 @@ public class TiltaksgjennomforingApiIntTest {
 
     @Autowired
     private TiltaksgjennomfoeringApiService service;
+
+    @MockBean
+    private PersondataService persondataService;
 
     @Test
     public void setterAvtalerTilJournalfoert() {
@@ -43,7 +48,13 @@ public class TiltaksgjennomforingApiIntTest {
 
     @Test
     public void henterAvtalerTilJournalfoering() {
+        Avtale testAvtale = TestData.opprettArbeidstreningAvtale();
         List<Avtale> avtaleList;
+        Set<String> deltakerFnr = Set.of(testAvtale.getDeltakerFnr());
+        when(persondataService.hentDiskresjonskoder(eq(deltakerFnr))).thenReturn(Map.of(
+                testAvtale.getDeltakerFnr(), Diskresjonskode.UGRADERT)
+        );
+
         avtaleList = service.finnAvtalerTilJournalfoering();
         Avtale avtale = avtaleList.stream()
                 .filter(avt -> avt.getTiltakstype().equals(Tiltakstype.ARBEIDSTRENING))
