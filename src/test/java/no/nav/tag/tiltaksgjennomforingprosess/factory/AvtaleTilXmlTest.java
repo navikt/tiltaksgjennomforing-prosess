@@ -22,7 +22,7 @@ public class AvtaleTilXmlTest {
     @Test
     public void lagerXmlAvArbeidstrening_skal_sladde_deltaker_info() {
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
-        avtale.setSkalSladdes(true);
+        avtale.utføreSladdingAvFelter();
 
         avtale.setAvtaleId(UUID.fromString(ID_AVTALE));
         String xml = avtaleTilXml.genererXml(avtale);

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,10 +26,17 @@ public class PersondataService {
             throw new IllegalArgumentException("Kan ikke hente diskresjonkode for mer enn 1000 om gangen");
         }
 
-        return persondataClient.hentPersonBolk(fnrSet)
-            .utledDiskresjonskoder(fnrSet)
-            .entrySet()
-            .stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().orElse(Diskresjonskode.UGRADERT)));
+        Map<String, Optional<Diskresjonskode>> diskresjonskodeOptFraPdl = persondataClient
+                .hentPersonBolk(fnrSet)
+                .utledDiskresjonskoder(fnrSet);
+
+        Map<String, Diskresjonskode> diskresjonskodeFraPdl = diskresjonskodeOptFraPdl.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().orElse(Diskresjonskode.UGRADERT)
+                ));
+
+        return diskresjonskodeFraPdl;
     }
 }
