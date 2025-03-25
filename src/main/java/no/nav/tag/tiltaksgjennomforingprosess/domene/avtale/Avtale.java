@@ -72,9 +72,6 @@ public class Avtale {
     private List<TilskuddsPeriode> tilskuddsPerioder = new ArrayList<>();
     private Boolean harFamilietilknytning;
     private String familietilknytningForklaring;
-    @ToString.Exclude
-    private boolean skalSladdes = false;
-
 
     // Inkluderingstilskudd
     private List<Inkluderingstilskuddsutgift> inkluderingstilskuddsutgift = new ArrayList<>();
@@ -124,13 +121,10 @@ public class Avtale {
         return this.versjon > 1;
     }
 
-    public void setSkalSladdes(boolean skalSladdes) {
-        this.skalSladdes = skalSladdes;
-        if (skalSladdes) {
-            this.deltakerFnr = "***********";
-            this.deltakerTlf = "***********";
-            this.deltakerEtternavn = "***********";
-            this.deltakerFornavn = "***********";
-        }
+    public void utføreSladdingAvFelter() {
+        this.deltakerFnr = "***********";
+        this.deltakerTlf = "***********";
+        this.deltakerEtternavn = "***********";
+        this.deltakerFornavn = "***********";
     }
 }

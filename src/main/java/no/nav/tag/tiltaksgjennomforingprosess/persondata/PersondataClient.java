@@ -1,7 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.persondata;
 
 import lombok.extern.slf4j.Slf4j;
-import no.nav.tag.tiltaksgjennomforingprosess.persondata.cache.PDLCacheConfig;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.domene.PdlRequest;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.domene.PdlRespons;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.domene.PdlResponsBolk;
@@ -53,7 +52,6 @@ public class PersondataClient {
         }
     }
 
-    @Cacheable(PDLCacheConfig.PDL_CACHE)
     public PdlRespons hentPersondata(String fnr) {
         try {
             PdlRequest<PdlRequest.Varaibles> pdlRequest = new PdlRequest<>(
