@@ -17,12 +17,8 @@ public class PersondataServiceTest {
     private static final String STRENGT_FORTROLIG_PERSON = "16053900422";
     private static final String STRENGT_FORTROLIG_UTLAND_PERSON = "28033114267";
     private static final String FORTROLIG_PERSON = "26067114433";
-    private static final String UGRADERT_PERSON = "00000000000";
-    private static final String UGRADERT_PERSON_TOM_RESPONSE = "27030960020";
-    private static final String USPESIFISERT_GRADERT_PERSON = "18076641842";
-    private static final String PERSON_FINNES_IKKE = "24080687881";
-    private static final String PERSON_FOR_RESPONS_UTEN_DATA = "23097010706";
-    private static final String DONALD_DUCK = "00000000000";
+    private static final String UGRADERT_PERSON = "08120689976";
+    private static final String ANNET = "23097010706";
     @Autowired
     private PersondataService persondataService;
 
@@ -30,7 +26,9 @@ public class PersondataServiceTest {
     private static final Map<String, Diskresjonskode> forventetSvar = Map.of(
             STRENGT_FORTROLIG_PERSON, Diskresjonskode.STRENGT_FORTROLIG,
             STRENGT_FORTROLIG_UTLAND_PERSON, Diskresjonskode.STRENGT_FORTROLIG_UTLAND,
-            FORTROLIG_PERSON, Diskresjonskode.FORTROLIG);
+            FORTROLIG_PERSON, Diskresjonskode.FORTROLIG,
+            UGRADERT_PERSON, Diskresjonskode.UGRADERT,
+            ANNET, Diskresjonskode.UGRADERT);
 
 
     @Test
