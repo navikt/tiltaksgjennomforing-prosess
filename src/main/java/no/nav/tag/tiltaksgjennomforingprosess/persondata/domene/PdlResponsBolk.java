@@ -2,10 +2,7 @@ package no.nav.tag.tiltaksgjennomforingprosess.persondata.domene;
 
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.Diskresjonskode;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public record PdlResponsBolk(Data data) {
@@ -16,7 +13,7 @@ public record PdlResponsBolk(Data data) {
             .filter(HentPersonBolk::isOk)
             .flatMap(person -> person.person().folkeregisteridentifikator().stream().map(a -> Map.entry(
                 a.identifikasjonsnummer(),
-                PdlRespons.utledAdressebeskyttelse(person.person()).map(Adressebeskyttelse::getGradering)
+                utledAdressebeskyttelse(person.person()).map(Adressebeskyttelse::getGradering)
             )))
             .collect(Collectors.toMap(
                 Map.Entry::getKey,
@@ -28,5 +25,13 @@ public record PdlResponsBolk(Data data) {
             fnr -> fnr,
             fnr -> diskresjonskodeMap.getOrDefault(fnr, Optional.empty())
         ));
+    }
+
+    public static Optional<Adressebeskyttelse> utledAdressebeskyttelse(HentPerson hentPerson) {
+        try {
+            return Optional.of(hentPerson.adressebeskyttelse().getFirst());
+        } catch (NullPointerException | NoSuchElementException e) {
+            return Optional.empty();
+        }
     }
 }

@@ -26,9 +26,9 @@
         "bodyPatterns": [
           {
             "equalToJson": {
-              "query": "query($ident: ID!) { hentPerson(ident: $ident) { navn { fornavn mellomnavn etternavn } adressebeskyttelse { gradering } } hentIdenter(ident: $ident, grupper: [AKTORID]) { identer { ident gruppe historisk } } hentGeografiskTilknytning(ident: $ident){ gtType gtKommune gtBydel gtLand regel } } ",
-              "variables": {
-                "ident": "16053900422"
+              "query" : "query($identer: [ID!]!) { hentPersonBolk(identer: $identer) { ident, person { adressebeskyttelse { gradering } folkeregisteridentifikator { identifikasjonsnummer status type } }, code } } ",
+              "variables" : {
+                "identer" : [ "28033114267", "16053900422", "26067114433"]
               }
             }
           }
@@ -36,11 +36,65 @@
       },
       "response": {
         "status": 200,
-        "body": "{\"data\": {\"hentPerson\": {\"adressebeskyttelse\": [{\"gradering\": \"STRENGT_FORTROLIG\"}]}}}",
+        "body": {
+            "hentPersonBolk": [
+              {
+                "ident": "28033114267",
+                "person": {
+                  "navn": [
+                    {
+                      "fornavn": "Ola",
+                      "mellomnavn": null,
+                      "etternavn": "Normann"
+                    }
+                  ],
+                  "adressebeskyttelse": [
+                    {
+                      "gradering": "STRENGT_FORTROLIG_UTLAND"
+                    }
+                  ]
+                }
+              },
+              {
+                "ident": "16053900422",
+                "person": {
+                  "navn": [
+                    {
+                      "fornavn": "Ola",
+                      "mellomnavn": null,
+                      "etternavn": "Normann"
+                    }
+                  ],
+                  "adressebeskyttelse": [
+                    {
+                      "gradering": "STRENGT_FORTROLIG_PERSON"
+                    }
+                  ]
+                }
+              },
+              {
+                "ident": "26067114433",
+                "person": {
+                  "navn": [
+                    {
+                      "fornavn": "Ola",
+                      "mellomnavn": null,
+                      "etternavn": "Normann"
+                    }
+                  ],
+                  "adressebeskyttelse": [
+                    {
+                      "gradering": "STRENGT_FORTROLIG_PERSON"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
         "headers": {
           "Content-Type": "application/json"
         }
-      }
     },
     {
       "request": {

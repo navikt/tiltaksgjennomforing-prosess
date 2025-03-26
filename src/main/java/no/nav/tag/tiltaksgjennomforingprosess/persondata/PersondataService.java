@@ -17,10 +17,6 @@ public class PersondataService {
         this.persondataClient = persondataClient;
     }
 
-    public Diskresjonskode hentDiskresjonskode(String fnr) {
-        return persondataClient.hentPersondata(fnr).utledDiskresjonskodeEllerUgradert();
-    }
-
     public Map<String, Diskresjonskode> hentDiskresjonskoder(Set<String> fnrSet) {
         if (fnrSet.size() > 1000) {
             throw new IllegalArgumentException("Kan ikke hente diskresjonkode for mer enn 1000 om gangen");
