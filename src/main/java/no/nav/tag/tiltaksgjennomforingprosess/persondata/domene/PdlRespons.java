@@ -12,37 +12,6 @@ public record PdlRespons(Data data) {
         HentGeografiskTilknytning hentGeografiskTilknytning
     ) { }
 
-    public Optional<String> utledGeoLokasjon() {
-        try {
-            return Optional.of(data().hentGeografiskTilknytning().getGeoTilknytning());
-        } catch (NullPointerException | NoSuchElementException e) {
-            return Optional.empty();
-        }
-    }
-
-    public Optional<String> utledGjeldendeIdent() {
-        try {
-            return data().hentIdenter().identer().stream()
-                .filter(i -> !i.isHistorisk())
-                .map(Identer::getIdent)
-                .findFirst();
-        } catch (NullPointerException | NoSuchElementException e) {
-            return Optional.empty();
-        }
-    }
-
-    public Navn utledNavnEllerTomtNavn() {
-        return utledNavn().orElse(Navn.TOMT_NAVN);
-    }
-
-    public Optional<Navn> utledNavn() {
-        try {
-            return Optional.of(data().hentPerson().navn().getFirst());
-        } catch (NullPointerException | NoSuchElementException e) {
-            return Optional.empty();
-        }
-    }
-
     public Diskresjonskode utledDiskresjonskodeEllerUgradert() {
         return utledDiskresjonskode().orElse(Diskresjonskode.UGRADERT);
     }
