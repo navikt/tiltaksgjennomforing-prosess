@@ -121,7 +121,7 @@ public class Avtale {
         return this.versjon > 1;
     }
 
-    public void utføreSladdingAvFelter() {
+    public void utførSladdingAvFelter() {
         this.deltakerFnr = "***********";
         this.deltakerTlf = "***********";
         this.deltakerEtternavn = "***********";

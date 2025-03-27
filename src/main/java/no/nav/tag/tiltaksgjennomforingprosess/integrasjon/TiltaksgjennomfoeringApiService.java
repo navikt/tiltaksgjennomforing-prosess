@@ -85,7 +85,7 @@ public class TiltaksgjennomfoeringApiService {
         avtaler.forEach(avtale -> {
             var diskresjonskode = diskresjonskoder.get(avtale.getDeltakerFnr());
             if (diskresjonskode != null && diskresjonskode.erKode6Eller7()) {
-                avtale.utføreSladdingAvFelter();
+                avtale.utførSladdingAvFelter();
             }
         });
         return avtaler;
