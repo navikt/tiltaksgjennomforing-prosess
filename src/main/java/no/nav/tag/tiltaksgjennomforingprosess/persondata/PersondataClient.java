@@ -9,7 +9,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class PersondataClient {
                 new PdlRequest.BolkVariables(new ArrayList<>(fnr))
             );
             return azureRestTemplate.postForObject(persondataProperties.getUri(), createRequestEntity(pdlRequest), PdlResponsBolk.class);
-        } catch (RestClientException exception) {
+        } catch (Exception exception) {
             log.error("Feil fra PDL med request-url: {}", persondataProperties.getUri(), exception);
             throw exception;
         }
