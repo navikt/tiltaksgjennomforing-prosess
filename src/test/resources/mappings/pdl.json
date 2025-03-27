@@ -3,19 +3,6 @@
     {
       "request": {
         "method": "POST",
-        "urlPath": "/persondata"
-      },
-      "response": {
-        "status": 200,
-        "body": "{\"errors\": [{\"message\": \"Fant ikke person\", \"locations\": [{\"line\": 1, \"column\": 8}], \"path\": [\"hentPerson\"], \"extensions\": {\"code\": \"not_found\", \"classification\": \"ExecutionAborted\"}}], \"data\": {\"hentPerson\": null}}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "POST",
         "urlPath": "/persondata",
         "headers": {
           "Content-Type": {
@@ -25,10 +12,17 @@
         },
         "bodyPatterns": [
           {
+            "ignoreArrayOrder": true,
             "equalToJson": {
-              "query": "query($ident: ID!) { hentPerson(ident: $ident) { navn { fornavn mellomnavn etternavn } adressebeskyttelse { gradering } } hentIdenter(ident: $ident, grupper: [AKTORID]) { identer { ident gruppe historisk } } hentGeografiskTilknytning(ident: $ident){ gtType gtKommune gtBydel gtLand regel } } ",
+              "query": "query($identer: [ID!]!) { hentPersonBolk(identer: $identer) { ident, person { adressebeskyttelse { gradering } folkeregisteridentifikator { identifikasjonsnummer status type } }, code } } ",
               "variables": {
-                "ident": "16053900422"
+                "identer": [
+                  "28033114267",
+                  "16053900422",
+                  "26067114433",
+                  "08120689976",
+                  "23097010706"
+                ]
               }
             }
           }
@@ -36,180 +30,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\"data\": {\"hentPerson\": {\"adressebeskyttelse\": [{\"gradering\": \"STRENGT_FORTROLIG\"}]}}}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "POST",
-        "urlPath": "/persondata",
-        "headers": {
-          "Content-Type": {
-            "equalTo": "application/json",
-            "caseInsensitive": true
-          }
-        },
-        "bodyPatterns": [
-          {
-            "equalToJson": {
-              "query": "query($ident: ID!) { hentPerson(ident: $ident) { navn { fornavn mellomnavn etternavn } adressebeskyttelse { gradering } } hentIdenter(ident: $ident, grupper: [AKTORID]) { identer { ident gruppe historisk } } hentGeografiskTilknytning(ident: $ident){ gtType gtKommune gtBydel gtLand regel } } ",
-              "variables": {
-                "ident": "28033114267"
-              }
-            }
-          }
-        ]
-      },
-      "response": {
-        "status": 200,
-        "body": "{\"data\": {\"hentPerson\": {\"adressebeskyttelse\": [{\"gradering\": \"STRENGT_FORTROLIG_UTLAND\"}]}}}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "POST",
-        "urlPath": "/persondata",
-        "headers": {
-          "Content-Type": {
-            "equalTo": "application/json",
-            "caseInsensitive": true
-          }
-        },
-        "bodyPatterns": [
-          {
-            "equalToJson": {
-              "query": "query($ident: ID!) { hentPerson(ident: $ident) { navn { fornavn mellomnavn etternavn } adressebeskyttelse { gradering } } hentIdenter(ident: $ident, grupper: [AKTORID]) { identer { ident gruppe historisk } } hentGeografiskTilknytning(ident: $ident){ gtType gtKommune gtBydel gtLand regel } } ",
-              "variables": {
-                "ident": "26067114433"
-              }
-            }
-          }
-        ]
-      },
-      "response": {
-        "status": 200,
-        "body": "{\"data\": {\"hentPerson\": {\"adressebeskyttelse\": [{\"gradering\": \"FORTROLIG\"}]}}}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "POST",
-        "urlPath": "/persondata",
-        "headers": {
-          "Content-Type": {
-            "equalTo": "application/json",
-            "caseInsensitive": true
-          }
-        },
-        "bodyPatterns": [
-          {
-            "equalToJson": {
-              "query": "query($ident: ID!) { hentPerson(ident: $ident) { navn { fornavn mellomnavn etternavn } adressebeskyttelse { gradering } } hentIdenter(ident: $ident, grupper: [AKTORID]) { identer { ident gruppe historisk } } hentGeografiskTilknytning(ident: $ident){ gtType gtKommune gtBydel gtLand regel } } ",
-              "variables": {
-                "ident": "18076641842"
-              }
-            }
-          }
-        ]
-      },
-      "response": {
-        "status": 200,
-        "body": "{\"data\": {\"hentPerson\": {\"adressebeskyttelse\": [{\"gradering\": \"\"}]}}}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "POST",
-        "urlPath": "/persondata",
-        "headers": {
-          "Content-Type": {
-            "equalTo": "application/json",
-            "caseInsensitive": true
-          }
-        },
-        "bodyPatterns": [
-          {
-            "equalToJson": {
-              "query": "query($ident: ID!) { hentPerson(ident: $ident) { navn { fornavn mellomnavn etternavn } adressebeskyttelse { gradering } } hentIdenter(ident: $ident, grupper: [AKTORID]) { identer { ident gruppe historisk } } hentGeografiskTilknytning(ident: $ident){ gtType gtKommune gtBydel gtLand regel } } ",
-              "variables": {
-                "ident": "23097010706"
-              }
-            }
-          }
-        ]
-      },
-      "response": {
-        "status": 200,
-        "body": "{\"errors\": [{\"message\": \"Fant ikke person\", \"locations\": [{\"line\": 1, \"column\": 8}], \"path\": [\"hentPerson\"], \"extensions\": {\"code\": \"not_found\", \"classification\": \"ExecutionAborted\"}}]}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "POST",
-        "urlPath": "/persondata",
-        "headers": {
-          "Content-Type": {
-            "equalTo": "application/json"
-          }
-        },
-        "bodyPatterns": [
-          {
-            "equalToJson": {
-              "query": "query($ident: ID!) { hentPerson(ident: $ident) { navn { fornavn mellomnavn etternavn } adressebeskyttelse { gradering } } hentIdenter(ident: $ident, grupper: [AKTORID]) { identer { ident gruppe historisk } } hentGeografiskTilknytning(ident: $ident){ gtType gtKommune gtBydel gtLand regel } } ",
-              "variables": {
-                "ident": "00000000000"
-              }
-            }
-          }
-        ]
-      },
-      "response": {
-        "status": 200,
-        "body": "{\"data\":{\"hentPerson\":{\"navn\":[{\"fornavn\":\"Donald\",\"etternavn\":\"Duck\"}]},\"hentGeografiskTilknytning\":{\"gtType\":\"BYDEL\",\"gtKommune\":null,\"gtBydel\":\"030104\",\"gtLand\":null,\"regel\":\"3\"}}}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "POST",
-        "urlPath": "/persondata",
-        "headers": {
-          "Content-Type": {
-            "equalTo": "application/json",
-            "caseInsensitive": true
-          }
-        },
-        "bodyPatterns": [
-          {
-            "equalToJson": {
-              "query": "query($ident: ID!) { hentPerson(ident: $ident) { navn { fornavn mellomnavn etternavn } adressebeskyttelse { gradering } } hentIdenter(ident: $ident, grupper: [AKTORID]) { identer { ident gruppe historisk } } hentGeografiskTilknytning(ident: $ident){ gtType gtKommune gtBydel gtLand regel } } ",
-              "variables": {
-                "ident": "00000000000"
-              }
-            }
-          }
-        ]
-      },
-      "response": {
-        "status": 200,
-        "body": "{\"data\":{\"hentPerson\":{\"adressebeskyttelse\": [{\"gradering\": \"UGRADERT\"}], \"navn\":[{\"fornavn\":\"Donald\",\"etternavn\":\"Duck\"}]},\"hentGeografiskTilknytning\":{\"gtType\":\"BYDEL\",\"gtKommune\":null,\"gtBydel\":\"030104\",\"gtLand\":null,\"regel\":\"3\"}},\"hentIdenter\": { \"identer\": [{ \"ident\": \"2135315926224\", \"gruppe\": \"AKTORID\", \"historisk\": false }]}}",
+        "body": "{\n    \"data\": {\n        \"hentPersonBolk\": [\n            {\n                \"ident\": \"28033114267\",\n                \"code\": \"ok\",\n                \"person\": {\n                    \"adressebeskyttelse\": [\n                        {\n                            \"gradering\": \"STRENGT_FORTROLIG_UTLAND\"\n                        }\n                    ],\n                    \"folkeregisteridentifikator\": [\n                        {\n                            \"identifikasjonsnummer\": \"28033114267\",\n                            \"status\": \"BOSA\",\n                            \"type\": \"FNR\"\n                        }\n                    ]\n                }\n            },\n            {\n                \"ident\": \"16053900422\",\n                \"code\": \"ok\",\n                \"person\": {\n                    \"adressebeskyttelse\": [\n                        {\n                            \"gradering\": \"STRENGT_FORTROLIG\"\n                        }\n                    ],\n                    \"folkeregisteridentifikator\": [\n                        {\n                            \"identifikasjonsnummer\": \"16053900422\",\n                            \"status\": \"BOSA\",\n                            \"type\": \"FNR\"\n                        }\n                    ]\n                }\n            },\n            {\n                \"ident\": \"26067114433\",\n                \"code\": \"ok\",\n                \"person\": {\n                    \"adressebeskyttelse\": [\n                        {\n                            \"gradering\": \"FORTROLIG\"\n                        }\n                    ],\n                    \"folkeregisteridentifikator\": [\n                        {\n                            \"identifikasjonsnummer\": \"26067114433\",\n                            \"status\": \"BOSA\",\n                            \"type\": \"FNR\"\n                        }\n                    ]\n                }\n            },\n          {\n                \"ident\": \"08120689976\",\n                \"code\": \"ok\",\n                \"person\": {\n                    \"adressebeskyttelse\": [\n                        {\n                            \"gradering\": \"UGRADERT\"\n                        }\n                    ],\n                    \"folkeregisteridentifikator\": [\n                        {\n                            \"identifikasjonsnummer\": \"08120689976\",\n                            \"status\": \"BOSA\",\n                            \"type\": \"FNR\"\n                        }\n                    ]\n                }\n            },\n {\n                \"ident\": \"23097010706\",\n                \"code\": \"ok\",\n                \"person\": {\n                    \"adressebeskyttelse\": [\n                        {\n                            \"gradering\": \"UGRADERT_PERSON_TOM_RESPONSE\"\n                        }\n                    ],\n                    \"folkeregisteridentifikator\": [\n                        {\n                            \"identifikasjonsnummer\": \"27030960020\",\n                            \"status\": \"BOSA\",\n                            \"type\": \"FNR\"\n                        }\n                    ]\n                }\n            }\n\n        ]\n    }\n}",
         "headers": {
           "Content-Type": "application/json"
         }

@@ -84,8 +84,8 @@ public class TiltaksgjennomfoeringApiService {
         Map<String, Diskresjonskode> diskresjonskoder = persondataService.hentDiskresjonskoder(fnrDeltakere);
         avtaler.forEach(avtale -> {
             var diskresjonskode = diskresjonskoder.get(avtale.getDeltakerFnr());
-            if (diskresjonskode != null) {
-                avtale.setSkalSladdes(diskresjonskode.erKode6Eller7());
+            if (diskresjonskode != null && diskresjonskode.erKode6Eller7()) {
+                avtale.utførSladdingAvFelter();
             }
         });
         return avtaler;

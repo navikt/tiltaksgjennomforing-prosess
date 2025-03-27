@@ -3,7 +3,6 @@ package no.nav.tag.tiltaksgjennomforingprosess.controller;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.security.token.support.core.api.Unprotected;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

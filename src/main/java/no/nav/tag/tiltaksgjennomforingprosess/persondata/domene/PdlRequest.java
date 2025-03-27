@@ -10,7 +10,6 @@ import java.util.List;
 
 @Value
 public class PdlRequest<V> {
-    public record Varaibles(String ident) {}
     public record BolkVariables(List<String> identer) {}
 
     private final String query;

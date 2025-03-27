@@ -1,18 +1,14 @@
 package no.nav.tag.tiltaksgjennomforingprosess.persondata;
 
 import lombok.extern.slf4j.Slf4j;
-import no.nav.tag.tiltaksgjennomforingprosess.persondata.cache.PDLCacheConfig;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.domene.PdlRequest;
-import no.nav.tag.tiltaksgjennomforingprosess.persondata.domene.PdlRespons;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.domene.PdlResponsBolk;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -47,21 +43,7 @@ public class PersondataClient {
                 new PdlRequest.BolkVariables(new ArrayList<>(fnr))
             );
             return azureRestTemplate.postForObject(persondataProperties.getUri(), createRequestEntity(pdlRequest), PdlResponsBolk.class);
-        } catch (RestClientException exception) {
-            log.error("Feil fra PDL med request-url: {}", persondataProperties.getUri(), exception);
-            throw exception;
-        }
-    }
-
-    @Cacheable(PDLCacheConfig.PDL_CACHE)
-    public PdlRespons hentPersondata(String fnr) {
-        try {
-            PdlRequest<PdlRequest.Varaibles> pdlRequest = new PdlRequest<>(
-                persondataQueryResource,
-                new PdlRequest.Varaibles(fnr)
-            );
-            return azureRestTemplate.postForObject(persondataProperties.getUri(), createRequestEntity(pdlRequest), PdlRespons.class);
-        } catch (RestClientException exception) {
+        } catch (Exception exception) {
             log.error("Feil fra PDL med request-url: {}", persondataProperties.getUri(), exception);
             throw exception;
         }
