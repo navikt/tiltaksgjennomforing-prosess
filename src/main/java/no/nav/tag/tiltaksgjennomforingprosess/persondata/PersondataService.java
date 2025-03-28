@@ -19,7 +19,7 @@ public class PersondataService {
     }
 
     public Map<String, Diskresjonskode> hentDiskresjonskoder(Set<String> fnrSet) {
-        if(fnrSet.isEmpty()) {
+        if (fnrSet.isEmpty()) {
             return Collections.emptyMap();
         }
 
