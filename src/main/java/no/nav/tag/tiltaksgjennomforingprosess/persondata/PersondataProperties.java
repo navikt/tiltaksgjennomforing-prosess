@@ -10,5 +10,5 @@ import java.net.URI;
 @Component
 @ConfigurationProperties(prefix = "prosess.integrasjon.persondata")
 public class PersondataProperties {
-    private URI uri;
+    private String uri;
 }

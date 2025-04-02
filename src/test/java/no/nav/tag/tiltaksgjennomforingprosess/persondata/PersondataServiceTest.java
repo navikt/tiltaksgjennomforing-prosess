@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.persondata;
 
+import no.nav.team_tiltak.felles.persondata.pdl.domene.Diskresjonskode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

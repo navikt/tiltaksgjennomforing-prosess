@@ -2,9 +2,9 @@ package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.persondata.Diskresjonskode;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.PersondataService;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
+import no.nav.team_tiltak.felles.persondata.pdl.domene.Diskresjonskode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
