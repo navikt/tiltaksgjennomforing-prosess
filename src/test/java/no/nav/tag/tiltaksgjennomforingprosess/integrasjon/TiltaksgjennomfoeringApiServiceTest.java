@@ -2,9 +2,10 @@ package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
 import no.nav.tag.tiltaksgjennomforingprosess.TestData;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.persondata.Diskresjonskode;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.PersondataService;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
+import no.nav.team_tiltak.felles.persondata.pdl.domene.Diskresjonskode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,21 +46,28 @@ public class TiltaksgjennomfoeringApiServiceTest {
     @InjectMocks
     private TiltaksgjennomfoeringApiService tiltaksgjennomfoeringApiService = new TiltaksgjennomfoeringApiService(new TiltakApiProperties(uri));
 
+
     @Test
     public void kall_mot_finn_avtaler_ok_skal_returnere_avtaler() {
-        List<Avtale> avtaleListe = Arrays.asList(TestData.opprettArbeidstreningAvtale());
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        List<Avtale> avtaleListe = Arrays.asList(avtale);
         when(restTemplate.exchange(eq(expUri), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class))).thenReturn(ResponseEntity.of(Optional.of(avtaleListe)));
-        when(persondataService.hentDiskresjonskoder(anySet())).thenReturn(Map.of());
+        when(persondataService.hentDiskresjonskoder(anySet())).thenReturn(Map.of(
+            avtale.getDeltakerFnr(), Optional.of(Diskresjonskode.UGRADERT)
+        ));
         assertThat(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).isEqualTo(avtaleListe);
     }
 
     @Test
     public void kall_mot_finn_avtaler_feiler_skal_hente_nytt_sts_token_og_forsøke_på_nytt() {
-        List<Avtale> avtaleListe = Arrays.asList(TestData.opprettArbeidstreningAvtale());
+        Avtale avtale = TestData.opprettArbeidstreningAvtale();
+        List<Avtale> avtaleListe = Arrays.asList(avtale);
+        when(persondataService.hentDiskresjonskoder(anySet())).thenReturn(Map.of(
+            avtale.getDeltakerFnr(), Optional.of(Diskresjonskode.UGRADERT)
+        ));
         when(restTemplate.exchange(eq(expUri), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class)))
                 .thenThrow(RuntimeException.class)
                 .thenReturn(ResponseEntity.of(Optional.of(avtaleListe)));
-        when(persondataService.hentDiskresjonskoder(anySet())).thenReturn(Map.of());
         assertThat(tiltaksgjennomfoeringApiService.finnAvtalerTilJournalfoering()).isEqualTo(avtaleListe);
         verify(stsService).evict();
         verify(stsService, times(2)).hentToken();
@@ -86,9 +94,9 @@ public class TiltaksgjennomfoeringApiServiceTest {
         Set<String> deltakerFnr = Set.of(avtale.getDeltakerFnr(), avtaleKode6.getDeltakerFnr(), avtaleKode7.getDeltakerFnr());
         when(restTemplate.exchange(eq(expUri), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class))).thenReturn(ResponseEntity.of(Optional.of(Arrays.asList(avtale, avtaleKode6, avtaleKode7))));
         when(persondataService.hentDiskresjonskoder(eq(deltakerFnr))).thenReturn(Map.of(
-                avtale.getDeltakerFnr(), Diskresjonskode.UGRADERT,
-                avtaleKode6.getDeltakerFnr(), Diskresjonskode.STRENGT_FORTROLIG,
-                avtaleKode7.getDeltakerFnr(), Diskresjonskode.STRENGT_FORTROLIG_UTLAND
+                avtale.getDeltakerFnr(), Optional.of(Diskresjonskode.UGRADERT),
+                avtaleKode6.getDeltakerFnr(), Optional.of(Diskresjonskode.STRENGT_FORTROLIG),
+                avtaleKode7.getDeltakerFnr(), Optional.of(Diskresjonskode.STRENGT_FORTROLIG_UTLAND)
         ));
 
         // NÅR
@@ -119,7 +127,7 @@ public class TiltaksgjennomfoeringApiServiceTest {
                         avtaleKode67_3_for_samme_deltaker))));
 
         when(persondataService.hentDiskresjonskoder(eq(deltakerFnr))).thenReturn(Map.of(
-                TestData.opprettEnAvtale().getDeltakerFnr(), Diskresjonskode.STRENGT_FORTROLIG
+                TestData.opprettEnAvtale().getDeltakerFnr(), Optional.of(Diskresjonskode.STRENGT_FORTROLIG)
         ));
 
         // NÅR

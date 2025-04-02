@@ -6,7 +6,7 @@
         "urlPath": "/persondata",
         "headers": {
           "Content-Type": {
-            "equalTo": "application/json",
+            "equalTo": "application/json; charset=utf-8",
             "caseInsensitive": true
           }
         },
@@ -14,7 +14,7 @@
           {
             "ignoreArrayOrder": true,
             "equalToJson": {
-              "query": "query($identer: [ID!]!) { hentPersonBolk(identer: $identer) { ident, person { adressebeskyttelse { gradering } folkeregisteridentifikator { identifikasjonsnummer status type } }, code } } ",
+              "query": "query($identer: [ID!]!) { hentPersonBolk(identer: $identer) { ident, person { adressebeskyttelse { gradering } }, code } }",
               "variables": {
                 "identer": [
                   "28033114267",

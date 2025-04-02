@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
-import no.nav.tag.tiltaksgjennomforingprosess.persondata.Diskresjonskode;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.PersondataService;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
+import no.nav.team_tiltak.felles.persondata.pdl.domene.Diskresjonskode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -81,10 +81,14 @@ public class TiltaksgjennomfoeringApiService {
 
     public List<Avtale> sladdeKode6og7Avtaler(List<Avtale> avtaler){
         Set<String> fnrDeltakere = avtaler.stream().map(Avtale::getDeltakerFnr).collect(Collectors.toSet());
-        Map<String, Diskresjonskode> diskresjonskoder = persondataService.hentDiskresjonskoder(fnrDeltakere);
+        Map<String, Optional<Diskresjonskode>> diskresjonskoder = persondataService.hentDiskresjonskoder(fnrDeltakere);
         avtaler.forEach(avtale -> {
-            var diskresjonskode = diskresjonskoder.get(avtale.getDeltakerFnr());
-            if (diskresjonskode != null && diskresjonskode.erKode6Eller7()) {
+            var diskresjonskode = diskresjonskoder.get(avtale.getDeltakerFnr()).orElseThrow(
+                () -> new IllegalStateException(
+                    "Klarte ikke utlede diskresjonskode for deltaker. Vet derfor ikke om avtale skal sladdes eller ikke"
+                )
+            );
+            if (diskresjonskode.erKode6Eller7()) {
                 avtale.utførSladdingAvFelter();
             }
         });

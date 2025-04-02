@@ -18,6 +18,17 @@
         <java.version>21</java.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <repository>
+            <id>github</id>
+            <url>https://github-package-registry-mirror.gc.nav.no/cached/maven-release</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -109,6 +120,12 @@
             <artifactId>hamcrest</artifactId>
             <version>2.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.team-tiltak</groupId>
+            <artifactId>tiltak-persondata</artifactId>
+            <version>2025.04.07_08.09-c5b0327d047a</version>
         </dependency>
     </dependencies>
 
