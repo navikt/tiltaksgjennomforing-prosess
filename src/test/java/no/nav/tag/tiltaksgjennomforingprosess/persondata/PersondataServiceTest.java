@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess.persondata;
 
+import no.nav.team_tiltak.felles.persondata.pdl.domene.Diskresjonskode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,6 +8,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,17 +25,18 @@ public class PersondataServiceTest {
     private PersondataService persondataService;
 
 
-    private static final Map<String, Diskresjonskode> forventetSvar = Map.of(
-            STRENGT_FORTROLIG_PERSON, Diskresjonskode.STRENGT_FORTROLIG,
-            STRENGT_FORTROLIG_UTLAND_PERSON, Diskresjonskode.STRENGT_FORTROLIG_UTLAND,
-            FORTROLIG_PERSON, Diskresjonskode.FORTROLIG,
-            UGRADERT_PERSON, Diskresjonskode.UGRADERT,
-            ANNET, Diskresjonskode.UGRADERT);
+    private static final Map<String, Optional<Diskresjonskode>> forventetSvar = Map.of(
+            STRENGT_FORTROLIG_PERSON, Optional.of(Diskresjonskode.STRENGT_FORTROLIG),
+            STRENGT_FORTROLIG_UTLAND_PERSON, Optional.of(Diskresjonskode.STRENGT_FORTROLIG_UTLAND),
+            FORTROLIG_PERSON, Optional.of(Diskresjonskode.FORTROLIG),
+            UGRADERT_PERSON, Optional.of(Diskresjonskode.UGRADERT),
+            ANNET, Optional.of(Diskresjonskode.UGRADERT)
+    );
 
 
     @Test
     public void hent_graderinger() {
-        Map<String, Diskresjonskode> diskresjonskode = persondataService.hentDiskresjonskoder(forventetSvar.keySet());
+        Map<String, Optional<Diskresjonskode>> diskresjonskode = persondataService.hentDiskresjonskoder(forventetSvar.keySet());
         assertThat(diskresjonskode).isEqualTo(forventetSvar);
     }
 }
