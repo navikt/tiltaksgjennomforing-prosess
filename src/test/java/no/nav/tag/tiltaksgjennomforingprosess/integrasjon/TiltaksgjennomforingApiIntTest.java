@@ -124,9 +124,6 @@ public class TiltaksgjennomforingApiIntTest {
         assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvArbeidsgiver());
         assertEquals(LocalDate.of(2020, 2, 3), avtale.getGodkjentAvVeileder());
         assertTrue(avtale.isGodkjentPaVegneAv());
-        assertEquals("Fadder", avtale.getFadderFornavn());
-        assertEquals("Faddersen", avtale.getFadderEtternavn());
-        assertEquals("12345678", avtale.getFadderTlf());
         assertEquals(6808, avtale.getSumLonnstilskudd());
 
         Avtale tilskuddAvtale = avtaleList.stream().filter(avt -> avt.getTiltakstype().equals(Tiltakstype.MIDLERTIDIG_LONNSTILSKUDD)).findFirst()

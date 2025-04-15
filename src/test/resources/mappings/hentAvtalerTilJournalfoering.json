@@ -59,10 +59,7 @@
             "godkjentAvDeltaker": "2020-02-11",
             "godkjentAvArbeidsgiver": "2020-02-11",
             "godkjentAvVeileder": "2020-02-11",
-            "godkjentPaVegneAv": false,
-            "fadderFornavn": null,
-            "fadderEtternavn": null,
-            "fadderTlf": null
+            "godkjentPaVegneAv": false
           },
           {
             "tiltakstype": "MIDLERTIDIG_LONNSTILSKUDD",
@@ -98,9 +95,6 @@
             "arbeidsgiveravgift": 0.051,
             "mentorFornavn": null,
             "mentorEtternavn": null,
-            "fadderFornavn": null,
-            "fadderEtternavn": null,
-            "fadderTlf": null,
             "mentorOppgaver": null,
             "mentorAntallTimer": null,
             "mentorTimelonn": null,
@@ -273,9 +267,6 @@
             "deltakerFornavn": "Jan",
             "deltakerEtternavn": "Banan",
             "deltakerTlf": "67676767",
-            "fadderFornavn": "Fadder",
-            "fadderEtternavn": "Faddersen",
-            "fadderTlf": "12345678",
             "bedriftNavn": "Maura og Kolbu regnskap",
             "arbeidsgiverFornavn": "Knut",
             "arbeidsgiverEtternavn": "Knutsen",
