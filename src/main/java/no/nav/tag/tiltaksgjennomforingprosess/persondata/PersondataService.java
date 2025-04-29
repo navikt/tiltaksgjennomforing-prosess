@@ -1,6 +1,11 @@
 package no.nav.tag.tiltaksgjennomforingprosess.persondata;
 
 import lombok.extern.slf4j.Slf4j;
+import no.nav.security.token.support.client.core.ClientProperties;
+import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenService;
+import no.nav.security.token.support.client.spring.ClientConfigurationProperties;
+import no.nav.team_tiltak.felles.persondata.PersondataClient;
+import no.nav.team_tiltak.felles.persondata.pdl.domene.Diskresjonskode;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -14,30 +19,21 @@ import java.util.stream.Collectors;
 public class PersondataService {
     private final PersondataClient persondataClient;
 
-    public PersondataService(PersondataClient persondataClient) {
-        this.persondataClient = persondataClient;
+    public PersondataService(
+        PersondataProperties persondataProperties,
+        ClientConfigurationProperties clientConfigurationProperties,
+        OAuth2AccessTokenService oAuth2AccessTokenService
+    ) {
+        ClientProperties clientProperties = clientConfigurationProperties.getRegistration().get("pdl-api");
+        this.persondataClient = new PersondataClient(
+            persondataProperties.getUri(),
+            () -> Optional.ofNullable(clientProperties)
+                .map(prop -> oAuth2AccessTokenService.getAccessToken(prop).getAccessToken())
+                .orElse(null)
+        );
     }
 
-    public Map<String, Diskresjonskode> hentDiskresjonskoder(Set<String> fnrSet) {
-        if (fnrSet.isEmpty()) {
-            return Collections.emptyMap();
-        }
-
-        if (fnrSet.size() > 1000) {
-            throw new IllegalArgumentException("Kan ikke hente diskresjonkode for mer enn 1000 om gangen");
-        }
-
-        Map<String, Optional<Diskresjonskode>> diskresjonskodeOptFraPdl = persondataClient
-                .hentPersonBolk(fnrSet)
-                .utledDiskresjonskoder(fnrSet);
-
-        Map<String, Diskresjonskode> diskresjonskodeFraPdl = diskresjonskodeOptFraPdl.entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().orElse(Diskresjonskode.UGRADERT)
-                ));
-
-        return diskresjonskodeFraPdl;
+    public Map<String, Optional<Diskresjonskode>> hentDiskresjonskoder(Set<String> fnrSet) {
+        return persondataClient.hentDiskresjonskoder(fnrSet);
     }
 }

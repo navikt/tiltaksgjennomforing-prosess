@@ -1,5 +1,6 @@
 package no.nav.tag.tiltaksgjennomforingprosess;
 
+import no.nav.security.token.support.client.spring.oauth2.EnableOAuth2Client;
 import no.nav.security.token.support.spring.api.EnableJwtTokenValidation;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 })
 @SpringBootApplication
 @EnableConfigurationProperties
+@EnableOAuth2Client(cacheEnabled = true)
 public class TiltaksgjennomforingProsessApplication {
 
 	public static void main(String[] args) {
