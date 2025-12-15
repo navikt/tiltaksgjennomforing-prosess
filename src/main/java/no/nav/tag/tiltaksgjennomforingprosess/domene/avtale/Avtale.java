@@ -50,7 +50,9 @@ public class Avtale {
     private Double mentorAntallTimer;
     private Integer mentorTimelonn;
     private String mentorFnr;
-
+    private Integer mentorValgtLonnstypeBelop;
+    private String mentorValgtLonnstype;
+    private String mentorTlf;
     private GodkjentPaVegneGrunn godkjentPaVegneGrunn;
     private String arbeidsgiverKontonummer;
     private String stillingstype;
