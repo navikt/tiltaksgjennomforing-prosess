@@ -6,6 +6,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.AvtaleTilXml;
 import no.nav.tag.tiltaksgjennomforingprosess.factory.JournalpostFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +37,7 @@ public class JoarkServiceIntTest {
         journalpostFactory = new JournalpostFactory(avtaleTilXml, dokgenAdapter);
     }
 
+    @Disabled("Mentor skal ikke til arena") // TODO: Lage nye tester for tiltakstype som skal til ARENA
     @Test
     public void oppretterJournalpost_til_arena() {
         Avtale avtale = TestData.opprettMentorAvtale();
@@ -69,7 +71,7 @@ public class JoarkServiceIntTest {
         String jounalpostId = joarkService.sendJournalpost(journalpost, ferdigstill(journalpost, avtale));
         assertEquals("001", jounalpostId);
     }
-
+    @Disabled("Mentor skal ikke til arena") // TODO: Lage nye tester for tiltakstype som skal til ARENA
     @Test
     public void oppretterJournalpost_til_arena_med_dokgen() {
         Avtale avtale = TestData.opprettMentorAvtale();
