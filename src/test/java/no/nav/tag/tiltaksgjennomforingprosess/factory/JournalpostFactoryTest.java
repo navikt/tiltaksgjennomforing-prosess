@@ -125,6 +125,7 @@ public class JournalpostFactoryTest {
         assertEquals(1, journalpost.getDokumenter().get(0).getDokumentVarianter().size());
     }
 
+    @Disabled("Mentor skal ikke til arena") // TODO: Lage nye tester for tiltakstype som skal til ARENA
     @Test
     public void journalpostMentorTilArena() {
         Avtale avtale = TestData.opprettMentorAvtale();
@@ -152,6 +153,7 @@ public class JournalpostFactoryTest {
         });
     }
 
+    @Disabled("Mentor skal ikke til arena") // TODO: Lage nye tester for tiltakstype som skal til ARENA
     @Test
     public void avtaleTilXmlFeiler() throws Exception {
         assertThrows(RuntimeException.class, () -> {
