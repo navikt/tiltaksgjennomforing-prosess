@@ -37,6 +37,8 @@ spec:
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: {{spring-profil}}
+  envFrom:
+    - secret: tiltaksgjennomforing-prosess
   prometheus:
     enabled: true
     path: /tiltaksgjennomforing-prosess/internal/actuator/prometheus
