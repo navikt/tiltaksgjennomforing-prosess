@@ -7,7 +7,7 @@ public enum Tiltakstype {
 
     ARBEIDSTRENING("Arbeidstrening", "ab0422", "Avtale om arbeidstrening", "tiltak-arbtren", false),
     MIDLERTIDIG_LONNSTILSKUDD("LonnstilskuddMidlertidig", "ab0336", "Avtale om midlertidig lønnstilskudd", "tiltak-midl-lønnst", false),
-    FIREARIG_LONNSTILSKUDD("LonnstilskuddMidlertidig", "ab0336", "Avtale om midlertidig lønnstilskudd", "tiltak-midl-lønnst", false),
+    FIREARIG_LONNSTILSKUDD("LonnstilskuddMidlertidig", "ab0572", "Avtale om fireårig lønnstilskudd for unge", "tiltak-fireårig-lønnst", false),
     VARIG_LONNSTILSKUDD("LonnstilskuddVarig", "ab0337", "Avtale om varig lønnstilskudd", "tiltak-varig-lønnst", false),
     MENTOR("mentor", "ab0416", "Avtale om tilskudd til mentor", "tiltak-mentor", false),
     INKLUDERINGSTILSKUDD("inkluderingstilskudd", "ab0417", "Avtale om inkluderingstilskudd", "tiltak-inkl-tilsk", true),

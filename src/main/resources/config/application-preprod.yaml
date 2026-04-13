@@ -17,7 +17,7 @@ prosess:
   cron: "5/30 * 07-20 * * MON-FRI"
   integrasjon:
     joark:
-      uri: https://dokarkiv-q1.nais.preprod.local
+      uri: https://dokarkiv-q2.nais.preprod.local
     sts:
       uri: http://security-token-service.default.svc.nais.local
       bruker: ${tiltaksgjennomforing.consumer.user}
