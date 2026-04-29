@@ -22,8 +22,6 @@ spec:
   readiness:
     path: /tiltaksgjennomforing-prosess/internal/healthcheck
     initialDelay: 30
-  ingresses:
-    - {{ingress}}
   accessPolicy:
     outbound:
       rules:
