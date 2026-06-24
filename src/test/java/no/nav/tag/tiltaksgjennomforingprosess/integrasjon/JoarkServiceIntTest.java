@@ -27,14 +27,15 @@ public class JoarkServiceIntTest {
 
     @Autowired
     private AvtaleTilXml avtaleTilXml;
+
     @Autowired
-    private DokgenAdapter dokgenAdapter;
+    private PdfgenAdapter pdfgenAdapter;
 
     private JournalpostFactory journalpostFactory;
 
     @BeforeEach
     public void setUp() {
-        journalpostFactory = new JournalpostFactory(avtaleTilXml, dokgenAdapter);
+        journalpostFactory = new JournalpostFactory(avtaleTilXml, pdfgenAdapter);
     }
 
     @Disabled("Mentor skal ikke til arena") // TODO: Lage nye tester for tiltakstype som skal til ARENA
@@ -73,7 +74,7 @@ public class JoarkServiceIntTest {
     }
     @Disabled("Mentor skal ikke til arena") // TODO: Lage nye tester for tiltakstype som skal til ARENA
     @Test
-    public void oppretterJournalpost_til_arena_med_dokgen() {
+    public void oppretterJournalpost_til_arena_med_pdfgen() {
         Avtale avtale = TestData.opprettMentorAvtale();
         avtale.setVersjon(1);
 
@@ -83,7 +84,7 @@ public class JoarkServiceIntTest {
     }
 
     @Test
-    public void oppretterJournalpost_ikke_til_arena_med_dokgen() {
+    public void oppretterJournalpost_ikke_til_arena_med_pdfgen() {
         Avtale avtale = TestData.opprettArbeidstreningAvtale();
         avtale.setBedriftNavn("Maura og Kolbu regnskap");
         avtale.setBedriftNr("910825518");

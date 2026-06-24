@@ -8,7 +8,7 @@ import java.net.URI;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "prosess.integrasjon.dokgen")
-public class DokgenProperties {
+@ConfigurationProperties(prefix = "prosess.integrasjon.pdfgen")
+public class PdfgenProperties {
     private URI uri;
 }

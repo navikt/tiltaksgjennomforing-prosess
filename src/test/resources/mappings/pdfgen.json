@@ -3,7 +3,7 @@
     {
       "request": {
         "method": "POST",
-        "url": "/template/tiltak-avtale/create-pdf"
+        "urlPathPattern": "/api/v1/genpdf/tiltak-avtale/[\\w-]+"
       },
       "response": {
         "status": 200,

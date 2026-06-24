@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.*;
-import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
+import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.PdfgenAdapter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class JournalpostFactory {
     private final static String EKSTREF_PREFIKS = "AVT-";
 
     private final AvtaleTilXml avtaleTilXml;
-    private final DokgenAdapter dokgenAdapter;
+    private final PdfgenAdapter pdfgenAdapter;
 
     public Journalpost konverterTilJournalpost(Avtale avtale) {
 
@@ -40,7 +40,7 @@ public class JournalpostFactory {
         journalpost.setEksternReferanseId(EKSTREF_PREFIKS + avtale.getAvtaleVersjonId().toString());
         List<DokumentVariant> dokumentVarianter = new ArrayList<>(2);
 
-        final byte[] dokumentPdfAsBytes = dokgenAdapter.genererPdf(avtale);
+        final byte[] dokumentPdfAsBytes = pdfgenAdapter.genererPdf(avtale);
 
         dokumentVarianter.add(new DokumentVariant(FILTYPE_PDF, VARIANFORMAT_PDF, encodeToBase64(dokumentPdfAsBytes)));
         Dokument dokument = new Dokument();
