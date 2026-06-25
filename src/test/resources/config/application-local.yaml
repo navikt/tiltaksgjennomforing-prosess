@@ -28,8 +28,8 @@ prosess:
       uri: http://localhost:8091/
     api:
       uri: http://localhost:8091/tiltaksgjennomforing-api
-    dokgen:
-      uri: http://localhost:8091/template/tiltak-avtale/create-pdf
+    pdfgen:
+      uri: http://localhost:8091/api/v1/genpdf
     persondata:
       uri: http://localhost:8091/persondata
   pilot:

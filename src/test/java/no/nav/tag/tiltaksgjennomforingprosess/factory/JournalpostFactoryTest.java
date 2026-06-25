@@ -5,7 +5,7 @@ import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Tiltakstype;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Dokument;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
-import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.DokgenAdapter;
+import no.nav.tag.tiltaksgjennomforingprosess.integrasjon.PdfgenAdapter;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.PilotProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -26,7 +26,7 @@ public class JournalpostFactoryTest {
     private AvtaleTilXml avtaleTilXml;
 
     @Mock
-    private DokgenAdapter dokgenAdapter;
+    private PdfgenAdapter pdfgenAdapter;
 
     @InjectMocks
     private JournalpostFactory journalpostFactory;
@@ -36,7 +36,7 @@ public class JournalpostFactoryTest {
 
     @BeforeEach
     public void before() {
-        when(dokgenAdapter.genererPdf(any(Avtale.class))).thenReturn(new byte[1]);
+        when(pdfgenAdapter.genererPdf(any(Avtale.class))).thenReturn(new byte[1]);
     }
 
     @Disabled("Burde kanskje teste at versjon 1 også blir journalført som ferdigstilt istedenfor midlertidig")
@@ -146,9 +146,9 @@ public class JournalpostFactoryTest {
         assertThrows(RuntimeException.class, () -> {
             Avtale avtale = TestData.opprettArbeidstreningAvtale();
 
-            when(dokgenAdapter.genererPdf(avtale)).thenThrow(HttpClientErrorException.class);
+            when(pdfgenAdapter.genererPdf(avtale)).thenThrow(HttpClientErrorException.class);
             journalpostFactory.konverterTilJournalpost(avtale);
-            verify(dokgenAdapter, atLeastOnce()).genererPdf(avtale);
+            verify(pdfgenAdapter, atLeastOnce()).genererPdf(avtale);
             verify(avtaleTilXml, never()).genererXml(avtale);
         });
     }
