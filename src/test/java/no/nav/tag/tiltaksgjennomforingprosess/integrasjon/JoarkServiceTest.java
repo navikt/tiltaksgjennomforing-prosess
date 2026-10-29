@@ -1,8 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
+import tools.jackson.databind.json.JsonMapper;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,14 +84,22 @@ public class JoarkServiceTest {
     }
 
     @Test
-    public void konflikt_409_mot_joark_skal_prøves_journalføre() throws JsonProcessingException {
+    public void konflikt_409_mot_joark_skal_prøves_journalføre() {
         JoarkResponse joarkResponse = new JoarkResponse();
         joarkResponse.setJournalpostId("1234");
-        HttpClientErrorException.Conflict.create(HttpStatus.CONFLICT, "Conflict", null, new ObjectMapper().writeValueAsString(joarkResponse).getBytes(), Charset.defaultCharset());
+        byte[] body = JsonMapper.builder().build().writeValueAsString(joarkResponse).getBytes();
         journalpost.setAvtaleVersjon(1);
-        when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenThrow(HttpClientErrorException.class).thenThrow(HttpClientErrorException.Conflict.create(HttpStatus.CONFLICT, "Conflict", null, new ObjectMapper().writeValueAsString(joarkResponse).getBytes(), Charset.defaultCharset()));
+        when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenThrow(HttpClientErrorException.class).thenThrow(HttpClientErrorException.Conflict.create(HttpStatus.CONFLICT, "Conflict", null, body, Charset.defaultCharset()));
         String journalPostId = joarkService.sendJournalpost(journalpost, false);
         assertThat(journalPostId).isEqualTo("1234");
+    }
+
+    @Test
+    public void konflikt_409_med_ukjente_felter_skal_gi_feil() {
+        byte[] body = "{\"journalpostId\": \"493353274\", \"journalpostferdigstilt\": true}".getBytes();
+        journalpost.setAvtaleVersjon(1);
+        when(restTemplate.postForObject(eq(expUriTilArena), any(HttpEntity.class), any())).thenThrow(HttpClientErrorException.class).thenThrow(HttpClientErrorException.Conflict.create(HttpStatus.CONFLICT, "Conflict", null, body, Charset.defaultCharset()));
+        assertThrows(RuntimeException.class, () -> joarkService.sendJournalpost(journalpost, false));
     }
 
 }

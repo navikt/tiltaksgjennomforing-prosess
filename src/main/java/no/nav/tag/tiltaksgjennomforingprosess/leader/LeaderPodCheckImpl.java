@@ -1,8 +1,7 @@
 package no.nav.tag.tiltaksgjennomforingprosess.leader;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import tools.jackson.databind.json.JsonMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.LeaderPodProperties;
 import org.springframework.context.annotation.Profile;
@@ -21,11 +20,11 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
 
     final LeaderPodProperties leaderPodProperties;
     final RestTemplate restTemplate;
-    final ObjectMapper objectMapper;
+    final JsonMapper objectMapper;
     final String path;
     HttpEntity<String> entity;
 
-    public LeaderPodCheckImpl(LeaderPodProperties leaderPodProperties, RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public LeaderPodCheckImpl(LeaderPodProperties leaderPodProperties, RestTemplate restTemplate, JsonMapper objectMapper) {
         this.leaderPodProperties = leaderPodProperties;
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
@@ -52,7 +51,7 @@ public class LeaderPodCheckImpl implements LeaderPodCheck {
         return hostname.equals(leader);
     }
 
-    private Elector getJSONFromUrl(String electorPath) throws JsonProcessingException {
+    private Elector getJSONFromUrl(String electorPath) {
         ResponseEntity responseEntity = restTemplate.exchange(electorPath, HttpMethod.GET, entity, String.class);
         return objectMapper.readValue((String) responseEntity.getBody(), Elector.class);
     }

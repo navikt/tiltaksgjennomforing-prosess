@@ -1,8 +1,8 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.avtale.Avtale;
 import no.nav.tag.tiltaksgjennomforingprosess.persondata.PersondataService;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.TiltakApiProperties;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class TiltaksgjennomfoeringApiService {
 
     @Autowired
-    ObjectMapper objectMapper;
+    JsonMapper objectMapper;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -99,7 +99,7 @@ public class TiltaksgjennomfoeringApiService {
         if (log.isDebugEnabled()) {
             try {
                 log.debug("JOURNALFØRT JSON REQ: {}", objectMapper.writeValueAsString(avtalerTilJournalfoert));
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
             }
         }
     }

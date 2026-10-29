@@ -1,8 +1,9 @@
 package no.nav.tag.tiltaksgjennomforingprosess.integrasjon;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 import no.nav.tag.tiltaksgjennomforingprosess.domene.journalpost.Journalpost;
 import no.nav.tag.tiltaksgjennomforingprosess.properties.JournalpostProperties;
 import org.springframework.http.HttpEntity;
@@ -20,6 +21,10 @@ import java.util.Arrays;
 @Slf4j
 @Service
 public class JoarkService {
+
+    private static final JsonMapper JSON_MAPPER = JsonMapper.builder()
+            .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
 
     private final HttpHeaders headers = new HttpHeaders();
     private final RestTemplate restTemplate;
@@ -50,10 +55,10 @@ public class JoarkService {
                 if(clientErrorException.getStatusCode().equals(HttpStatus.CONFLICT)) {
                     if(isNotBlank(clientErrorException.getResponseBodyAsString())) {
                         try {
-                            JoarkResponse joarkResponse = new ObjectMapper().readValue(clientErrorException.getResponseBodyAsString(), JoarkResponse.class);
+                            JoarkResponse joarkResponse = JSON_MAPPER.readValue(clientErrorException.getResponseBodyAsString(), JoarkResponse.class);
                             log.warn("Konflikt i Joark, journalført versjon {} av avtale {}", journalpost.getAvtaleVersjon(), journalpost.getAvtaleId());
                             return joarkResponse.getJournalpostId();
-                        } catch (JsonProcessingException e) {
+                        } catch (JacksonException e) {
                             log.error("Kall til Joark feilet", clientErrorException);
                             throw new RuntimeException("Kall til Joark feilet: ", clientErrorException);
                         }
@@ -88,8 +93,8 @@ public class JoarkService {
     private void debugLogJournalpost(Journalpost journalpost) {
         if (log.isDebugEnabled()) {
             try {
-                log.debug("JSON REQ: {}", new ObjectMapper().writeValueAsString(journalpost));
-            } catch (JsonProcessingException e) {
+                log.debug("JSON REQ: {}", JSON_MAPPER.writeValueAsString(journalpost));
+            } catch (JacksonException e) {
             }
         }
     }
