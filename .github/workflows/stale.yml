@@ -1,0 +1,32 @@
+name: Lukk inaktive PR-er
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  stale:
+    name: Merk og lukk inaktive PR-er
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11.0.0
+        with:
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
+          days-before-pr-stale: 14
+          days-before-pr-close: 30
+          stale-pr-label: wontfix
+          exempt-pr-labels: pinned,security,dependencies
+          stale-pr-message: >
+            Denne PR-en er markert som inaktiv fordi den ikke har hatt noen nylig aktivitet.
+            Den blir lukket hvis det ikke kommer ny aktivitet innen 30 dager.
+          close-pr-message: >
+            Denne PR-en er lukket på grunn av inaktivitet. Du kan åpne den igjen.
